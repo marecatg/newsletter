@@ -14,7 +14,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        if ($this->isGranted(Level::ANONYMOUS)) {
+        if (!$this->isGranted(Level::USER)) {
             return $this->redirectToRoute('fos_user_security_login');
         }
         // replace this example code with whatever you need
