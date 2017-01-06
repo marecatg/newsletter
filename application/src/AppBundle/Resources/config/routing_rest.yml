@@ -1,0 +1,4 @@
+stages:
+    type: rest
+    resource: AppBundle\Controller\TestRestController
+    name_prefix:  api_test_
