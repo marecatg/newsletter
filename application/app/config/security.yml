@@ -14,19 +14,44 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
         main:
-            pattern: ^/
+            pattern: /(.*)
+            context: user
             form_login:
                 provider: fos_userbundle
+                login_path: /login
+                use_forward: false
+                check_path: /login_check
+                failure_path:   null
                 csrf_token_generator: security.csrf.token_manager
                 # if you are using Symfony < 2.8, use the following config instead:
                 # csrf_provider: form.csrf_provider
 
-            logout:       true
+            logout:
+                path:           /logout
+                target:         /
+                invalidate_session: true
             anonymous:    true
 
     access_control:
+        # URL of FOSUserBundle which need to be available to anonymous users
+
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+
+        # Secured part of the site
+        # This config requires being logged for the whole site and having the admin role for the admin part.
+        # Change these rules to adapt them to your needs
+        - { path: ^/api/doc/.*, role: [ROLE_SUPER_ADMIN] }
+        - { path: ^/.*, role: [ROLE_USER] }
+        - { path: ^/api/users/.*, role: [ROLE_USER] }
+        - { path: ^/profile/.*, role: [ROLE_USER]}
+
+    role_hierarchy:
+        ROLE_USER: [ROLE_USER]
+        ROLE_ADMIN: [ROLE_ADMIN]

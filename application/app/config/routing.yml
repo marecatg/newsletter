@@ -23,7 +23,7 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile*
 
-workshop_api :
+newsletter_api :
     type : rest
     resource: "@AppBundle/Resources/config/routing_rest.yml"
     prefix:   /api

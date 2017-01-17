@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}" data-ng-app="app" ng-strict-di>
+<head>
+    <meta charset="utf-8">
+    <title data-ng-bind="title"></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style>
+        /* This helps the ng-show/ng-hide animations start at the right place. */
+        /* Since Angular has this but needs to load, this gives us the class early. */
+        .ng-hide {
+            display: none!important;
+        }
+    </style>
+
+    {% block stylesheets %}
+        {% include 'AppBundle::stylesheets.html.twig' %}
+    {% endblock %}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="/iejs/html5shiv.min.js"></script>
+    <script src="/iejs/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/app/image/newsletter.png') }}" />
+</head>
+<body>
+{% block body %}{% endblock %}
+
+{% block javascripts %}
+    {% include 'AppBundle::javascripts.html.twig' %}
+{% endblock %}
+</body>
+</html>
