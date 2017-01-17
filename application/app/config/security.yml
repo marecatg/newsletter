@@ -38,19 +38,18 @@ security:
 
     access_control:
         # URL of FOSUserBundle which need to be available to anonymous users
-
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %chanel_require% }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %chanel_require% }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %chanel_require% }
         - { path: ^/admin/, role: ROLE_ADMIN }
 
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to your needs
-        - { path: ^/api/doc/.*, role: [ROLE_SUPER_ADMIN] }
-        - { path: ^/.*, role: [ROLE_USER] }
-        - { path: ^/api/users/.*, role: [ROLE_USER] }
-        - { path: ^/profile/.*, role: [ROLE_USER]}
+        - { path: ^/api/doc/.*, role: [ROLE_SUPER_ADMIN], requires_channel: %chanel_require%  }
+        - { path: ^/.*, role: [ROLE_USER], requires_channel: %chanel_require% }
+        - { path: ^/api/users/.*, role: [ROLE_USER], requires_channel: %chanel_require% }
+        - { path: ^/profile/.*, role: [ROLE_USER], requires_channel: %chanel_require% }
 
     role_hierarchy:
         ROLE_USER: [ROLE_USER]
