@@ -23,7 +23,7 @@ parameters:
                     - "Resources/public/vendor/ng-idle/angular-idle.min.js"
                     - "Resources/public/vendor/bootstrap/js/dropdown.js"
                     - "Resources/public/vendor/bootstrap/js/alert.js"
-                    - "Resources/public/vendor/angular-file-upload/dist/angular-file-upload.min.js"
+                    - "Resources/public/vendor/angular-file-upload/angular-file-upload.min.js"
                 app:
                     - "Resources/public/app/app.module.js"
                     - "Resources/public/app/blocks/logger/logger.module.js"
@@ -33,11 +33,11 @@ parameters:
                     - "Resources/public/app/core/core.module.js"
                     - "Resources/public/app/core/config.js"
                     - "Resources/public/app/core/core.js"
-                    - "Resources/public/app/core/modal/modal.js"
+                    #- "Resources/public/app/core/modal/modal.js"
                     - "Resources/public/app/layout/layout.module.js"
-                    - "Resources/public/app/layout/config.route.js"
+                    #- "Resources/public/app/layout/config.route.js"
                     - "Resources/public/app/layout/layout.js"
-                    - "Resources/public/app/newsletter/accueil/accueil.modulejs"
+                    - "Resources/public/app/newsletter/accueil/accueil.module.js"
                     - "Resources/public/app/newsletter/accueil/config.route.js"
                     - "Resources/public/app/newsletter/accueil/accueil.js"
             css:
@@ -48,4 +48,4 @@ parameters:
                     - "Resources/public/vendor/angular-loading-bar/build/loading-bar.min.css"
                     - "Resources/public/vendor/jquery-ui/themes/base/jquery-ui.min.css"
                 app:
-                    - "Resources/public/css/screen.css"
+                    - "Resources/public/css/style.css"

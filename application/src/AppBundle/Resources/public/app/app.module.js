@@ -15,7 +15,8 @@
          * but this is easier to maintain.
          */
         'app.core',
-        'app.accueil'
+        'app.accueil',
+        'app.layout'
     ]);
 
 })();

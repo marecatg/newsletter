@@ -9,6 +9,6 @@
         /*
          * Our reusable cross app code modules
          */
-        'blocks.exception', 'blocks.logger', 'blocks.router', 'ckeditor', 'ngAnimate'
+        'blocks.logger', 'blocks.router', 'ckeditor', 'ngAnimate'
     ]);
 })();

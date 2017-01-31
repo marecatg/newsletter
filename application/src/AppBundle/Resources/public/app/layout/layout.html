@@ -1,0 +1,10 @@
+<div data-ng-controller="Layout as vm" id="wrapper">
+    <header class="clearfix display-header" role="banner" data-ng-if="vm.showView">
+        <div data-ng-include="'bundles/app/app/layout/header.html'"></div>
+    </header>
+
+    <main id="content" tabindex="-1" class="content" role="main" data-ng-if="vm.showView"
+          data-ng-style="{'padding-top': '100px'}">
+        <div data-ng-view></div>
+    </main>
+</div>

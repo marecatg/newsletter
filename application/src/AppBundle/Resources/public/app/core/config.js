@@ -22,9 +22,9 @@
     core.config(configure);
 
     configure.$inject = ['$logProvider', '$routeProvider', 'routehelperConfigProvider',
-        'exceptionHandlerProvider', '$httpProvider', 'IdleProvider', 'KeepaliveProvider'];
+        '$httpProvider', 'IdleProvider', 'KeepaliveProvider'];
     function configure($logProvider, $routeProvider, routehelperConfigProvider,
-                       exceptionHandlerProvider, $httpProvider, IdleProvider, KeepaliveProvider) {
+                       $httpProvider, IdleProvider, KeepaliveProvider) {
         // turn debugging off/on (no info or warn)
 
         if ($logProvider.debugEnabled) {
@@ -34,9 +34,6 @@
         // Configure the common route provider
         routehelperConfigProvider.config.$routeProvider = $routeProvider;
         routehelperConfigProvider.config.docTitle = config.appTitle;
-
-        // Configure the common exception handler
-        exceptionHandlerProvider.configure(config.appErrorPrefix);
 
         $httpProvider.defaults.cache = false;
         if (!$httpProvider.defaults.headers.get) {

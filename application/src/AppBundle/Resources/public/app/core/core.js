@@ -8,7 +8,7 @@
     CoreController.$inject = ['$q', 'logger'];
 
     function CoreController($q, logger) {
-        /*jshint validthis: true, camelcase: false */
+        
         var vm = this;
 
         mainActivate();
