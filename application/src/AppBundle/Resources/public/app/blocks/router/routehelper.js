@@ -98,7 +98,11 @@
                 function(event, current, previous) {
                     routeCounts.changes++;
                     handlingRouteChangeError = false;
-                    var title = (current.title || '') + ' : ' + routehelperConfig.config.docTitle;
+                    var title = routehelperConfig.config.docTitle;
+                    if (angular.isDefined(current.title) && current.title != null &&
+                        current.title !== '') {
+                        title = routehelperConfig.config.docTitle + ' : ' + (current.title || '');
+                    }
                     $rootScope.title = title; // data bind to <title>
                 }
             );

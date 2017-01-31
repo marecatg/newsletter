@@ -16,6 +16,7 @@
          */
         'app.core',
         'app.newsletter',
+        'app.campagne',
         'app.layout'
     ]);
 

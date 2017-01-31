@@ -40,6 +40,9 @@ parameters:
                     - "Resources/public/app/campit/newsletter/newsletter.module.js"
                     - "Resources/public/app/campit/newsletter/config.route.js"
                     - "Resources/public/app/campit/newsletter/newsletter.js"
+                    - "Resources/public/app/campit/campagne/campagne.module.js"
+                    - "Resources/public/app/campit/campagne/config.route.js"
+                    - "Resources/public/app/campit/campagne/campagne.js"
             css:
                 vendor:
                     - "Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css"

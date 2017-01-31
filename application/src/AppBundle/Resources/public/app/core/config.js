@@ -13,7 +13,7 @@
 
     var config = {
         appErrorPrefix: '[My app] ', //Configure the exceptionHandler decorator
-        appTitle: 'Application Newsletter',
+        appTitle: 'Application Campit',
         version: '1.0.0'
     };
 
