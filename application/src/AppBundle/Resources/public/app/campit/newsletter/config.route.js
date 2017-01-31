@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.accueil')
+        .module('app.newsletter')
         .run(appRun);
 
     appRun.$inject = ['routehelper'];
@@ -14,12 +14,11 @@
     function getRoutes() {
         return [
             {
-                url: '/',
+                url: '/newsletter',
                 config: {
-                    templateUrl: 'bundles/app/app/newsletter/accueil/accueil.html',
-                    controller: 'Accueil',
-                    controllerAs: 'vm',
-                    title: 'Accueil'
+                    templateUrl: 'bundles/app/app/campit/newsletter/newsletter.html',
+                    controller: 'Newsletter',
+                    controllerAs: 'vm'
                 }
             }
         ];

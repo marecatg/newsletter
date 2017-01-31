@@ -51,7 +51,7 @@
                     angular.extend(route.config.resolve || {}, routehelperConfig.config.resolveAlways);
                 $routeProvider.when(route.url, route.config);
             });
-            $routeProvider.otherwise({redirectTo: '/'});
+            $routeProvider.otherwise({redirectTo: '/newsletter'});
         }
 
         function handleRoutingErrors() {
@@ -69,7 +69,7 @@
                         'unknown target';
                     var msg = 'Error routing to ' + destination + '. ' + (rejection.msg || '');
                     //logger.warning(msg, [current]);
-                    $location.path('/');
+                    $location.path('/newsletter');
                 }
             );
         }

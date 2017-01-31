@@ -37,9 +37,9 @@ parameters:
                     - "Resources/public/app/layout/layout.module.js"
                     #- "Resources/public/app/layout/config.route.js"
                     - "Resources/public/app/layout/layout.js"
-                    - "Resources/public/app/newsletter/accueil/accueil.module.js"
-                    - "Resources/public/app/newsletter/accueil/config.route.js"
-                    - "Resources/public/app/newsletter/accueil/accueil.js"
+                    - "Resources/public/app/campit/newsletter/newsletter.module.js"
+                    - "Resources/public/app/campit/newsletter/config.route.js"
+                    - "Resources/public/app/campit/newsletter/newsletter.js"
             css:
                 vendor:
                     - "Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css"

@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('app.accueil')
-        .controller('Accueil', Accueil);
+        .module('app.newsletter')
+        .controller('Newsletter', Newsletter);
 
-    Accueil.$inject = ['$q'];
+    Newsletter.$inject = ['$q'];
 
-    function Accueil($q) {
+    function Newsletter($q) {
 
         var vm = this;
         vm.showView = false;
@@ -19,7 +19,7 @@
             promises = []; //initQuestion load in loadListUser
             return $q.all(promises).then(function () {
                 vm.showView = true;
-                console.log('Activated Accueil View');
+                console.log('Activated Newsletter View');
             });
         }
     }
