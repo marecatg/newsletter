@@ -3,7 +3,7 @@
 
     var core = angular.module('app.core');
 
-    core.config(toastrConfig);
+    //core.config(toastrConfig);
 
     toastrConfig.$inject = ['toastr'];
     function toastrConfig(toastr) {

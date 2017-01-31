@@ -4,13 +4,12 @@
     angular.module('app.layout')
         .controller('Layout', Layout);
 
-    Layout.$inject = ['$q', 'logger', 'config', '$scope', '$sce'];
+    Layout.$inject = ['$q', '$scope', '$rootScope', '$sce'];
 
-    function Layout($q, logger, config, $scope, $rootScope, $sce) {
+    function Layout($q, $scope, $rootScope, $sce) {
 
         var vm = this;
         vm.showView = false;
-        vm.title = config.appTitle;
 
         vm.isDefined = isDefined;
         vm.stopClose = stopClose;
@@ -26,7 +25,7 @@
 
             return $q.all().then(function () {
                         vm.showView = true;
-                        logger.info('Activated Layout View');
+                        console.log('Activated Layout View');
             });
         }
 

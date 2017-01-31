@@ -5,11 +5,12 @@
         .module('app.accueil')
         .controller('Accueil', Accueil);
 
-    Accueil.$inject = ['$q', 'logger'];
+    Accueil.$inject = ['$q'];
 
-    function Accueil($q, logger) {
+    function Accueil($q) {
 
         var vm = this;
+        vm.showView = false;
 
         activate();
 
@@ -17,8 +18,8 @@
             var promises = [];
             promises = []; //initQuestion load in loadListUser
             return $q.all(promises).then(function () {
-                ;
-                logger.info('Activated Accueil View');
+                vm.showView = true;
+                console.log('Activated Accueil View');
             });
         }
     }
