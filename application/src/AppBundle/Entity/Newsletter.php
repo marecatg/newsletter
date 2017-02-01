@@ -68,4 +68,124 @@ class Newsletter
      * @ORM\JoinColumn(name="campagne_id", referencedColumnName="id", nullable=true)
      */
     private $campagne;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateProchainEnvoi()
+    {
+        return $this->dateProchainEnvoi;
+    }
+
+    /**
+     * @param \DateTime $dateProchainEnvoi
+     */
+    public function setDateProchainEnvoi($dateProchainEnvoi)
+    {
+        $this->dateProchainEnvoi = $dateProchainEnvoi;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPeriodiciteUnite()
+    {
+        return $this->periodiciteUnite;
+    }
+
+    /**
+     * @param string $periodiciteUnite
+     */
+    public function setPeriodiciteUnite($periodiciteUnite)
+    {
+        $this->periodiciteUnite = $periodiciteUnite;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPeriodiciteValeur()
+    {
+        return $this->periodiciteValeur;
+    }
+
+    /**
+     * @param int $periodiciteValeur
+     */
+    public function setPeriodiciteValeur($periodiciteValeur)
+    {
+        $this->periodiciteValeur = $periodiciteValeur;
+    }
+
+    /**
+     * @return User
+     */
+    public function getCreateur()
+    {
+        return $this->createur;
+    }
+
+    /**
+     * @param User $createur
+     */
+    public function setCreateur($createur)
+    {
+        $this->createur = $createur;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getContenus()
+    {
+        return $this->contenus;
+    }
+
+    /**
+     * @param ArrayCollection $contenus
+     */
+    public function setContenus($contenus)
+    {
+        $this->contenus = $contenus;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getInscriptions()
+    {
+        return $this->inscriptions;
+    }
+
+    /**
+     * @param ArrayCollection $inscriptions
+     */
+    public function setInscriptions($inscriptions)
+    {
+        $this->inscriptions = $inscriptions;
+    }
+
+    /**
+     * @return Campagne
+     */
+    public function getCampagne()
+    {
+        return $this->campagne;
+    }
+
+    /**
+     * @param Campagne $campagne
+     */
+    public function setCampagne($campagne)
+    {
+        $this->campagne = $campagne;
+    }
 }

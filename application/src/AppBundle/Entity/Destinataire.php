@@ -45,4 +45,76 @@ class Destinataire
      * @ORM\JoinTable(name="destinataire_liste_diffusion")
      */
     private $listesDiffusion;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActif()
+    {
+        return $this->actif;
+    }
+
+    /**
+     * @param boolean $actif
+     */
+    public function setActif($actif)
+    {
+        $this->actif = $actif;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getInscriptions()
+    {
+        return $this->inscriptions;
+    }
+
+    /**
+     * @param ArrayCollection $inscriptions
+     */
+    public function setInscriptions($inscriptions)
+    {
+        $this->inscriptions = $inscriptions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getListesDiffusion()
+    {
+        return $this->listesDiffusion;
+    }
+
+    /**
+     * @param mixed $listesDiffusion
+     */
+    public function setListesDiffusion($listesDiffusion)
+    {
+        $this->listesDiffusion = $listesDiffusion;
+    }
 }

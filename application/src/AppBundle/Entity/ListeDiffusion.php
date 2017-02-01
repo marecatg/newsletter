@@ -21,13 +21,54 @@ class ListeDiffusion
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Destinataire", mappedBy="listesDissusion")
+     * @ORM\ManyToMany(targetEntity="Destinataire", mappedBy="listesDiffusion")
      */
     private $destinataires;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=false)
      */
     private $nom;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getDestinataires()
+    {
+        return $this->destinataires;
+    }
+
+    /**
+     * @param ArrayCollection $destinataires
+     */
+    public function setDestinataires($destinataires)
+    {
+        $this->destinataires = $destinataires;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+    }
 }

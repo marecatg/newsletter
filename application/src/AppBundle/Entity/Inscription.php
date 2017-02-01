@@ -46,4 +46,76 @@ class Inscription
      */
     private $listeDiffusionSource;
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Newsletter
+     */
+    public function getNewsletter()
+    {
+        return $this->newsletter;
+    }
+
+    /**
+     * @param Newsletter $newsletter
+     */
+    public function setNewsletter($newsletter)
+    {
+        $this->newsletter = $newsletter;
+    }
+
+    /**
+     * @return Destinataire
+     */
+    public function getDestinataire()
+    {
+        return $this->destinataire;
+    }
+
+    /**
+     * @param Destinataire $destinataire
+     */
+    public function setDestinataire($destinataire)
+    {
+        $this->destinataire = $destinataire;
+    }
+
+    /**
+     * @return Campagne
+     */
+    public function getCampagneSource()
+    {
+        return $this->campagneSource;
+    }
+
+    /**
+     * @param Campagne $campagneSource
+     */
+    public function setCampagneSource($campagneSource)
+    {
+        $this->campagneSource = $campagneSource;
+    }
+
+    /**
+     * @return ListeDiffusion
+     */
+    public function getListeDiffusionSource()
+    {
+        return $this->listeDiffusionSource;
+    }
+
+    /**
+     * @param ListeDiffusion $listeDiffusionSource
+     */
+    public function setListeDiffusionSource($listeDiffusionSource)
+    {
+        $this->listeDiffusionSource = $listeDiffusionSource;
+    }
+
 }
