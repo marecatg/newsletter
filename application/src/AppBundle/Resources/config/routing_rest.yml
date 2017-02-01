@@ -1,4 +1,4 @@
-stages:
+destinataire:
     type: rest
-    resource: AppBundle\Controller\TestRestController
-    name_prefix:  api_test_
+    resource: AppBundle\Controller\Rest\DestinataireRestController
+    name_prefix:  api_destinataire_

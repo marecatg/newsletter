@@ -5,10 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DestinataireRepository")
  * @ORM\Table(name="destinataire")
+ * @JMS\ExclusionPolicy("all")
  */
 class Destinataire
 {
@@ -16,6 +20,7 @@ class Destinataire
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -23,6 +28,7 @@ class Destinataire
      * @var string
      * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=false)
+     * @Expose
      */
     private $email;
 
@@ -30,6 +36,7 @@ class Destinataire
      * @var boolean
      * @Assert\NotBlank()
      * @ORM\Column(type="boolean", nullable=false)
+     * @Expose
      */
     private $actif = true;
 
