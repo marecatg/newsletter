@@ -2,6 +2,7 @@
 
 namespace Application\FOS\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Entity\User as FOSUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,7 +22,7 @@ class User extends FOSUser
     protected $id;
 
     /**
-     * @var Newsletter
+     * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Newsletter", mappedBy="createur")
      */
     private $newsletters;

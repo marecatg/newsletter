@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Application\FOS\UserBundle\Entity\User;
@@ -21,7 +22,7 @@ class Newsletter
     private $id;
 
     /**
-     * @var date
+     * @var \DateTime
      * @Assert\NotBlank()
      * @ORM\Column(type="date", nullable=true)
      */
@@ -45,7 +46,19 @@ class Newsletter
      * @var User
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Application\FOS\UserBundle\Entity\User", inversedBy="newsletters")
-     * @ORM\JoinColumn(name="createur", referencedColumnName="id")
+     * @ORM\JoinColumn(name="createur_id", referencedColumnName="id", nullable=false)
      */
     private $createur;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="ContenuNewsletter", mappedBy="newsletter")
+     */
+    private $contenus;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Inscription", mappedBy="newsletter")
+     */
+    private $inscriptions;
 }
