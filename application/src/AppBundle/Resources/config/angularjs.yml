@@ -33,6 +33,7 @@ parameters:
                     - "Resources/public/app/core/core.module.js"
                     - "Resources/public/app/core/config.js"
                     - "Resources/public/app/core/core.js"
+                    - "Resources/public/app/core/model/page.constante.js"
                     #- "Resources/public/app/core/modal/modal.js"
                     - "Resources/public/app/layout/layout.module.js"
                     #- "Resources/public/app/layout/config.route.js"
@@ -43,6 +44,9 @@ parameters:
                     - "Resources/public/app/campit/campagne/campagne.module.js"
                     - "Resources/public/app/campit/campagne/config.route.js"
                     - "Resources/public/app/campit/campagne/campagne.js"
+                    - "Resources/public/app/campit/destinataire/destinataire.module.js"
+                    - "Resources/public/app/campit/destinataire/config.route.js"
+                    - "Resources/public/app/campit/destinataire/destinataire.js"
             css:
                 vendor:
                     - "Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css"

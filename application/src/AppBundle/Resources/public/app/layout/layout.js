@@ -4,12 +4,14 @@
     angular.module('app.layout')
         .controller('Layout', Layout);
 
-    Layout.$inject = ['$q', '$scope', '$rootScope', '$sce'];
+    Layout.$inject = ['$q', '$scope', '$rootScope', '$sce', 'page', '$location'];
 
-    function Layout($q, $scope, $rootScope, $sce) {
+    function Layout($q, $scope, $rootScope, $sce, page, $location) {
 
         var vm = this;
         vm.showView = false;
+        vm.currentPage = $location.path();
+        vm.page = page;
 
         vm.isDefined = isDefined;
         vm.stopClose = stopClose;
@@ -22,7 +24,6 @@
         };
 
         function activate() {
-
             return $q.all().then(function () {
                         vm.showView = true;
                         console.log('Activated Layout View');
@@ -36,6 +37,10 @@
         $scope.$on('Update.config.title', function (event, title) {
             console.log("Updating page title: " + title);
             $rootScope.title = title;
+        });
+
+        $rootScope.$on('$locationChangeSuccess', function(){
+            vm.currentPage = $location.path();
         });
 
         function stopClose(event) {

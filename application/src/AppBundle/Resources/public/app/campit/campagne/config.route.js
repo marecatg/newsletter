@@ -5,16 +5,16 @@
         .module('app.campagne')
         .run(appRun);
 
-    appRun.$inject = ['routehelper'];
+    appRun.$inject = ['routehelper', 'page'];
 
-    function appRun(routehelper) {
-        routehelper.configureRoutes(getRoutes());
+    function appRun(routehelper, page) {
+        routehelper.configureRoutes(getRoutes(page));
     }
 
-    function getRoutes() {
+    function getRoutes(page) {
         return [
             {
-                url: '/campagne',
+                url: page.routeCampagne,
                 config: {
                     templateUrl: 'bundles/app/app/campit/campagne/campagne.html',
                     controller: 'Campagne',

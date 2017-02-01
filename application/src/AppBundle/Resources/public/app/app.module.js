@@ -17,6 +17,7 @@
         'app.core',
         'app.newsletter',
         'app.campagne',
+        'app.destinataire',
         'app.layout'
     ]);
 

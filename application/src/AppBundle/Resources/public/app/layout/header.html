@@ -5,6 +5,9 @@
             <ul>
                 <li class="active-link"><a href="/#/newsletter">Newsletter</a></li>
                 <li><a href="/#/campagne">Campagne</a></li>
+                <li><a href="/#/destinataire" data-ng-class="{'active-link': vm.currentPage == vm.page.destinataire}">
+                    Destinataire
+                </a></li>
                 <li class="folder">
                     <input type="checkbox" name="folder-toggle-1" id="folder-toggle-1"
                            class="folder-toggle-box hidden"/>
@@ -16,7 +19,6 @@
                         <li><a href="#">Link</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Contact Us</a></li>
                 <li><a href="/logout">Deconnexion</a></li>
             </ul>
         </nav>
