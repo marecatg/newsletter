@@ -33,6 +33,20 @@ class Destinataire
     private $email;
 
     /**
+     * @var string
+     * @ORM\Column(type="string")
+     * @Expose
+     */
+    private $nom;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     * @Expose
+     */
+    private $prenom;
+
+    /**
      * @var boolean
      * @Assert\NotBlank()
      * @ORM\Column(type="boolean", nullable=false)
