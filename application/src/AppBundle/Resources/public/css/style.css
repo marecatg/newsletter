@@ -170,3 +170,19 @@
     background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
     background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
 }
+.espace-top {
+    padding-top: 30px;
+}
+#loading-bar .bar {
+    background: white;
+    height: 3px;
+}
+
+#loading-bar-spinner .spinner-icon {
+    width: 25px;
+    height: 25px;
+    border: solid 3px transparent;
+    border-top-color: white;
+    border-left-color: white;
+    border-radius: 10px;
+}

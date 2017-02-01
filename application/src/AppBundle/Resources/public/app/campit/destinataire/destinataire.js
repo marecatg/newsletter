@@ -5,12 +5,19 @@
         .module('app.destinataire')
         .controller('Destinataire', Destinataire);
 
-    Destinataire.$inject = ['$q'];
+    Destinataire.$inject = ['$q', 'dataserviceDestinataire'];
 
-    function Destinataire($q) {
+    function Destinataire($q, dataserviceDestinataire) {
 
         var vm = this;
         vm.showView = false;
+        vm.newDestinataire = {
+            nom: null,
+            prenom: null,
+            email: null
+        };
+
+        vm.creerDestinataire = creerDestinataire;
 
         activate();
 
@@ -21,6 +28,13 @@
                 vm.showView = true;
                 console.log('Activated Destinataire View');
             });
+        }
+
+        function creerDestinataire(form) {
+            if(form.$submitted) {
+                console.log('envoi');
+                dataserviceDestinataire.postDestinataire(vm.newDestinataire);
+            }
         }
     }
 })();

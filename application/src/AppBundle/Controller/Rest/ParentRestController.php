@@ -17,4 +17,17 @@ class ParentRestController extends FOSRestController
 
         return $this->handleView($view);
     }
+
+    protected function processForm($object) {
+
+        $em = $this->getDoctrine()->getEntityManager();
+        try {
+            $em->persist($object);
+            $em->flush();
+        } catch (\Exception $e) {
+            return $this->view($e->getMessage(), Codes::HTTP_BAD_REQUEST);
+        }
+
+        return $this->view(Codes::HTTP_OK);
+    }
 }
