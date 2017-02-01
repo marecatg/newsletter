@@ -61,4 +61,11 @@ class Newsletter
      * @ORM\OneToMany(targetEntity="Inscription", mappedBy="newsletter")
      */
     private $inscriptions;
+
+    /**
+     * @var Campagne
+     * @ORM\ManyToOne(targetEntity="Campagne", inversedBy="newsletters")
+     * @ORM\JoinColumn(name="campagne_id", referencedColumnName="id", nullable=true)
+     */
+    private $campagne;
 }

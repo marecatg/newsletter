@@ -34,9 +34,16 @@ class Inscription
      */
     private $destinataire;
 
-
+    /**
+     * @var Campagne
+     * @ORM\Column(name="campagne_source", type="integer", nullable=true)
+     */
     private $campagneSource;
 
+    /**
+     * @var ListeDiffusion
+     * @ORM\Column(name="liste_diffusion_source", type="integer", nullable=true)
+     */
     private $listeDiffusionSource;
 
 }

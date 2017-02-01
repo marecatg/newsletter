@@ -38,4 +38,11 @@ class Destinataire
      * @ORM\OneToMany(targetEntity="Inscription", mappedBy="destinataire")
      */
     private $inscriptions;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="ListeDiffusion", inversedBy="destinataires")
+     * @ORM\JoinTable(name="destinataire_liste_diffusion")
+     */
+    private $listesDiffusion;
 }
