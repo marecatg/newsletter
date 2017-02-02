@@ -16,6 +16,7 @@
             prenom: null,
             email: null
         };
+        vm.ajoutDestinataireenCours = false;
 
         vm.creerDestinataire = creerDestinataire;
 
@@ -32,9 +33,10 @@
 
         function creerDestinataire(form) {
             if (form.$valid) {
-
-                console.log('envoi');
-                dataserviceDestinataire.postDestinataire(vm.newDestinataire);
+                vm.ajoutDestinataireenCours = true;
+                dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function() {
+                    vm.ajoutDestinataireenCours = false;
+                });
             }
         }
     }
