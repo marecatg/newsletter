@@ -25,9 +25,7 @@ class DestinataireRestController extends ParentRestController
      *      404="Returned when user is not found"
      *  }
      * )
-     *
      * @View()
-     *
      * @param $id integer
      * @return Response
      */
@@ -36,6 +34,10 @@ class DestinataireRestController extends ParentRestController
 
         $orm = $this->getDoctrine();
         $destinataire = $orm->getRepository('AppBundle:Destinataire')->find($id);
+
+        if ($destinataire == null) {
+            return $this->view('Destinaiatre non trouvé avec l\'id '.$id, Codes::HTTP_NOT_FOUND);
+        }
 
         return $destinataire;
     }
@@ -61,7 +63,7 @@ class DestinataireRestController extends ParentRestController
         $params = json_decode($request->getContent(), true);
 
         $destinataire = new Destinataire();
-        if (!isset($params['destinataire'])) {
+        if (isset($params['destinataire'])) {
             return $this->view(null, Codes::HTTP_BAD_REQUEST);
         }
         if (isset($params['destinataire']['nom']) && $params['destinataire']['nom'] != null) {
@@ -88,7 +90,6 @@ class DestinataireRestController extends ParentRestController
     private function processForm($destinataire)
     {
         $em = $this->getDoctrine()->getManager();
-        $translator = $this->get('translator');
 
         $validator = $this->get('validator');
         $errors = $validator->validate($destinataire);
@@ -100,8 +101,7 @@ class DestinataireRestController extends ParentRestController
                 $em->persist($destinataire);
                 $em->flush();
             } catch (\Exception $ex) {
-//                return $this->view($translator->trans('actionrest.mandatory_error'), Codes::HTTP_BAD_REQUEST);
-                return $this->view($ex, Codes::HTTP_BAD_REQUEST);
+                return $this->handleView($this->view($ex, Codes::HTTP_BAD_REQUEST));
             }
         }
 

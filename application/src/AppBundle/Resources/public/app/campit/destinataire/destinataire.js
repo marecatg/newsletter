@@ -17,6 +17,7 @@
             email: null
         };
         vm.ajoutDestinataireenCours = false;
+        vm.currentListeDiffusion = -1;
 
         vm.creerDestinataire = creerDestinataire;
 

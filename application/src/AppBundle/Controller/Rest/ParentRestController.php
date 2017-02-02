@@ -8,5 +8,4 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ParentRestController extends FOSRestController
 {
-    
 }
