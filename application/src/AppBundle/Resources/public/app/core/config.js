@@ -3,13 +3,25 @@
 
     var core = angular.module('app.core');
 
-    //core.config(toastrConfig);
+    // core.config(toastrConfig);
+    //
+    // toastrConfig.$inject = ['toastr'];
+    // function toastrConfig(toastr) {
+    //     toastr.options.timeOut = 4000;
+    //     toastr.options.positionClass = 'toast-bottom-right';
+    // }
 
-    toastrConfig.$inject = ['toastr'];
-    function toastrConfig(toastr) {
-        toastr.options.timeOut = 4000;
-        toastr.options.positionClass = 'toast-bottom-right';
-    }
+    core.config(["toastrConfig",function(toastrConfig) {
+
+        var options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "timeOut": "4000"
+        };
+
+        angular.extend(toastrConfig, options);
+    }]);
 
     var config = {
         appErrorPrefix: '[My app] ', //Configure the exceptionHandler decorator

@@ -14,7 +14,7 @@ parameters:
                     - "Resources/public/vendor/angular-animate/angular-animate.min.js"
                     - "Resources/public/vendor/angular-route/angular-route.min.js"
                     - "Resources/public/vendor/angular-sanitize/angular-sanitize.min.js"
-                    - "Resources/public/vendor/toastr/toastr.min.js"
+                    - "Resources/public/vendor/angular-toastr/dist/angular-toastr.tpls.min.js"
                     - "Resources/public/vendor/angular-loading-bar/build/loading-bar.min.js"
                     - "Resources/public/vendor/angular-i18n/angular-locale_fr-fr.js"
                     - "Resources/public/vendor/angular-bootstrap/ui-bootstrap-tpls.js"
@@ -52,7 +52,7 @@ parameters:
                 vendor:
                     - "Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css"
                     - "Resources/public/vendor/font-awesome/css/font-awesome.min.css"
-                    - "Resources/public/vendor/toastr/toastr.css"
+                    - "Resources/public/vendor/angular-toastr/dist/angular-toastr.min.css"
                     - "Resources/public/vendor/angular-loading-bar/build/loading-bar.min.css"
                     - "Resources/public/vendor/jquery-ui/themes/base/jquery-ui.min.css"
                 app:

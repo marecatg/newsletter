@@ -5,9 +5,9 @@
         .module('app.destinataire')
         .controller('Destinataire', Destinataire);
 
-    Destinataire.$inject = ['$q', 'dataserviceDestinataire'];
+    Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger'];
 
-    function Destinataire($q, dataserviceDestinataire) {
+    function Destinataire($q, dataserviceDestinataire, logger) {
 
         var vm = this;
         vm.showView = false;
@@ -27,7 +27,7 @@
             promises = [];
             return $q.all(promises).then(function () {
                 vm.showView = true;
-                console.log('Activated Destinataire View');
+                logger.info('Activated Destinataire View');
             });
         }
 
@@ -35,6 +35,11 @@
             if (form.$valid) {
                 vm.ajoutDestinataireenCours = true;
                 dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function() {
+                    vm.ajoutDestinataireenCours = false;
+                    logger.success('Destinataire ajouté', true)
+                }, function(data) {
+                    logger.error('Erreur lors de l\'ajout du destinataire', true);
+                    logger.error(data);
                     vm.ajoutDestinataireenCours = false;
                 });
             }
