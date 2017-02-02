@@ -40,7 +40,7 @@
                     logger.success('Destinataire ajouté', true)
                 }, function(data) {
                     logger.error('Erreur lors de l\'ajout du destinataire', true);
-                    logger.error(data);
+                    logger.error(data.data);
                     vm.ajoutDestinataireenCours = false;
                 });
             }

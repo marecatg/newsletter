@@ -63,8 +63,8 @@ class DestinataireRestController extends ParentRestController
         $params = json_decode($request->getContent(), true);
 
         $destinataire = new Destinataire();
-        if (isset($params['destinataire'])) {
-            return $this->view(null, Codes::HTTP_BAD_REQUEST);
+        if (!isset($params['destinataire'])) {
+            return $this->view('Param destinataire non trouvé', Codes::HTTP_BAD_REQUEST);
         }
         if (isset($params['destinataire']['nom']) && $params['destinataire']['nom'] != null) {
             $destinataire->setNom($params['destinataire']['nom']);
@@ -101,7 +101,7 @@ class DestinataireRestController extends ParentRestController
                 $em->persist($destinataire);
                 $em->flush();
             } catch (\Exception $ex) {
-                return $this->handleView($this->view($ex, Codes::HTTP_BAD_REQUEST));
+                return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
             }
         }
 
