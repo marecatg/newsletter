@@ -31,7 +31,8 @@
         }
 
         function creerDestinataire(form) {
-            if(form.$submitted) {
+            if (form.$valid) {
+
                 console.log('envoi');
                 dataserviceDestinataire.postDestinataire(vm.newDestinataire);
             }

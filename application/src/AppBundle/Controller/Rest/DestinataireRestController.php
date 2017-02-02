@@ -2,12 +2,14 @@
 
 namespace AppBundle\Controller\Rest;
 
+use AppBundle\Entity\Destinataire;
 use FOS\RestBundle\Controller\Annotations\View;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Util\Codes;
 
 class DestinataireRestController extends ParentRestController
 {
@@ -24,6 +26,8 @@ class DestinataireRestController extends ParentRestController
      *  }
      * )
      *
+     * @View()
+     *
      * @param $id integer
      * @return Response
      */
@@ -33,7 +37,7 @@ class DestinataireRestController extends ParentRestController
         $orm = $this->getDoctrine();
         $destinataire = $orm->getRepository('AppBundle:Destinataire')->find($id);
 
-        return $this->returnObject($destinataire);
+        return $destinataire;
     }
 
     /**
@@ -47,33 +51,60 @@ class DestinataireRestController extends ParentRestController
      *      400="Est retourné lorsque le destinataire est invalide"
      *  }
      * )
-     *
+     * @View()
      * @param $request Request
      * @return Response
      */
-    public function postDestinataireAction($request)
+    public function postDestinataireAction(Request $request)
     {
 
-        $params = array();
-        if (!empty($request->getContent()))
-        {
-            $params = json_decode($request->getContent(), true); // 2nd param to get as array
+        $params = json_decode($request->getContent(), true);
+
+        $destinataire = new Destinataire();
+        if (!isset($params['destinataire'])) {
+            return $this->view(null, Codes::HTTP_BAD_REQUEST);
+        }
+        if (isset($params['destinataire']['nom']) && $params['destinataire']['nom'] != null) {
+            $destinataire->setNom($params['destinataire']['nom']);
         }
 
-        $destinataire = null;
-
-        if (isset($params['nom']) && $params['nom'] != null) {
-            $destinataire['nom'] = $params['nom'];
+        if (isset($params['destinataire']['prenom']) && $params['destinataire']['prenom'] != null) {
+            $destinataire->setPrenom($params['destinataire']['prenom']);
         }
 
-        if (isset($params['prenom']) && $params['prenom'] != null) {
-            $destinataire['prenom'] = $params['prenom'];
-        }
-
-        if (isset($params['email']) && $params['email'] != null) {
-            $destinataire['email'] = $params['email'];
+        if (isset($params['destinataire']['email']) && $params['destinataire']['email'] != null) {
+            $destinataire->setEmail($params['destinataire']['email']);
         }
 
         return $this->processForm($destinataire);
+    }
+
+    /**
+     * save entity if is valid
+     * @param Destinataire $destinataire
+     *
+     * @return Respone
+     */
+    private function processForm($destinataire)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $translator = $this->get('translator');
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($destinataire);
+
+        if (count($errors) > 0) {
+            return $this->view($errors, Codes::HTTP_BAD_REQUEST);
+        } else {
+            try {
+                $em->persist($destinataire);
+                $em->flush();
+            } catch (\Exception $ex) {
+//                return $this->view($translator->trans('actionrest.mandatory_error'), Codes::HTTP_BAD_REQUEST);
+                return $this->view($ex, Codes::HTTP_BAD_REQUEST);
+            }
+        }
+
+        return $this->view(array('id' => $destinataire->getId()), Codes::HTTP_OK);
     }
 }

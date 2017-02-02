@@ -3,25 +3,40 @@
 
     <h1 class="text-center">Gestion des destinataires</h1>
     <div class="col-md-7"></div>
-    <div class="espace-top col-md-5 col-lg-3">
-        <form name="form" class="col-md-12">
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <input data-ng-model="vm.newDestinataire.prenom" required="required"
-                           type="text" class="form-control" id="destinataire-prenom" placeholder="Prenom">
+    <div class="espace-top col-md-5 col-lg-4">
+        <form name="form" class="col-md-12" novalidate>
+            <div class="col-md-6">
+                <div class="form-group has-feedback"
+                     ng-class="{ 'has-error': form.$submitted && form.prenom.$error.required }">
+                    <input data-ng-model="vm.newDestinataire.prenom" required="" name="prenom"
+                           type="text" class="form-control" placeholder="Prenom">
+                        <span class="glyphicon glyphicon-remove form-control-feedback"
+                              data-ng-show="form.$submitted && form.prenom.$error.required"></span>
                 </div>
-                <div class="form-group col-md-6">
-                    <input data-ng-model="vm.newDestinataire.nom" required="required"
+            </div>
+            <div class="col-md-6">
+                <div class="form-group has-feedback"
+                     ng-class="{ 'has-error': form.$submitted && form.nom.$error.required }">
+                    <input data-ng-model="vm.newDestinataire.nom" required="" name="nom"
                            type="text" class="form-control" id="destinataire-nom" placeholder="Nom">
+                    <span class="glyphicon glyphicon-remove form-control-feedback"
+                          data-ng-show="form.$submitted && form.nom.$error.required"></span>
                 </div>
             </div>
-            <div class="form-group col-md-6=12"    >
-                <input data-ng-model="vm.newDestinataire.email" required="required"
-                       type="email" class="form-control" id="destinataire-email" placeholder="Email">
+            <div class="col-md-12">
+                <div class="form-group has-feedback"
+                     ng-class="{ 'has-error': form.$submitted && (form.email.$error.required  || form.email.$error.email) }">
+                    <input name="email" data-ng-model="vm.newDestinataire.email" required="" type="email"
+                           class="form-control" id="destinataire-email" placeholder="Email">
+                    <span class="glyphicon glyphicon-remove form-control-feedback"
+                          data-ng-show="form.$submitted && (form.email.$error.required || form.email.$error.email)"></span>
+                    <span class="help-block" data-ng-show="form.$submitted && form.email.$error.email">Email non valide</span>
+                </div>
             </div>
-            <button data-ng-click="vm.creerDestinataire(form)" type="submit" class="col-md-12 btn btn-info">
-                Créer le nouveau destinataire
-            </button>
+            <div class="col-md-12 text-center">
+                <input data-ng-click="vm.creerDestinataire(form)" type="submit" class="btn btn-info"
+                       value="Creer une nouveau destinataire"/>
+            </div>
         </form>
     </div>
 </section>
