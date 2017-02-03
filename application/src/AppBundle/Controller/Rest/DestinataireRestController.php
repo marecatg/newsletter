@@ -31,15 +31,50 @@ class DestinataireRestController extends ParentRestController
      */
     public function getDestinataireAction($id)
     {
+        if($id == 'null') {
+            return $this->view('Id obligatoire', Codes::HTTP_BAD_REQUEST);
+        }
 
         $orm = $this->getDoctrine();
         $destinataire = $orm->getRepository('AppBundle:Destinataire')->find($id);
 
-        if ($destinataire == null) {
-            return $this->view('Destinaiatre non trouvé avec l\'id '.$id, Codes::HTTP_NOT_FOUND);
-        }
+//        if ($destinataire == null) {
+//            return $this->view('Destinaiatre non trouvé avec l\'id '.$id, Codes::HTTP_NOT_FOUND);
+//        }
 
         return $destinataire;
+    }
+
+    /**
+     * Recherche les destinataires d'une liste de diffusion.
+     * Id -1 pour rechercher les destinataires qui n'ont pas de liste.
+     *
+     * @ApiDoc(
+     * section = "Destinataire",
+     *  output={"class"="Destinataire"},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when user is not found"
+     *  }
+     * )
+     * @View(serializerGroups={})
+     * @param $idListeDiffusion integer
+     * @return Response
+     */
+    public function getDestinataireByListeDiffusionAction($idListeDiffusion)
+    {
+
+        $orm = $this->getDoctrine();
+
+        if ($idListeDiffusion == 'null') {
+            return $this->view('Id obligatoire', Codes::HTTP_BAD_REQUEST);
+        } else if ($idListeDiffusion == -1) {
+            $destinataires = $orm->getRepository('AppBundle:Destinataire')->getDestinataireNotInListeDiffusion();
+        } else {
+            $destinataires = $orm->getRepository('AppBundle:ListeDiffusion')->find($idListeDiffusion)->getDestinataires();
+        }
+
+        return $destinataires;
     }
 
     /**

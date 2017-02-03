@@ -7,18 +7,17 @@
 
     dataserviceDestinataire.$inject = ['$q', '$http'];
     function dataserviceDestinataire($q, $http) {
-        var service = {
+        return {
             postDestinataire: postDestinataire,
+            getDestinataireByListeDiffusion: getDestinataireByListeDiffusion
         };
 
-        return service;
-
-        // function getActions(meetingId) {
-        //     return $http.get('/api/actions/' + meetingId + '/meeting')
-        //         .then(function (data) {
-        //             return $q.when(data.data);
-        //         });
-        // }
+        function getDestinataireByListeDiffusion(idListeDiffusion) {
+            return $http.get('/api/destinataires/' + idListeDiffusion + '/by/liste/diffusion')
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
 
         function postDestinataire(destinataire) {
             return $http.post('/api/destinataires', {destinataire: destinataire})

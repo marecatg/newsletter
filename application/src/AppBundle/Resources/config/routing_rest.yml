@@ -2,3 +2,7 @@ destinataire:
     type: rest
     resource: AppBundle\Controller\Rest\DestinataireRestController
     name_prefix:  api_destinataire_
+liste_diffusion:
+    type: rest
+    resource: AppBundle\Controller\Rest\ListeDiffusionRestController
+    name_prefix:  api_liste_diffusion_

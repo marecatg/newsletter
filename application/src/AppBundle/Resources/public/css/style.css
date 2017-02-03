@@ -190,3 +190,6 @@
     padding: 0 !important;
     margin: 0 !important;
 }
+section > h1 {
+    padding-top: 30px;
+}

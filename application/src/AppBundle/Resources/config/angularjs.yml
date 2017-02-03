@@ -35,6 +35,7 @@ parameters:
                     - "Resources/public/app/core/core.js"
                     - "Resources/public/app/core/model/page.constante.js"
                     - "Resources/public/app/core/dataservice/destinataire.factory.js"
+                    - "Resources/public/app/core/dataservice/listeDiffusion.factory.js"
                     #- "Resources/public/app/core/modal/modal.js"
                     - "Resources/public/app/layout/layout.module.js"
                     #- "Resources/public/app/layout/config.route.js"

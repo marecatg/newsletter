@@ -4,17 +4,21 @@
     <h1 class="text-center">Gestion des destinataires</h1>
     <div class="col-md-7 espace-top">
         <div class="col-md-6 form-group">
-            <select class="form-control" title="Groupe Commercial">
-                <option value="{{ null }}">Sans liste de diffusion</option>
+            <select class="form-control" title="Groupe Commercial"
+                    data-ng-model="vm.currentListeDiffusion"
+                    data-ng-change="vm.rechercheDestinatairesByListe(vm.currentListeDiffusion)"
+                    data-ng-options="liste.id as liste.nom for liste in vm.listesDiffusion | orderBy:'name'">
             </select>
         </div>
         <div class="col-md-6">
             <div class="col-xs-11">
                 <div class="col-xs-12 no-padding pre-scrollable">
-
+                    <div data-ng-repeat="destinataire in vm.destinataires | orderBy: 'email'">
+                        {{ ::destinataire.email }}
+                    </div>
                 </div>
             </div>
-            <div class="col-xs-11">
+            <div class="col-xs-1">
                 <button class="btn btn-info">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span class="glyphicon glyphicon-minus"></span>
@@ -53,7 +57,8 @@
                            class="form-control" id="destinataire-email" placeholder="Email">
                     <span class="glyphicon glyphicon-remove form-control-feedback"
                           data-ng-show="form.$submitted && (form.email.$error.required || form.email.$error.email)"></span>
-                    <span class="help-block" data-ng-show="form.$submitted && form.email.$error.email">Email non valide</span>
+                    <span class="help-block"
+                          data-ng-show="form.$submitted && form.email.$error.email">Email non valide</span>
                 </div>
             </div>
             <div class="col-md-12 text-center">
