@@ -2,70 +2,86 @@
          data-ng-if="vm.showView">
 
     <h1 class="text-center">Gestion des destinataires</h1>
-    <div class="col-md-7 espace-top">
-        <div class="col-md-6 form-group">
-            <select class="form-control" title="Groupe Commercial"
-                    data-ng-model="vm.currentListeDiffusion"
-                    data-ng-change="vm.rechercheDestinatairesByListe(vm.currentListeDiffusion)"
-                    data-ng-options="liste.id as liste.nom for liste in vm.listesDiffusion | orderBy:'name'">
-            </select>
-        </div>
-        <div class="col-md-6">
-            <div class="col-xs-11">
-                <div class="col-xs-12 no-padding pre-scrollable">
-                    <div data-ng-repeat="destinataire in vm.destinataires | orderBy: 'email'">
-                        {{ ::destinataire.email }}
+    <div class="col-md-7 col-lg-6 col-lg-offset-1 espace-top">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Gestion des listes de diffusion
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6 form-group">
+                    <select class="form-control" title="Groupe Commercial"
+                            data-ng-model="vm.currentListeDiffusion"
+                            data-ng-change="vm.rechercheDestinatairesByListe(vm.currentListeDiffusion)"
+                            data-ng-options="liste.id as liste.nom for liste in vm.listesDiffusion | orderBy:'name'">
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-xs-10">
+                        <div class="col-xs-12 no-padding pre-scrollable">
+                            <div data-ng-repeat="destinataire in vm.destinataires | orderBy: 'email'">
+                                {{ ::destinataire.email }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 nopadding">
+                        <button class="btn btn-success text-center">
+                            <span>
+                                <i class="glyphicon glyphicon-plus"></i><br>
+                                <i class="glyphicon glyphicon-minus"></i>
+                            </span>
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-1">
-                <button class="btn btn-info">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span class="glyphicon glyphicon-minus"></span>
-                </button>
             </div>
         </div>
     </div>
 
 
     <div class="espace-top col-md-5 col-lg-4">
-
         <!--Formulaire d'ajout de destinataire-->
-        <form name="form" class="col-md-12" novalidate>
-            <div class="col-md-6">
-                <div class="form-group has-feedback"
-                     ng-class="{ 'has-error': form.$submitted && form.prenom.$error.required }">
-                    <input data-ng-model="vm.newDestinataire.prenom" required="" name="prenom"
-                           type="text" class="form-control" placeholder="Prenom">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Creer un nouveau destinataire
+            </div>
+            <div class="panel-body">
+                <form name="form" novalidate>
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': form.$submitted && form.prenom.$error.required }">
+                            <input data-ng-model="vm.newDestinataire.prenom" required="" name="prenom"
+                                   type="text" class="form-control" placeholder="Prenom">
                         <span class="glyphicon glyphicon-remove form-control-feedback"
                               data-ng-show="form.$submitted && form.prenom.$error.required"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group has-feedback"
-                     ng-class="{ 'has-error': form.$submitted && form.nom.$error.required }">
-                    <input data-ng-model="vm.newDestinataire.nom" required="" name="nom"
-                           type="text" class="form-control" id="destinataire-nom" placeholder="Nom">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': form.$submitted && form.nom.$error.required }">
+                            <input data-ng-model="vm.newDestinataire.nom" required="" name="nom"
+                                   type="text" class="form-control" id="destinataire-nom" placeholder="Nom">
                     <span class="glyphicon glyphicon-remove form-control-feedback"
                           data-ng-show="form.$submitted && form.nom.$error.required"></span>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group has-feedback"
-                     ng-class="{ 'has-error': form.$submitted && (form.email.$error.required  || form.email.$error.email) }">
-                    <input name="email" data-ng-model="vm.newDestinataire.email" required="" type="email"
-                           class="form-control" id="destinataire-email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': form.$submitted && (form.email.$error.required  || form.email.$error.email) }">
+                            <input name="email" data-ng-model="vm.newDestinataire.email" required="" type="email"
+                                   class="form-control" id="destinataire-email" placeholder="Email">
                     <span class="glyphicon glyphicon-remove form-control-feedback"
                           data-ng-show="form.$submitted && (form.email.$error.required || form.email.$error.email)"></span>
                     <span class="help-block"
                           data-ng-show="form.$submitted && form.email.$error.email">Email non valide</span>
-                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <input data-ng-click="vm.creerDestinataire(form)" type="submit"
+                               class="btn btn-success pull-right"
+                               value="Creer" data-ng-disabled="vm.ajoutDestinataireenCours"/>
+                    </div>
+                </form>
             </div>
-            <div class="col-md-12 text-center">
-                <input data-ng-click="vm.creerDestinataire(form)" type="submit" class="btn btn-info"
-                       value="Creer une nouveau destinataire" data-ng-disabled="vm.ajoutDestinataireenCours"/>
-            </div>
-        </form>
+        </div>
     </div>
 </section>
 

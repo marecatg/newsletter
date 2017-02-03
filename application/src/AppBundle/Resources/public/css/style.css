@@ -1,3 +1,6 @@
+body {
+    background-color: #fafafa;
+}
 .header-banner-top .primary-wrapper {
     margin: 0 auto;
     max-width: 900px;
@@ -192,4 +195,14 @@
 }
 section > h1 {
     padding-top: 30px;
+}
+.panel {
+    -moz-box-shadow: 1px 1px 20px 0px #cfcfcf;
+    -webkit-box-shadow: 1px 1px 20px 0px #cfcfcf;
+    -o-box-shadow: 1px 1px 20px 0px #cfcfcf;
+    box-shadow: 1px 1px 20px 0px #cfcfcf;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=134, Strength=20);
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
