@@ -34,14 +34,14 @@
         function activate() {
             var promises = [initListesDiffusion(),
                 rechercheDestinatairesByListe()];
-            return $q.all([promises]).then(function () {
+            return $q.all(promises).then(function () {
                     vm.showView = true;
                     logger.info('Activated Destinataire View');
                 });
         }
 
         function initListesDiffusion() {
-            dataserviceListeDiffusion.getAll()
+            return dataserviceListeDiffusion.getAll()
                 .then(function (data) {
                     angular.forEach(data, function (liste) {
                         vm.listesDiffusion.push(liste);
@@ -57,7 +57,7 @@
             if (idListeDiffusion == null) {
                 idListeDiffusion = vm.currentListeDiffusion;
             }
-            dataserviceDestinataire.getDestinataireByListeDiffusion(idListeDiffusion)
+            return dataserviceDestinataire.getDestinataireByListeDiffusion(idListeDiffusion)
                 .then(function (data) {
                     vm.destinataires = data;
                 }, function () {
