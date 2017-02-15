@@ -5,9 +5,9 @@
         .module('app.destinataire')
         .controller('Destinataire', Destinataire);
 
-    Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger', 'dataserviceListeDiffusion'];
+    Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger', 'dataserviceListeDiffusion', '$uibModal'];
 
-    function Destinataire($q, dataserviceDestinataire, logger, dataserviceListeDiffusion) {
+    function Destinataire($q, dataserviceDestinataire, logger, dataserviceListeDiffusion, $uibModal) {
 
         var vm = this;
         vm.showView = false;
@@ -28,6 +28,7 @@
 
         vm.creerDestinataire = creerDestinataire;
         vm.rechercheDestinatairesByListe = rechercheDestinatairesByListe;
+        vm.openGestionDestinataireModal = openGestionDestinataireModal;
 
         activate();
 
@@ -35,9 +36,9 @@
             var promises = [initListesDiffusion(),
                 rechercheDestinatairesByListe()];
             return $q.all(promises).then(function () {
-                    vm.showView = true;
-                    logger.info('Activated Destinataire View');
-                });
+                vm.showView = true;
+                logger.info('Activated Destinataire View');
+            });
         }
 
         function initListesDiffusion() {
@@ -46,7 +47,6 @@
                     angular.forEach(data, function (liste) {
                         vm.listesDiffusion.push(liste);
                     });
-                    console.log(vm.listesDiffusion);
                 }, function () {
                     logger.error('Erreur lors de la récupération des listes de diffusion', true);
                     logger.error(data.data);
@@ -81,6 +81,21 @@
                     vm.ajoutDestinataireenCours = false;
                 });
             }
+        }
+
+        function openGestionDestinataireModal() {
+            $uibModal.open({
+                templateUrl: 'bundles/app/app/campit/destinataire/modal/modalGestionDestinataire.html',
+                controller: 'ModalGestionDestinataire',
+                controllerAs: 'vm',
+                size: 'md',
+                windowClass: 'clearfix',
+                resolve: {
+                    currentDestinataire : function() {
+                        return vm.destinataires
+                    }
+                }
+            });
         }
     }
 })();

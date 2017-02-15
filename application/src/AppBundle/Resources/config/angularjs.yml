@@ -49,6 +49,7 @@ parameters:
                     - "Resources/public/app/campit/destinataire/destinataire.module.js"
                     - "Resources/public/app/campit/destinataire/config.route.js"
                     - "Resources/public/app/campit/destinataire/destinataire.js"
+                    - "Resources/public/app/campit/destinataire/modal/modalGestionDestinataire.js"
             css:
                 vendor:
                     - "Resources/public/vendor/bootstrap/dist/css/bootstrap.min.css"
