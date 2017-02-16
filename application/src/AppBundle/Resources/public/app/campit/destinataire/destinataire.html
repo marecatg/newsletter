@@ -24,7 +24,8 @@
                         </div>
                     </div>
                     <div class="col-xs-2 nopadding">
-                        <button class="btn btn-success text-center" ng-click="vm.openGestionDestinataireModal()">
+                        <button class="btn btn-success text-center" ng-click="vm.openGestionDestinataireModal()"
+                                data-ng-disabled="vm.currentListeDiffusion === -1">
                             <span>
                                 <i class="glyphicon glyphicon-plus"></i><br>
                                 <i class="glyphicon glyphicon-minus"></i>

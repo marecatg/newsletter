@@ -229,3 +229,13 @@ section > h1 {
 .view-animation.ng-hide-remove.ng-hide-remove-active {
     opacity:1;
 }
+#liste-choix-destinataire label {
+    width: 100%;
+    padding: 10px 30px;
+}
+#liste-choix-destinataire li {
+    padding: 0;
+}
+#liste-choix-destinataire label:hover, #liste-choix-destinataire label:focus {
+    background-color: #f9f9f9;
+}

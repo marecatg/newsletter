@@ -91,7 +91,7 @@
                 size: 'md',
                 windowClass: 'clearfix',
                 resolve: {
-                    currentDestinataire : function() {
+                    currentDestinataires : function() {
                         return vm.destinataires
                     }
                 }

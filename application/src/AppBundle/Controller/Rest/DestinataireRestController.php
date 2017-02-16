@@ -25,13 +25,13 @@ class DestinataireRestController extends ParentRestController
      *      404="Returned when user is not found"
      *  }
      * )
-     * @View()
+     * @View(serializerGroups={"destinataire"})
      * @param $id integer
      * @return Response
      */
     public function getDestinataireAction($id)
     {
-        if($id == 'null') {
+        if ($id == 'null') {
             return $this->view('Id obligatoire', Codes::HTTP_BAD_REQUEST);
         }
 
@@ -57,7 +57,7 @@ class DestinataireRestController extends ParentRestController
      *      404="Returned when user is not found"
      *  }
      * )
-     * @View(serializerGroups={})
+     * @View(serializerGroups={"destinataire"})
      * @param $idListeDiffusion integer
      * @return Response
      */
@@ -73,6 +73,30 @@ class DestinataireRestController extends ParentRestController
         } else {
             $destinataires = $orm->getRepository('AppBundle:ListeDiffusion')->find($idListeDiffusion)->getDestinataires();
         }
+
+        return $destinataires;
+    }
+
+
+    /**
+     * Retourne tous les destinataires
+     *
+     * @ApiDoc(
+     * section = "Destinataire",
+     *  output={"class"="Destinataire"},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when user is not found"
+     *  }
+     * )
+     * @View(serializerGroups={"destinataire"})
+     * @return Response
+     */
+    public function getAllDestinataireAction()
+    {
+
+        $orm = $this->getDoctrine();
+        $destinataires = $orm->getRepository('AppBundle:Destinataire')->findAll();
 
         return $destinataires;
     }

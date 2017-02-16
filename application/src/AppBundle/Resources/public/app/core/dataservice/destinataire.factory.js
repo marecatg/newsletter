@@ -9,11 +9,19 @@
     function dataserviceDestinataire($q, $http) {
         return {
             postDestinataire: postDestinataire,
+            getAllDestinataire: getAllDestinataire,
             getDestinataireByListeDiffusion: getDestinataireByListeDiffusion
         };
 
         function getDestinataireByListeDiffusion(idListeDiffusion) {
             return $http.get('/api/destinataires/' + idListeDiffusion + '/by/liste/diffusion')
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
+
+        function getAllDestinataire() {
+            return $http.get('/api/all/destinataire')
                 .then(function (data) {
                     return $q.when(data.data);
                 });

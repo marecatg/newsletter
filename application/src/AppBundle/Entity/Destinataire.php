@@ -6,13 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DestinataireRepository")
  * @ORM\Table(name="destinataire")
- * @JMS\ExclusionPolicy("all")
  */
 class Destinataire
 {
@@ -20,7 +18,7 @@ class Destinataire
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Expose
+     * @Groups({"destinataire"})
      */
     private $id;
 
@@ -28,21 +26,21 @@ class Destinataire
      * @var string
      * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=false)
-     * @Expose
+     * @Groups({"destinataire"})
      */
     private $email;
 
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Expose
+     * @Groups({})
      */
     private $nom;
 
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Expose
+     * @Groups({})
      */
     private $prenom;
 
@@ -50,13 +48,14 @@ class Destinataire
      * @var boolean
      * @Assert\NotBlank()
      * @ORM\Column(type="boolean", nullable=false)
-     * @Expose
+     * @Groups({})
      */
     private $actif = true;
 
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Inscription", mappedBy="destinataire")
+     * @Groups({})
      */
     private $inscriptions;
 
@@ -64,6 +63,7 @@ class Destinataire
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="ListeDiffusion", inversedBy="destinataires")
      * @ORM\JoinTable(name="destinataire_liste_diffusion")
+     * @Groups({})
      */
     private $listesDiffusion;
 
