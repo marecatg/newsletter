@@ -1,3 +1,7 @@
+test:
+    type: rest
+    resource: AppBundle\Controller\Rest\TestRestController
+    name_prefix:  api_test_
 destinataire:
     type: rest
     resource: AppBundle\Controller\Rest\DestinataireRestController
