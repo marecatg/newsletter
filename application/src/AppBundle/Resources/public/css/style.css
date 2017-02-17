@@ -229,6 +229,10 @@ section > h1 {
 .view-animation.ng-hide-remove.ng-hide-remove-active {
     opacity:1;
 }
+#liste-choix-destinataire {
+    max-height: 400px;
+    overflow-y: auto;
+}
 #liste-choix-destinataire label {
     width: 100%;
     padding: 10px 30px;
