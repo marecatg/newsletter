@@ -11,11 +11,11 @@
 
         var vm = this;
         vm.showView = false;
-
+        vm.allDestinataires = null;
 
         vm.cancel = cancel;
         vm.currentDestinataires = currentDestinataires;
-        vm.allDestinataires = null;
+        vm.ok = ok;
 
         activate();
 
@@ -48,7 +48,15 @@
         }
 
         function cancel() {
-            $uibModalInstance.close(false);
+            $uibModalInstance.dismiss();
+        }
+
+        function ok() {
+            var newDestinataires = [];
+            angular.forEach(vm.allDestinataires, function(value) {
+               if (value.present) newDestinataires.push(value);
+            });
+            $uibModalInstance.close(newDestinataires);
         }
 
     }
