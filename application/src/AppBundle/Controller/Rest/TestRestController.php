@@ -24,7 +24,7 @@ class TestRestController extends ParentRestController
      * @param $to
      * @return Response
      */
-    public function getAllListesDiffusionAction($to)
+    public function getTestEmailAction($to)
     {
 
         $message = \Swift_Message::newInstance()

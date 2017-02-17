@@ -95,6 +95,8 @@
                         return vm.destinataires
                     }
                 }
+            }).result.then(function(users) {
+                vm.currentListeDiffusion.users = users;
             });
         }
     }
