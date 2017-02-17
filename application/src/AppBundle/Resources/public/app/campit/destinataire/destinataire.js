@@ -24,7 +24,7 @@
                 nom: 'Sans liste de diffusion'
             }
         ]
-        vm.currentListeDiffusion = vm.listesDiffusion[0].id;
+        vm.currentListeDiffusion = vm.listesDiffusion[0];
 
         vm.creerDestinataire = creerDestinataire;
         vm.rechercheDestinatairesByListe = rechercheDestinatairesByListe;
@@ -53,11 +53,11 @@
                 });
         }
 
-        function rechercheDestinatairesByListe(idListeDiffusion) {
-            if (idListeDiffusion == null) {
-                idListeDiffusion = vm.currentListeDiffusion;
+        function rechercheDestinatairesByListe(listeDiffusion) {
+            if (listeDiffusion == null) {
+                listeDiffusion = vm.currentListeDiffusion;
             }
-            return dataserviceDestinataire.getDestinataireByListeDiffusion(idListeDiffusion)
+            return dataserviceDestinataire.getDestinataireByListeDiffusion(listeDiffusion.id)
                 .then(function (data) {
                     vm.destinataires = data;
                 }, function () {
@@ -97,6 +97,12 @@
                 }
             }).result.then(function(users) {
                 vm.currentListeDiffusion.users = users;
+                dataserviceListeDiffusion.putListe(vm.currentListeDiffusion).then(function(data) {
+                    vm.destinataires = data.liste.destinataires;
+                }, function(data) {
+                    logger.error('Erreur lors de l\'ajout des destinataire', true);
+                    logger.error(data.data);
+                });
             });
         }
     }

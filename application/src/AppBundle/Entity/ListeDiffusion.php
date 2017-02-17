@@ -23,7 +23,7 @@ class ListeDiffusion
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Destinataire", mappedBy="listesDiffusion")
+     * @ORM\ManyToMany(targetEntity="Destinataire", mappedBy="listesDiffusion", cascade={"persist"})
      * @Groups({})
      */
     private $destinataires;

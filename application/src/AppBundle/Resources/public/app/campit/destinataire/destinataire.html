@@ -12,7 +12,7 @@
                     <select class="form-control" title="Groupe Commercial"
                             data-ng-model="vm.currentListeDiffusion"
                             data-ng-change="vm.rechercheDestinatairesByListe(vm.currentListeDiffusion)"
-                            data-ng-options="liste.id as liste.nom for liste in vm.listesDiffusion | orderBy:'name'">
+                            data-ng-options="liste as liste.nom for liste in vm.listesDiffusion | orderBy:'name' track by liste.id">
                     </select>
                 </div>
                 <div class="col-md-6">
