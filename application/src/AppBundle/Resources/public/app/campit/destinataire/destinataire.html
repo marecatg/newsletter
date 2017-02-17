@@ -8,16 +8,16 @@
                 Gestion des listes de diffusion
             </div>
             <div class="panel-body">
-                <div class="col-md-6 form-group">
+                <div class="col-md-5 form-group">
                     <select class="form-control" title="Groupe Commercial"
                             data-ng-model="vm.currentListeDiffusion"
                             data-ng-change="vm.rechercheDestinatairesByListe(vm.currentListeDiffusion)"
                             data-ng-options="liste as liste.nom for liste in vm.listesDiffusion | orderBy:'name' track by liste.id">
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="col-xs-10">
-                        <div class="col-xs-12 no-padding pre-scrollable">
+                        <div class="col-xs-12 no-padding liste-destinataires">
                             <div data-ng-repeat="destinataire in vm.destinataires | orderBy: 'email'">
                                 {{ ::destinataire.email }}
                             </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-xs-2 nopadding">
                         <button class="btn btn-success text-center" ng-click="vm.openGestionDestinataireModal()"
-                                data-ng-disabled="vm.currentListeDiffusion === -1">
+                                data-ng-disabled="vm.currentListeDiffusion.id === -1">
                             <span>
                                 <i class="glyphicon glyphicon-plus"></i><br>
                                 <i class="glyphicon glyphicon-minus"></i>

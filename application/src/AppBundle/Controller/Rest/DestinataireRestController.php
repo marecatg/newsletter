@@ -112,7 +112,7 @@ class DestinataireRestController extends ParentRestController
      *      400="Est retourné lorsque le destinataire est invalide"
      *  }
      * )
-     * @View()
+     * @View(serializerGroups={"destinataire"})
      * @param $request Request
      * @return Response
      */
@@ -164,6 +164,6 @@ class DestinataireRestController extends ParentRestController
             }
         }
 
-        return $this->view(array('id' => $destinataire->getId()), Codes::HTTP_OK);
+        return $this->view($destinataire, Codes::HTTP_OK);
     }
 }

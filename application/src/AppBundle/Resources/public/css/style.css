@@ -243,3 +243,9 @@ section > h1 {
 #liste-choix-destinataire label:hover, #liste-choix-destinataire label:focus {
     background-color: #f9f9f9;
 }
+.liste-destinataires {
+    height: 300px;
+    overflow-y: auto;
+    border-radius: 5px;
+    border: 1px solid #e8e8e8
+}

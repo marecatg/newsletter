@@ -69,11 +69,16 @@
         function creerDestinataire(form) {
             if (form.$valid) {
                 vm.ajoutDestinataireenCours = true;
-                dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function () {
+                dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function (destinataire) {
                     vm.ajoutDestinataireenCours = false;
-                    if (vm.currentListeDiffusion == vm.listesDiffusion[0].id) {
-                        rechercheDestinatairesByListe(vm.currentListeDiffusion);
+                    if (vm.currentListeDiffusion .id== vm.listesDiffusion[0].id) {
+                        vm.destinataires.push(destinataire)
                     }
+                    vm.newDestinataire = {
+                        nom: null,
+                        prenom: null,
+                        email: null
+                    };
                     logger.success('Destinataire ajouté', true)
                 }, function (data) {
                     logger.error('Erreur lors de l\'ajout du destinataire', true);
