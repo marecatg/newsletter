@@ -12,4 +12,4 @@ parameters:
     mailer_auth_mode: login
     mailer_port: 587
     secret: tookenprojeti4
-    chanel_require: https
+    chanel_require: ~
