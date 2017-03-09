@@ -12,6 +12,12 @@
         var vm = this;
         vm.showView = false;
 
+        vm.ckeditorOptions = {
+            language: 'fr',
+            allowedContent: true,
+            entities: false
+        };
+
         activate();
 
         function activate() {

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContenuNewsletterRepository")
@@ -15,8 +16,17 @@ class ContenuNewsletter
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"newsletter_list"})
      */
     private $id;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", nullable=false)
+     * @Groups({"newsletter_list"})
+     */
+    private $nom;
 
     /**
      * @var Newsletter
@@ -28,8 +38,7 @@ class ContenuNewsletter
 
     /**
      * @var \DateTime
-     * @Assert\NotBlank()
-     * @ORM\Column(type="date", nullable=false)
+     * @ORM\Column(type="date", nullable=true)
      */
     private $dateModification;
 
@@ -46,6 +55,22 @@ class ContenuNewsletter
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
     }
 
     /**

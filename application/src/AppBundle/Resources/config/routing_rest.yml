@@ -10,3 +10,7 @@ liste_diffusion:
     type: rest
     resource: AppBundle\Controller\Rest\ListeDiffusionRestController
     name_prefix:  api_liste_diffusion_
+newsletter:
+    type: rest
+    resource: AppBundle\Controller\Rest\NewsletterRestController
+    name_prefix:  api_newsletter_

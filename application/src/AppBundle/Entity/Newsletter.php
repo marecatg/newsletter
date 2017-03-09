@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Application\FOS\UserBundle\Entity\User;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsletterRepository")
@@ -18,6 +19,7 @@ class Newsletter
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"newsletter_list"})
      */
     private $id;
 
@@ -52,7 +54,8 @@ class Newsletter
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="ContenuNewsletter", mappedBy="newsletter")
+     * @ORM\OneToMany(targetEntity="ContenuNewsletter", mappedBy="newsletter", cascade={"persist", "remove"})
+     * @Groups({"newsletter_list"})
      */
     private $contenus;
 
