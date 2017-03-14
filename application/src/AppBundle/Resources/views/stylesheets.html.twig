@@ -1,8 +1,8 @@
-{% if app.environment == 'dev' %}
+{#{% if app.environment == 'dev' %}#}
     {% for css in newsletter_angular_js.assets.css.vendor
     |merge(newsletter_angular_js.assets.css.app)%}
         <link rel="stylesheet" href="{{ asset( 'bundles/app/' ~ css|replace( { 'Resources/public/': '' } ) ) }}" type="text/css" media="all" />
     {% endfor %}
-{% else %}
-    <link rel="stylesheet" href="{{ asset( 'css/screen.css' ) }}" type="text/css" media="all" />
-{% endif %}
+{#{% else %}#}
+    {#<link rel="stylesheet" href="{{ asset( 'css/screen.css' ) }}" type="text/css" media="all" />#}
+{#{% endif %}#}
