@@ -77,6 +77,38 @@ class DestinataireRestController extends ParentRestController
         return $destinataires;
     }
 
+    /**
+     * Supprime un destinataire de l'application
+     *
+     * @ApiDoc(
+     * section = "Destinataire",
+     *  output={"class"="Destinataire"},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when user is not found"
+     *  }
+     * )
+     * @View(serializerGroups={"destinataire"})
+     * @param $id integer
+     * @return Response
+     */
+    public function deleteDestinataireAction($id)
+    {
+
+        $orm = $this->getDoctrine();
+
+        if ($id == 'null') {
+            return $this->view('Id obligatoire', Codes::HTTP_BAD_REQUEST);
+        }
+
+        $destinataire = $orm->getRepository('AppBundle:Destinataire')->find($id);
+
+        $orm->getManager()->remove($destinataire);
+        $orm->getManager()->flush();
+
+        return $this->view('Le destinataire a bien été supprimé', Codes::HTTP_OK);
+    }
+
 
     /**
      * Retourne tous les destinataires
@@ -144,7 +176,7 @@ class DestinataireRestController extends ParentRestController
      * save entity if is valid
      * @param Destinataire $destinataire
      *
-     * @return Respone
+     * @return Response
      */
     private function processForm($destinataire)
     {

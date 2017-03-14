@@ -10,7 +10,8 @@
         return {
             postDestinataire: postDestinataire,
             getAllDestinataire: getAllDestinataire,
-            getDestinataireByListeDiffusion: getDestinataireByListeDiffusion
+            getDestinataireByListeDiffusion: getDestinataireByListeDiffusion,
+            deleteDestinataire: deleteDestinataire
         };
 
         function getDestinataireByListeDiffusion(idListeDiffusion) {
@@ -29,6 +30,13 @@
 
         function postDestinataire(destinataire) {
             return $http.post('/api/destinataires', {destinataire: destinataire})
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
+
+        function deleteDestinataire(id) {
+            return $http.delete('/api/destinataires/' + id)
                 .then(function (data) {
                     return $q.when(data.data);
                 });

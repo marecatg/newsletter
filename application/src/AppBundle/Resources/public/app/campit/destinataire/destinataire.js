@@ -62,7 +62,7 @@
                     vm.destinataires = data;
                 }, function () {
                     logger.error('Erreur lors de la récupération des destinataires', true);
-                    logger.error(data.data);
+                    logger.error(data);
                 });
         }
 
@@ -82,7 +82,7 @@
                     logger.success('Destinataire ajouté', true)
                 }, function (data) {
                     logger.error('Erreur lors de l\'ajout du destinataire', true);
-                    logger.error(data.data);
+                    logger.error(data);
                     vm.ajoutDestinataireenCours = false;
                 });
             }
@@ -106,7 +106,7 @@
                     vm.destinataires = data.liste.destinataires;
                 }, function(data) {
                     logger.error('Erreur lors de l\'ajout des destinataire', true);
-                    logger.error(data.data);
+                    logger.error(data);
                 });
             });
         }
