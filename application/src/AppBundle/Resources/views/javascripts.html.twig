@@ -1,14 +1,14 @@
-{% if app.environment == 'dev' %}
+{#{% if app.environment == 'dev' %}#}
     {% for js in newsletter_angular_js.assets.js.moment
     |merge (newsletter_angular_js.assets.js.ckeditor)
     |merge (newsletter_angular_js.assets.js.vendor)
     |merge(newsletter_angular_js.assets.js.app)%}
         <script src="{{ asset( 'bundles/app/' ~ js|replace( { 'Resources/public/': '' } ) ) }}" type="text/javascript"></script>
     {% endfor %}
-{% else %}
-    <script src="{{ asset( 'js/moment.js' ) }}" type="text/javascript"></script>
-    <script src="{{ asset( 'js/ckeditor.js' ) }}" type="text/javascript"></script>
-    <script src="{{ asset( 'js/vendor.js' ) }}" type="text/javascript"></script>
-    <script src="{{ asset( 'js/app.js' ) }}" type="text/javascript"></script>
-    <script src="{{ asset( 'bundles/app/app/core/decorator/exceptionHandler.decorator.js' ) }}" type="text/javascript"></script>
-{% endif %}
+{#{% else %}#}
+    {#<script src="{{ asset( 'js/moment.js' ) }}" type="text/javascript"></script>#}
+    {#<script src="{{ asset( 'js/ckeditor.js' ) }}" type="text/javascript"></script>#}
+    {#<script src="{{ asset( 'js/vendor.js' ) }}" type="text/javascript"></script>#}
+    {#<script src="{{ asset( 'js/app.js' ) }}" type="text/javascript"></script>#}
+    {#<script src="{{ asset( 'bundles/app/app/core/decorator/exceptionHandler.decorator.js' ) }}" type="text/javascript"></script>#}
+{#{% endif %}#}
