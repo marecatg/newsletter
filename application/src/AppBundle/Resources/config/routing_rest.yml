@@ -14,3 +14,7 @@ newsletter:
     type: rest
     resource: AppBundle\Controller\Rest\NewsletterRestController
     name_prefix:  api_newsletter_
+campagne:
+    type: rest
+    resource: AppBundle\Controller\Rest\CampagneRestController
+    name_prefix:  api_campagne_

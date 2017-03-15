@@ -23,7 +23,7 @@
                 id: -1,
                 nom: 'Sans liste de diffusion'
             }
-        ]
+        ];
         vm.currentListeDiffusion = vm.listesDiffusion[0];
 
         vm.creerDestinataire = creerDestinataire;

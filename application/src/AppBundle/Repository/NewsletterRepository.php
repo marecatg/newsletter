@@ -45,4 +45,20 @@ class NewsletterRepository extends EntityRepository
 
         return $newsletters;
     }
+
+    public function getNewsletterNotInCampagne()
+    {
+        $em = $this->getEntityManager();
+
+        $q = $em->createQueryBuilder()
+            ->select('n')
+            ->from('AppBundle:Newsletter', 'n')
+            ->leftJoin('n.campagne', 'c')
+            ->having('COUNT(c.id) = 0')
+            ->groupBy('n.id');
+
+        $newsletters = $q->getQuery()->getResult();
+
+        return $this->keepLastContenus($newsletters);
+    }
 }

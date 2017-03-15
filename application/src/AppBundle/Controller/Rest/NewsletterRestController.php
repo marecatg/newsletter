@@ -38,6 +38,38 @@ class NewsletterRestController extends ParentRestController
     }
 
     /**
+     * Recherche les newsletters d'une campagne.
+     * Id -1 pour rechercher les newsletters qui n'ont pas de campagne.
+     *
+     * @ApiDoc(
+     * section = "Newsletter",
+     *  output={"class"="Newsletter"},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when user is not found"
+     *  }
+     * )
+     * @View(serializerGroups={"newsletter_list"})
+     * @param $idCampagne integer
+     * @return Response
+     */
+    public function getNewsletterByCampagneAction($idCampagne)
+    {
+
+        $orm = $this->getDoctrine();
+
+        if ($idCampagne === 'null') {
+            return $this->view('Id obligatoire', Codes::HTTP_BAD_REQUEST);
+        } else if ($idCampagne == -1) {
+            $newsletters = $orm->getRepository('AppBundle:Newsletter')->getNewsletterNotInCampagne();
+        } else {
+            $newsletters = $orm->getRepository('AppBundle:Campagne')->find($idCampagne)->getNewsletters();
+        }
+
+        return $newsletters;
+    }
+
+    /**
      * Recherche une newsletter et son dernier contenu
      *
      * @ApiDoc(
