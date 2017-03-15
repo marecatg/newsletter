@@ -41,6 +41,12 @@ class User extends FOSUser
      */
     private $prenom;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->enabled = true;
+    }
+
     /**
      * @return mixed
      */

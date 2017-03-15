@@ -37,13 +37,14 @@ class RegistrationController extends Controller
 
             // 4) save the User!
             $em = $this->getDoctrine()->getManager();
+            
             $em->persist($user);
             $em->flush();
 
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
 
-            return $this->redirectToRoute('replace_with_some_route');
+            return $this->redirectToRoute('user_registration');
         }
 
         return $this->render(
