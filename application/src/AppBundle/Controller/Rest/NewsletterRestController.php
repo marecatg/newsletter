@@ -32,7 +32,7 @@ class NewsletterRestController extends ParentRestController
     {
 
         $orm = $this->getDoctrine();
-        $newsletters = $orm->getRepository('AppBundle:Newsletter')->getAllLast();
+        $newsletters = $orm->getRepository('AppBundle:Newsletter')->findAll();
 
         return $newsletters;
     }
@@ -80,9 +80,9 @@ class NewsletterRestController extends ParentRestController
      *      404="Returned when user is not found"
      *  }
      * )
-     * @View(serializerGroups={"newsletter_list"})
+     * @View(serializerGroups={"newsletter_last_contenu"})
      * @param $id integer
-     * @return Response
+     * @return Newsletter
      */
     public function getNewsletterAction($id)
     {
@@ -92,9 +92,9 @@ class NewsletterRestController extends ParentRestController
         }
 
         $orm = $this->getDoctrine();
-        $newsletters = $orm->getRepository('AppBundle:Newsletter')->getLast($id);
+        $newsletter = $orm->getRepository('AppBundle:Newsletter')->getLast($id);
 
-        return $newsletters;
+        return $newsletter;
     }
 
 }

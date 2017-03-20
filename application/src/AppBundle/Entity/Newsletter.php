@@ -19,9 +19,17 @@ class Newsletter
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"newsletter_list"})
+     * @Groups({"newsletter_list", "newsletter_last_contenu"})
      */
     private $id;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", nullable=false)
+     * @Groups({"newsletter_list", "newsletter_last_contenu"})
+     */
+    private $nom;
 
     /**
      * @var \DateTime
@@ -55,7 +63,7 @@ class Newsletter
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="ContenuNewsletter", mappedBy="newsletter", cascade={"persist", "remove"})
-     * @Groups({"newsletter_list"})
+     * @Groups({"newsletter_last_contenu"})
      */
     private $contenus;
 
@@ -78,6 +86,22 @@ class Newsletter
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
     }
 
     /**

@@ -18,9 +18,9 @@
                 <div class="col-md-7">
                     <div class="col-xs-10">
                         <div class="col-xs-12 no-padding liste-destinataires">
-                            <button data-ng-repeat="newsletter in vm.newsletters | orderBy: 'contenus[0].nom'"
-                            ng-click="vm.showContenu(newsletter.contenus[0].id)">
-                                {{ ::newsletter.contenus[0].nom }}
+                            <button data-ng-repeat="newsletter in vm.newsletters | orderBy: 'nom'"
+                            ng-click="vm.getNewsletter(newsletter.id)">
+                                {{ ::newsletter.nom }}
                             </button>
                         </div>
                     </div>
@@ -39,14 +39,14 @@
     </div>
 
 
-    <div class="espace-top col-md-5 col-lg-4" ng-if="vm.currentNewsletterContenu">
+    <div class="espace-top col-md-5 col-lg-4" ng-if="vm.currentNewsletter">
         <!--Formulaire d'ajout de destinataire-->
         <div class="panel panel-primary">
             <div class="panel-heading">
-                ::vm.currentNewsletterContenu.nom
+                {{::vm.currentNewsletter.nom}}
             </div>
             <div class="panel-body">
-
+                <div ng-bind-html="vm.currentNewsletter.contenus[0].contenu_h_t_m_l"></div>
                 <button class="col-xs-12 btn btn-success">Voir la liste des inscrits</button>
             </div>
         </div>

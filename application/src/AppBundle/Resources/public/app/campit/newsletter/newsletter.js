@@ -25,8 +25,10 @@
             allowedContent: true,
             entities: false
         };
+        vm.currentNewsletter = null;
 
         vm.rechercheNewsletters = rechercheNewsletters;
+        vm.getNewsletter = getNewsletter;
 
         activate();
 
@@ -53,7 +55,7 @@
         function rechercheNewsletters(campagne) {
             if (campagne == null) {
                 campagne = vm.currentCampagne;
-                }
+            }
             return dataserviceNewsletter.getNewslettersByCampagne(campagne.id)
                 .then(function (data) {
                     vm.newsletters = data;
@@ -61,6 +63,15 @@
                     logger.error('Erreur lors de la récupération des newsletters', true);
                     logger.error(data);
                 });
+        }
+
+        function getNewsletter(id) {
+            return dataserviceNewsletter.getNewsletter(id).then(function (data) {
+                vm.currentNewsletter = data;
+            }, function () {
+                logger.error('Erreur lors de la récupération de la newsletter', true);
+                logger.error(data);
+            })
         }
     }
 })();

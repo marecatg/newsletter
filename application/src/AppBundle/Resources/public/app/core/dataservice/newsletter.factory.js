@@ -8,7 +8,8 @@
     dataserviceNewsletter.$inject = ['$q', '$http'];
     function dataserviceNewsletter($q, $http) {
         return {
-            getNewslettersByCampagne: getNewslettersByCampagne
+            getNewslettersByCampagne: getNewslettersByCampagne,
+            getNewsletter: getNewsletter
         };
 
         function getNewslettersByCampagne(idCampagne) {
@@ -16,6 +17,13 @@
                 .then(function (data) {
                     return $q.when(data.data);
                 });
+        }
+
+        function getNewsletter(id) {
+            return $http.get('/api/newsletters/' + id)
+                .then(function (data) {
+                    return $q.when(data.data);
+                })
         }
     }
 })();

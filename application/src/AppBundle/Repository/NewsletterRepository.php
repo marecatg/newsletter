@@ -31,9 +31,11 @@ class NewsletterRepository extends EntityRepository
             ->where('n.id = :id')
             ->orderBy('c.id')
             ->setParameter('id', $id);
-        $newsletters = $q->getQuery()->getResult();
-
-        return $this->keepLastContenus($newsletters);
+        $newsletter = $q->getQuery()->getSingleResult();
+        $contenuLight = new ArrayCollection();
+        $contenuLight->add($newsletter->getContenus()[$newsletter->getContenus()->count() - 1]);
+        $newsletter->setContenus($contenuLight);
+        return $newsletter;
     }
 
     private function keepLastContenus($newsletters) {
@@ -59,6 +61,6 @@ class NewsletterRepository extends EntityRepository
 
         $newsletters = $q->getQuery()->getResult();
 
-        return $this->keepLastContenus($newsletters);
+        return $newsletters;
     }
 }
