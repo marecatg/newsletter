@@ -5,9 +5,9 @@
         .module('app.newsletter')
         .controller('Newsletter', Newsletter);
 
-    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter'];
+    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter', '$uibModal'];
 
-    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter) {
+    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter, $uibModal) {
 
         var vm = this;
         vm.showView = false;
@@ -19,16 +19,11 @@
         ];
         vm.currentCampagne = vm.campagnes[0];
         vm.newsletters = [];
-
-        vm.ckeditorOptions = {
-            language: 'fr',
-            allowedContent: true,
-            entities: false
-        };
         vm.currentNewsletter = null;
 
         vm.rechercheNewsletters = rechercheNewsletters;
         vm.getNewsletter = getNewsletter;
+        vm.openNewsletterModal = openNewsletterModal;
 
         activate();
 
@@ -72,6 +67,23 @@
                 logger.error('Erreur lors de la récupération de la newsletter', true);
                 logger.error(data);
             })
+        }
+
+        function openNewsletterModal() {
+            $uibModal.open({
+                templateUrl: 'bundles/app/app/campit/newsletter/modal/modalNewsletter.html',
+                controller: 'ModalNewsletter',
+                controllerAs: 'vm',
+                size: 'lg',
+                windowClass: 'clearfix',
+                resolve: {
+                    campagne : function() {
+                        return vm.currentCampagne
+                    }
+                }
+            }).result.then(function(newsletter) {
+
+            });
         }
     }
 })();
