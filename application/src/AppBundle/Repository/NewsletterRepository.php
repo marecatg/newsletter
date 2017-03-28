@@ -31,9 +31,11 @@ class NewsletterRepository extends EntityRepository
             ->where('n.id = :id')
             ->orderBy('c.id')
             ->setParameter('id', $id);
-        $newsletters = $q->getQuery()->getResult();
-
-        return $this->keepLastContenus($newsletters);
+        $newsletter = $q->getQuery()->getSingleResult();
+        $contenuLight = new ArrayCollection();
+        $contenuLight->add($newsletter->getContenus()[$newsletter->getContenus()->count() - 1]);
+        $newsletter->setContenus($contenuLight);
+        return $newsletter;
     }
 
     private function keepLastContenus($newsletters) {
@@ -42,6 +44,22 @@ class NewsletterRepository extends EntityRepository
             $contenuLight->add($n->getContenus()[$n->getContenus()->count() - 1]);
             $n->setContenus($contenuLight);
         }
+
+        return $newsletters;
+    }
+
+    public function getNewsletterNotInCampagne()
+    {
+        $em = $this->getEntityManager();
+
+        $q = $em->createQueryBuilder()
+            ->select('n')
+            ->from('AppBundle:Newsletter', 'n')
+            ->leftJoin('n.campagne', 'c')
+            ->having('COUNT(c.id) = 0')
+            ->groupBy('n.id');
+
+        $newsletters = $q->getQuery()->getResult();
 
         return $newsletters;
     }

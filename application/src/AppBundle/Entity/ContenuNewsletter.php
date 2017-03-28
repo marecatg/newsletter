@@ -16,23 +16,16 @@ class ContenuNewsletter
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"newsletter_list"})
+     * @Groups({"newsletter_last_contenu"})
      */
     private $id;
-
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", nullable=false)
-     * @Groups({"newsletter_list"})
-     */
-    private $nom;
 
     /**
      * @var Newsletter
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Newsletter", inversedBy="contenus")
      * @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", nullable=false)
+     * @Groups({})
      */
     private $newsletter;
 
@@ -46,6 +39,7 @@ class ContenuNewsletter
      * @var string
      * @Assert\NotBlank()
      * @ORM\Column(type="text", nullable=false)
+     * @Groups({"newsletter_last_contenu"})
      */
     private $contenuHTML;
 
@@ -55,22 +49,6 @@ class ContenuNewsletter
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNom()
-    {
-        return $this->nom;
-    }
-
-    /**
-     * @param string $nom
-     */
-    public function setNom($nom)
-    {
-        $this->nom = $nom;
     }
 
     /**

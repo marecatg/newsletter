@@ -77,23 +77,24 @@ class ListeDiffusionRestController extends ParentRestController
                 if (!isset($user['id']) || $user['id'] == null) {
                     return $this->view('Un destinataire n\'a pas d\'id', Codes::HTTP_BAD_REQUEST);
                 }
-                $destinataire = $orm->getRepository('AppBundle:Destinataire')->find($user['id']);
-                if ( $destinataire == null) {
-                    return $this->view('Destinataire non trouvé avec l\'id '.$user['id'], Codes::HTTP_BAD_REQUEST);
-                }
-                $listesDuDest = $destinataire->getListesDiffusion();
-                $trouve = false;
-                foreach($listesDuDest as $l) {
-                    if ($l->getId() == $liste->getId()) {
-                        $l = $liste;
-                        $trouve = true;
-                    }
-                }
-                if (!$trouve) {
-                    $listesDuDest[] = $liste;
-                }
-                $destinataire->setListesDiffusion($listesDuDest);
-                $destinataires[] = $destinataire;
+                $destinataires[] = $orm->getManager()->getRepository('AppBundle:Destinataire')->find($user['id']);
+//                $destinataire = $orm->getRepository('AppBundle:Destinataire')->find($user['id']);
+//                if ( $destinataire == null) {
+//                    return $this->view('Destinataire non trouvé avec l\'id '.$user['id'], Codes::HTTP_BAD_REQUEST);
+//                }
+//                $listesDuDest = $destinataire->getListesDiffusion();
+//                $trouve = false;
+//                foreach($listesDuDest as $l) {
+//                    if ($l->getId() == $liste->getId()) {
+//                        $l = $liste;
+//                        $trouve = true;
+//                    }
+//                }
+//                if (!$trouve) {
+//                    $listesDuDest[] = $liste;
+//                }
+//                $destinataire->setListesDiffusion($listesDuDest);
+//                $destinataires[] = $destinataire;
             }
             $liste->setDestinataires($destinataires);
         }

@@ -1,0 +1,28 @@
+<div ng-if="vm.showView">
+    <form name="form" novalidate>
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Creer une newsletter</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="form-group has-feedback"
+                 ng-class="{ 'has-error': form.$submitted && form.nom.$error.required }">
+                <label class="control-label">Nom</label>
+                <input data-ng-model="vm.newsletter.nom" required="" name="nom"
+                       type="text" class="form-control" id="nom">
+                <span class="glyphicon glyphicon-remove form-control-feedback"
+                      data-ng-show="form.$submitted && form.nom.$error.required"></span>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error': form.$submitted && form.corps.$error.required }">
+                <label class="control-label" for="corps">Contenu de la newsletter</label>
+                <textarea class="ckeditor form-control" ckeditor="vm.ckeditorOptions" ng-model="vm.newsletter.corps" name="corps"
+                          id="corps" placeholder="Contenu" required=""></textarea>
+                <span ng-show="form.$submitted && form.corps.$error.required" class="control-label">Le contenu est requis</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" type="submit" ng-click="vm.ok(form)">Ok</button>
+            <button class="btn btn-danger" type="button" ng-click="vm.cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

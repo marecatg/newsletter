@@ -39,7 +39,7 @@ security:
     access_control:
         # URL of FOSUserBundle which need to be available to anonymous users
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %chanel_require% }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %chanel_require% }
+        - { path: ^/register, role: [ROLE_USER], requires_channel: %chanel_require% }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: %chanel_require% }
         - { path: ^/admin/, role: ROLE_ADMIN }
 

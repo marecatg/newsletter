@@ -32,7 +32,39 @@ class NewsletterRestController extends ParentRestController
     {
 
         $orm = $this->getDoctrine();
-        $newsletters = $orm->getRepository('AppBundle:Newsletter')->getAllLast();
+        $newsletters = $orm->getRepository('AppBundle:Newsletter')->findAll();
+
+        return $newsletters;
+    }
+
+    /**
+     * Recherche les newsletters d'une campagne.
+     * Id -1 pour rechercher les newsletters qui n'ont pas de campagne.
+     *
+     * @ApiDoc(
+     * section = "Newsletter",
+     *  output={"class"="Newsletter"},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when user is not found"
+     *  }
+     * )
+     * @View(serializerGroups={"newsletter_list"})
+     * @param $idCampagne integer
+     * @return Response
+     */
+    public function getNewsletterByCampagneAction($idCampagne)
+    {
+
+        $orm = $this->getDoctrine();
+
+        if ($idCampagne === 'null') {
+            return $this->view('Id obligatoire', Codes::HTTP_BAD_REQUEST);
+        } else if ($idCampagne == -1) {
+            $newsletters = $orm->getRepository('AppBundle:Newsletter')->getNewsletterNotInCampagne();
+        } else {
+            $newsletters = $orm->getRepository('AppBundle:Campagne')->find($idCampagne)->getNewsletters();
+        }
 
         return $newsletters;
     }
@@ -48,9 +80,9 @@ class NewsletterRestController extends ParentRestController
      *      404="Returned when user is not found"
      *  }
      * )
-     * @View(serializerGroups={"newsletter_list"})
+     * @View(serializerGroups={"newsletter_last_contenu"})
      * @param $id integer
-     * @return Response
+     * @return Newsletter
      */
     public function getNewsletterAction($id)
     {
@@ -60,9 +92,9 @@ class NewsletterRestController extends ParentRestController
         }
 
         $orm = $this->getDoctrine();
-        $newsletters = $orm->getRepository('AppBundle:Newsletter')->getLast($id);
+        $newsletter = $orm->getRepository('AppBundle:Newsletter')->getLast($id);
 
-        return $newsletters;
+        return $newsletter;
     }
 
 }

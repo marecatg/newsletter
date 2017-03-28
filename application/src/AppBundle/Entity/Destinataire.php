@@ -61,7 +61,7 @@ class Destinataire
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="ListeDiffusion", inversedBy="destinataires")
+     * @ORM\ManyToMany(targetEntity="ListeDiffusion", mappedBy="destinataires")
      * @ORM\JoinTable(name="destinataire_liste_diffusion")
      * @Groups({})
      */

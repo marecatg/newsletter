@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CampagneRepository")
@@ -16,12 +17,14 @@ class Campagne
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"campagne_info"})
      */
     private $id;
 
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Newsletter", mappedBy="campagne")
+     * @Groups({})
      */
     private $newsletters;
 
@@ -29,12 +32,14 @@ class Campagne
      * @var string
      * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=false)
+     * @Groups({"campagne_info"})
      */
     private $nom;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({})
      */
     private $dateLancement;
 
