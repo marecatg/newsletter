@@ -6,9 +6,9 @@ parameters:
     database_user: root
     database_password: root
     mailer_transport: smtp
-    mailer_host: smtp.gaetan-marecat.fr
-    mailer_user: campit@gaetan-marecat.fr
-    mailer_password: epsiepsi34
+    mailer_host: 192.168.76.128
+    mailer_user: root@campit.mail
+    mailer_password: root
     mailer_auth_mode: login
     mailer_port: 587
     secret: tookenprojeti4
