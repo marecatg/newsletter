@@ -33,7 +33,6 @@ class Newsletter
 
     /**
      * @var \DateTime
-     * @Assert\NotBlank()
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateProchainEnvoi;

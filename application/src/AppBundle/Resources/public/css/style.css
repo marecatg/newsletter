@@ -263,3 +263,20 @@ section > h1 {
 .newsletter-active, #liste-choix-newsletter button:hover, #liste-choix-newsletter button:focus {
     background-color: #e6e6e6 !important;
 }
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+}
+.has-error .input-group-btn .btn.btn-default {
+    color: #a94442;
+    border-color: #a94442;
+}
+.has-error #cke_corps {
+    border-color: #a94442;
+}

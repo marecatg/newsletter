@@ -34,6 +34,7 @@ parameters:
                     - "Resources/public/app/core/config.js"
                     - "Resources/public/app/core/core.js"
                     - "Resources/public/app/core/model/page.constante.js"
+                    - "Resources/public/app/core/model/periodiciteUnite.constante.js"
                     - "Resources/public/app/core/dataservice/destinataire.factory.js"
                     - "Resources/public/app/core/dataservice/listeDiffusion.factory.js"
                     - "Resources/public/app/core/dataservice/campagne.factory.js"
