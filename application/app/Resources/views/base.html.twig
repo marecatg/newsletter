@@ -20,8 +20,8 @@
     {% if is_granted("ROLE_USER") %}
 
                 <ul>
-                    <li><div>{% block message %} Bienvenu dans CAMPIT, votre application Newsletter !{% endblock %}</div></li>
-                    <li><a href="{{ path('fos_user_security_logout') }}">Deconnexion</a></li>
+                    <li><a href="{{ path('newsletter_angular_js_homepage')}}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+                    <li>{% block deconnect %}<a href="{{ path('fos_user_security_logout') }}"><span class="glyphicon glyphicon-off"></span> Deconnexion</a>{% endblock %}</li>
                 </ul>
         {% else %}
             <ul>

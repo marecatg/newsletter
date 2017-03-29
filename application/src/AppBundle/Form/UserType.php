@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class UserType extends AbstractType
@@ -32,6 +33,11 @@ class UserType extends AbstractType
             ))
             ->add('nom', TextType::class)
             ->add('prenom', TextType::class)
+            ->add('save', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-info'
+                )
+            ))
         ;
     }
 
