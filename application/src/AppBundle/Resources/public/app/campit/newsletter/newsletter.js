@@ -28,7 +28,7 @@
         activate();
 
         function activate() {
-            var promises = [initCampagnes(), rechercheNewsletters()];
+            var promises = [initCampagnes(), rechercheNewsletters(vm.campagnes[0])];
             return $q.all(promises).then(function () {
                 vm.showView = true;
                 console.log('Activated Newsletter View');
@@ -48,7 +48,7 @@
         }
 
         function rechercheNewsletters(campagne) {
-            if (campagne == null) {
+            if (campagne === null) {
                 campagne = vm.currentCampagne;
             }
             return dataserviceNewsletter.getNewslettersByCampagne(campagne.id)
@@ -82,7 +82,9 @@
                     }
                 }
             }).result.then(function(newsletter) {
-
+                if (newsletter !== null) {
+                    vm.newsletters.push(newsletter);
+                }
             });
         }
     }

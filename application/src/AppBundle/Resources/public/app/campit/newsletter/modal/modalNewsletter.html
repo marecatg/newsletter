@@ -13,12 +13,20 @@
                                type="text" class="form-control" id="nom">
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-2">
                     <div class="form-group"
-                         ng-class="{ 'has-error': form.$submitted && form.periodicite.$error.required }">
-                        <label class="control-label" for="periodicite">Périodicité</label>
-                        <select data-ng-model="vm.newsletter.periodicite" required="" name="periodicite"
-                                class="form-control" id="periodicite">
+                         ng-class="{ 'has-error': form.$submitted && form.periodiciteValeur.$error.required }">
+                        <label class="control-label" for="periodiciteValeur">Interval</label>
+                        <input data-ng-model="vm.newsletter.periodiciteValeur" required="" name="periodiciteValeur"
+                               type="number" class="form-control" id="periodiciteValeur">
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="form-group"
+                         ng-class="{ 'has-error': form.$submitted && form.periodiciteUnite.$error.required }">
+                        <label class="control-label" for="periodiciteUnite">Périodicité</label>
+                        <select data-ng-model="vm.newsletter.periodiciteUnite" required="" name="periodiciteUnite"
+                                class="form-control" id="periodiciteUnite">
                             <option value="{{ vm.periodiciteUnite.jour }}">Jour</option>
                             <option value="{{ vm.periodiciteUnite.semaine }}">Semaine</option>
                             <option value="{{ vm.periodiciteUnite.mois }}">Mois</option>
@@ -26,7 +34,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <div class="form-group"
                          ng-class="{ 'has-error': form.$submitted && form.prochainEnvoi.$error.required }">
                         <label class="control-label" for="prochainEnvoi">Date de prochain envoi</label>
@@ -56,7 +64,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-success" type="submit" ng-click="vm.ok(form)">Créer</button>
+            <button class="btn btn-success" ng-disabled="vm.ajoutNewsletterEnCours" type="submit" ng-click="vm.creerNewsletter(form)">Créer</button>
             <button class="btn btn-danger" type="button" ng-click="vm.cancel()">Annuler</button>
         </div>
     </form>

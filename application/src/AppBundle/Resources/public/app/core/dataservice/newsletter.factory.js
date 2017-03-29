@@ -9,7 +9,8 @@
     function dataserviceNewsletter($q, $http) {
         return {
             getNewslettersByCampagne: getNewslettersByCampagne,
-            getNewsletter: getNewsletter
+            getNewsletter: getNewsletter,
+            postNewsletter: postNewsletter
         };
 
         function getNewslettersByCampagne(idCampagne) {
@@ -24,6 +25,13 @@
                 .then(function (data) {
                     return $q.when(data.data);
                 })
+        }
+
+        function postNewsletter(newsletter) {
+            return $http.post('/api/newsletters', {newsletter: newsletter})
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
         }
     }
 })();

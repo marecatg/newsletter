@@ -118,6 +118,7 @@ class NewsletterRestController extends ParentRestController
     {
 
         $params = json_decode($request->getContent(), true);
+        $orm = $this->getDoctrine();
 
         $newsletter = new Newsletter();
         $contenu = new ContenuNewsletter();
@@ -133,9 +134,31 @@ class NewsletterRestController extends ParentRestController
             $contenu->setContenuHTML($params['newsletter']['corps']);
         }
 
+        if (isset($params['newsletter']['campagneId']) && $params['newsletter']['campagneId'] != null) {
+            $campagne = $orm->getRepository('AppBundle:Campagne')->find($params['newsletter']['campagneId']);
+            if ($campagne == null) {
+                return $this->view('Campagne d\'id '.$params['newsletter']['campagneId'].' non trouvé', Codes::HTTP_BAD_REQUEST);
+            }
+            $newsletter->setCampagne($campagne);
+        }
+
+        if (isset($params['newsletter']['periodiciteValeur']) && $params['newsletter']['periodiciteValeur'] != null) {
+            $newsletter->setPeriodiciteValeur($params['newsletter']['periodiciteValeur']);
+        }
+
+        if (isset($params['newsletter']['periodiciteUnite']) && $params['newsletter']['periodiciteUnite'] != null) {
+            $newsletter->setPeriodiciteUnite($params['newsletter']['periodiciteUnite']);
+        }
+
+        if (isset($params['newsletter']['dateEnvoi']) && $params['newsletter']['dateEnvoi'] != null) {
+            $newsletter->setDateProchainEnvoi(new \DateTime($params['newsletter']['dateEnvoi']));
+        }
+
         $contenu->setDateModification(new \DateTime());
-        $newsletter->setContenus(new ArrayCollection($contenu));
         $newsletter->setCreateur($this->getUser());
+        $contenu->setNewsletter($newsletter);
+        $contenus = [$contenu];
+        $newsletter->setContenus($contenus);
 
         return $this->processForm($newsletter);
     }

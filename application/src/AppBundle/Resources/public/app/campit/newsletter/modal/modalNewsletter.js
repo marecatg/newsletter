@@ -6,10 +6,10 @@
         .controller('ModalNewsletter', ModalNewsletter);
 
     ModalNewsletter.$inject = ['$uibModalInstance', '$q', 'campagne', 'dataserviceNewsletter', 'periodiciteUnite',
-        '$scope'];
+        '$scope', 'logger'];
 
     function ModalNewsletter($uibModalInstance, $q, campagne, dataserviceNewsletter, periodiciteUnite,
-        $scope) {
+        $scope, logger) {
 
         var vm = this;
         vm.showView = false;
@@ -17,7 +17,9 @@
             nom: null,
             corps: null,
             campagneId: null,
-            dateEnvoi: null
+            dateEnvoi: null,
+            periodiciteUnite: null,
+            periodiciteValeur: null
         };
         vm.campagne = campagne;
         vm.periodiciteUnite = periodiciteUnite;
@@ -28,14 +30,14 @@
             entities: false
         };
 
-        vm.ok = ok;
         vm.cancel = cancel;
+        vm.creerNewsletter = creerNewsletter;
 
 
         activate();
         function activate() {
             var promises = [];
-            if (angular.isDefined(campagne)) {
+            if (angular.isDefined(campagne) && campagne.id !== -1) {
                 vm.newsletter.campagneId = campagne.id;
             }
             return $q.all(promises).then(function () {
@@ -47,9 +49,23 @@
             $uibModalInstance.dismiss();
         }
 
-        function ok(form) {
-            if (form.$submitted && form.$valid) {
-                $uibModalInstance.close(vm.newsletter);
+        function ok() {
+            $uibModalInstance.close(vm.newsletter);
+        }
+
+        function creerNewsletter(form) {
+            if (form.$valid) {
+                vm.ajoutNewsletterEnCours = true;
+                dataserviceNewsletter.postNewsletter(vm.newsletter).then(function (newsletter) {
+                    vm.ajoutNewsletterEnCours = false;
+                    vm.newsletter = newsletter;
+                    ok();
+                    logger.success('Newsletter créée', true)
+                }, function (data) {
+                    logger.error('Erreur lors de la création de la newsletter', true);
+                    logger.error(data);
+                    vm.ajoutNewsletterEnCours = false;
+                });
             }
         }
 
