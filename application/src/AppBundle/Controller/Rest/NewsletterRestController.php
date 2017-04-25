@@ -190,4 +190,35 @@ class NewsletterRestController extends ParentRestController
         return $this->view($newsletter, Codes::HTTP_OK);
     }
 
+    /**
+     * Supprime une newsletter de l'application
+     *
+     * @ApiDoc(
+     * section = "Newsletter",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when user is not found"
+     *  }
+     * )
+     * @View()
+     * @param $id integer
+     * @return Response
+     */
+    public function deleteNewsletterAction($id)
+    {
+
+        $orm = $this->getDoctrine();
+
+        if ($id == 'null') {
+            return $this->view('Id obligatoire', Codes::HTTP_BAD_REQUEST);
+        }
+
+        $newsletter = $orm->getRepository('AppBundle:Newsletter')->find($id);
+
+        $orm->getManager()->remove($newsletter);
+        $orm->getManager()->flush();
+
+        return $this->view('Le destinataire a bien été supprimé', Codes::HTTP_OK);
+    }
+
 }

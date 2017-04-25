@@ -5,9 +5,9 @@
         .module('app.newsletter')
         .controller('Newsletter', Newsletter);
 
-    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter', '$uibModal'];
+    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter', '$uibModal', 'logger'];
 
-    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter, $uibModal) {
+    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter, $uibModal, logger) {
 
         var vm = this;
         vm.showView = false;
@@ -24,6 +24,7 @@
         vm.rechercheNewsletters = rechercheNewsletters;
         vm.getNewsletter = getNewsletter;
         vm.openNewsletterModal = openNewsletterModal;
+        vm.deleteNewsletter = deleteNewsletter;
 
         activate();
 
@@ -65,6 +66,25 @@
                 vm.currentNewsletter = data;
             }, function () {
                 logger.error('Erreur lors de la récupération de la newsletter', true);
+                logger.error(data);
+            })
+        }
+
+        function deleteNewsletter(id) {
+            return dataserviceNewsletter.deleteNewsletter(id).then(function () {
+                vm.currentNewsletter = null;
+
+                var copy = angular.copy(vm.newsletters);
+                angular.forEach(copy, function(n, key) {
+                    if (n.id === id) {
+                        vm.newsletters.splice(key, 1);
+                        return true;
+                    }
+                });
+
+                logger.success('Newsletter supprimée', true);
+            }, function () {
+                logger.error('Erreur lors de la suppression de la newsletter', true);
                 logger.error(data);
             })
         }

@@ -280,3 +280,6 @@ section > h1 {
 .has-error #cke_corps {
     border-color: #a94442;
 }
+.margin-top-10 {
+    margin-top: 10px;
+}
