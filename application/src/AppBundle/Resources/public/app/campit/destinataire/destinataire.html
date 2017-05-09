@@ -39,6 +39,35 @@
 
 
     <div class="espace-top col-md-5 col-lg-4">
+
+        <!--Formulaire d'ajout de liste de diffusion-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Creer une liste de diffusion
+            </div>
+            <div class="panel-body">
+                <form name="formListe" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': formListe.$submitted && formListe.nom.$error.required }">
+                            <input data-ng-model="vm.newList.nom" required="" name="nom"
+                                   type="text" class="form-control" placeholder="Nom de la liste">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="formListe.$submitted && formListe.nom.$error.required"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button data-ng-click="vm.postListeDiffusion()" type="submit"
+                                class="btn btn-success pull-right"
+                                data-ng-disabled="">
+                            Créer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
         <!--Formulaire d'ajout de destinataire-->
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -51,8 +80,8 @@
                              ng-class="{ 'has-error': form.$submitted && form.prenom.$error.required }">
                             <input data-ng-model="vm.newDestinataire.prenom" required="" name="prenom"
                                    type="text" class="form-control" placeholder="Prenom">
-                        <span class="glyphicon glyphicon-remove form-control-feedback"
-                              data-ng-show="form.$submitted && form.prenom.$error.required"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="form.$submitted && form.prenom.$error.required"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -60,8 +89,8 @@
                              ng-class="{ 'has-error': form.$submitted && form.nom.$error.required }">
                             <input data-ng-model="vm.newDestinataire.nom" required="" name="nom"
                                    type="text" class="form-control" id="destinataire-nom" placeholder="Nom">
-                    <span class="glyphicon glyphicon-remove form-control-feedback"
-                          data-ng-show="form.$submitted && form.nom.$error.required"></span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="form.$submitted && form.nom.$error.required"></span>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -69,16 +98,18 @@
                              ng-class="{ 'has-error': form.$submitted && (form.email.$error.required  || form.email.$error.email) }">
                             <input name="email" data-ng-model="vm.newDestinataire.email" required="" type="email"
                                    class="form-control" id="destinataire-email" placeholder="Email">
-                    <span class="glyphicon glyphicon-remove form-control-feedback"
-                          data-ng-show="form.$submitted && (form.email.$error.required || form.email.$error.email)"></span>
-                    <span class="help-block"
-                          data-ng-show="form.$submitted && form.email.$error.email">Email non valide</span>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="form.$submitted && (form.email.$error.required || form.email.$error.email)"></span>
+                            <span class="help-block"
+                                  data-ng-show="form.$submitted && form.email.$error.email">Email non valide</span>
                         </div>
                     </div>
                     <div class="col-md-12 text-center">
-                        <input data-ng-click="vm.creerDestinataire(form)" type="submit"
-                               class="btn btn-success pull-right"
-                               value="Creer" data-ng-disabled="vm.ajoutDestinataireenCours"/>
+                        <button data-ng-click="vm.creerDestinataire(form)" type="submit"
+                                class="btn btn-success pull-right"
+                                data-ng-disabled="vm.ajoutDestinataireenCours">
+                            Créer
+                        </button>
                     </div>
                 </form>
             </div>

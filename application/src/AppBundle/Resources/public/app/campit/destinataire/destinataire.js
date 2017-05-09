@@ -5,9 +5,11 @@
         .module('app.destinataire')
         .controller('Destinataire', Destinataire);
 
-    Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger', 'dataserviceListeDiffusion', '$uibModal'];
+    Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger', 'dataserviceListeDiffusion', '$uibModal',
+        'FileUploader'];
 
-    function Destinataire($q, dataserviceDestinataire, logger, dataserviceListeDiffusion, $uibModal) {
+    function Destinataire($q, dataserviceDestinataire, logger, dataserviceListeDiffusion, $uibModal,
+                          FileUploader) {
 
         var vm = this;
         vm.showView = false;
@@ -25,10 +27,41 @@
             }
         ];
         vm.currentListeDiffusion = vm.listesDiffusion[0];
+        vm.newList = {
+            nom: null
+        };
+
+        //upload limit in octet
+        vm.limit = 2097152;
+        vm.limitMo = vm.limit / Math.pow(1024, 2);
+        vm.saveInProgress = false;
+
+        //uploader
+        vm.uploader = new FileUploader({
+            removeAfterUpload: true,
+            filters: [{
+                name: 'size',
+                fn: function (item) {
+                    if (item.size > vm.limit) {
+                        vm.errorFileLimit = true;
+                        return false;
+                    } else {
+                        vm.errorFileLimit = false;
+                        return true;
+                    }
+                }
+            }]
+        });
 
         vm.creerDestinataire = creerDestinataire;
         vm.rechercheDestinatairesByListe = rechercheDestinatairesByListe;
         vm.openGestionDestinataireModal = openGestionDestinataireModal;
+        vm.postListeDiffusion = postListeDiffusion;
+
+        vm.uploader.onCompleteAll = onCompleteAll;
+        vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
+        vm.uploader.onErrorItem = onErrorItem;
+        vm.uploader.onAfterAddingFile = onAfterAddingFile;
 
         activate();
 
@@ -109,6 +142,38 @@
                     logger.error(data);
                 });
             });
+        }
+
+        function postListeDiffusion() {
+            return dataserviceListeDiffusion.postListe(vm.newList.nom).then(function(data) {
+                logger.success('Upload ok', true);
+            }, function(data) {
+                logger.error('Upload fail', true);
+                logger.error(data);
+            });
+        }
+
+        function importUser() {
+            vm.uploader.url = '/api/questions/' + vm.question.id + '/files';
+            vm.uploader.uploadAll();
+        }
+
+        //Uploader function
+        function onCompleteAll(fileItem, response, status, headers) {
+            logger.info('Le fichier est enregistré.', true);
+        }
+
+        //set the id project in url before upload
+        function onBeforeUploadItem(item) {
+            item.url = vm.uploader.url;
+        }
+
+        function onErrorItem(item, response, status) {
+            logger.error("Le fichier n'a pas était enregistré pour cause d'erreur.", true);
+        }
+
+        function onAfterAddingFile(item) {
+            vm.fileName = item.file.name;
         }
     }
 })();

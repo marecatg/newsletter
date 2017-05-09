@@ -110,7 +110,7 @@ class ListeDiffusionRestController extends ParentRestController
      * save entity if is valid
      * @param ListeDiffusion $liste
      *
-     * @return Respone
+     * @return Response
      */
     private function processForm($liste)
     {
@@ -131,5 +131,73 @@ class ListeDiffusionRestController extends ParentRestController
         }
 
         return $this->view(array('liste' => $liste, Codes::HTTP_OK));
+    }
+
+    /**
+     *
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @ApiDoc(
+     * section = "Liste Diffusion",
+     *    statusCodes = {
+     *      201 = "Returned when successful",
+     *      400 = "Returned when it failed"
+     *    }
+     * )
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postListeFileAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $liste = $em->getRepository('AppBundle:ListeDiffusion')->find($id);
+
+        if (!$liste) {
+            $this->view(null, Codes::HTTP_BAD_REQUEST);
+        }
+
+        $file = $request->files->get('file');
+
+        if (!empty($file)) {
+            $fileObject = new File();
+
+//            try {
+//                $em->persist();
+//                $em->flush();
+//            } catch (\Exception $ex) {
+//                return $this->view(null, Codes::HTTP_BAD_REQUEST);
+//            }
+        }
+
+        $this->view('OK', Codes::HTTP_OK);
+    }
+
+    /**
+     *
+     *
+     * @param string $name
+     *
+     * @ApiDoc(
+     * section = "Liste Diffusion",
+     *    statusCodes = {
+     *      201 = "Returned when successful",
+     *      400 = "Returned when it failed"
+     *    }
+     * )
+     *
+     * @return Response
+     */
+    public function postListeDiffusionAction($name)
+    {
+        if (!$name) {
+            $this->view(null, Codes::HTTP_BAD_REQUEST);
+        }
+
+        $liste = new ListeDiffusion();
+        $liste->setNom($name);
+
+        return $this->processForm($liste);
     }
 }

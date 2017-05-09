@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('app.destinataire', ['ui.bootstrap']);
+    angular.module('app.destinataire', ['ui.bootstrap', 'angularFileUpload']);
 })();
