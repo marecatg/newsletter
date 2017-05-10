@@ -28,7 +28,8 @@
         ];
         vm.currentListeDiffusion = vm.listesDiffusion[0];
         vm.newList = {
-            nom: null
+            nom: null,
+            fileName: null
         };
 
         //upload limit in octet
@@ -39,6 +40,7 @@
         //uploader
         vm.uploader = new FileUploader({
             removeAfterUpload: true,
+            queueLimit : 1,
             filters: [{
                 name: 'size',
                 fn: function (item) {
@@ -52,11 +54,13 @@
                 }
             }]
         });
+        vm.lastListRecord = null;
 
         vm.creerDestinataire = creerDestinataire;
         vm.rechercheDestinatairesByListe = rechercheDestinatairesByListe;
         vm.openGestionDestinataireModal = openGestionDestinataireModal;
         vm.postListeDiffusion = postListeDiffusion;
+        vm.resetListeForm = resetListeForm;
 
         vm.uploader.onCompleteAll = onCompleteAll;
         vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
@@ -67,7 +71,7 @@
 
         function activate() {
             var promises = [initListesDiffusion(),
-                rechercheDestinatairesByListe()];
+                rechercheDestinatairesByListe(null)];
             return $q.all(promises).then(function () {
                 vm.showView = true;
                 logger.info('Activated Destinataire View');
@@ -87,7 +91,7 @@
         }
 
         function rechercheDestinatairesByListe(listeDiffusion) {
-            if (listeDiffusion == null) {
+            if (listeDiffusion === null) {
                 listeDiffusion = vm.currentListeDiffusion;
             }
             return dataserviceDestinataire.getDestinataireByListeDiffusion(listeDiffusion.id)
@@ -104,7 +108,7 @@
                 vm.ajoutDestinataireenCours = true;
                 dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function (destinataire) {
                     vm.ajoutDestinataireenCours = false;
-                    if (vm.currentListeDiffusion .id== vm.listesDiffusion[0].id) {
+                    if (vm.currentListeDiffusion .id === vm.listesDiffusion[0].id) {
                         vm.destinataires.push(destinataire)
                     }
                     vm.newDestinataire = {
@@ -144,18 +148,35 @@
             });
         }
 
-        function postListeDiffusion() {
-            return dataserviceListeDiffusion.postListe(vm.newList.nom).then(function(data) {
-                logger.success('Upload ok', true);
-            }, function(data) {
-                logger.error('Upload fail', true);
-                logger.error(data);
-            });
+        function postListeDiffusion(form) {
+            if (form.$valid) {
+                return dataserviceListeDiffusion.postListe(vm.newList.nom).then(function(data) {
+                    importUser(data.liste);
+                    logger.success('Upload ok', true);
+                }, function(data) {
+                    logger.error('Upload fail', true);
+                    logger.error(data);
+                });
+            }
         }
 
-        function importUser() {
-            vm.uploader.url = '/api/questions/' + vm.question.id + '/files';
-            vm.uploader.uploadAll();
+        function resetListeForm(form) {
+            form.$submitted = false;
+            vm.newList = {
+                nom: null,
+                fileName: null
+            };
+            angular.element('#file').val(null);
+            vm.uploader.queue = [];
+        }
+
+        function importUser(lastListRecord) {
+            if (lastListRecord.id) {
+                vm.uploader.url = '/api/listes/' + lastListRecord.id + '/files';
+                vm.uploader.uploadAll();
+            } else {
+                logger.error("Impossible d'uploader", true);
+            }
         }
 
         //Uploader function
@@ -173,7 +194,7 @@
         }
 
         function onAfterAddingFile(item) {
-            vm.fileName = item.file.name;
+            vm.newList.fileName = item.file.name;
         }
     }
 })();

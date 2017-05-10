@@ -157,11 +157,10 @@ class ListeDiffusionRestController extends ParentRestController
         if (!$liste) {
             $this->view(null, Codes::HTTP_BAD_REQUEST);
         }
-
         $file = $request->files->get('file');
+        var_dump($file);
 
         if (!empty($file)) {
-            $fileObject = new File();
 
 //            try {
 //                $em->persist();
@@ -169,9 +168,11 @@ class ListeDiffusionRestController extends ParentRestController
 //            } catch (\Exception $ex) {
 //                return $this->view(null, Codes::HTTP_BAD_REQUEST);
 //            }
+            $this->view('OK', Codes::HTTP_OK);
         }
 
-        $this->view('OK', Codes::HTTP_OK);
+        $this->view('OK', Codes::HTTP_INTERNAL_SERVER_ERROR);
+
     }
 
     /**
