@@ -247,10 +247,8 @@
                 if (vm.listeTmp) {
                     vm.listesDiffusion.push(vm.listeTmp);
                 }
-                resetListeForm($scope.formListe);
-            } else if (status === 412) {
-                console.log(response);
             }
+            resetListeForm($scope.formListe);
             vm.listeTmp = null;
         }
 
@@ -264,6 +262,8 @@
             if (status === 406) {
                 logger.error("Le fichier n'a pas était enregistré car il contient des utilisateurs qui " +
                     "existent déjà dans l'application.", true);
+            } else if (status === 412) {
+                logger.error(response, true);
             } else {
                 logger.error("Le fichier n'a pas était enregistré pour cause d'erreur.", true);
             }

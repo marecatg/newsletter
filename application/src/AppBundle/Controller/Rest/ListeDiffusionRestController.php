@@ -228,12 +228,12 @@ class ListeDiffusionRestController extends ParentRestController
 
                 if (count($errors) > 0) {
                     try {
-                        $em->persist($liste);
+                        $em->remove($liste);
                         $em->flush();
                     } catch (\Exception $ex) {
                         return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
                     }
-                    return $this->view('Email mal formate à la ligne '.($key+2), Codes::HTTP_PRECONDITION_FAILED);
+                    return $this->view('Email mal formaté à la ligne '.($key+2), Codes::HTTP_PRECONDITION_FAILED);
                 }
                 $destinataire->setEmail($row[2]);
 
