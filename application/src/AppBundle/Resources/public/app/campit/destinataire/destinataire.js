@@ -181,6 +181,11 @@
 
         //Uploader function
         function onCompleteAll(fileItem, response, status, headers) {
+            angular.element('#file').val(null);
+            vm.newList = {
+                nom: null,
+                fileName: null
+            };
             logger.info('Le fichier est enregistré.', true);
         }
 

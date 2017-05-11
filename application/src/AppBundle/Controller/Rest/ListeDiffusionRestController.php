@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Rest;
 
 use AppBundle\Entity\Destinataire;
 use AppBundle\Entity\ListeDiffusion;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\RestBundle\Controller\Annotations\View;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -152,26 +153,52 @@ class ListeDiffusionRestController extends ParentRestController
     public function postListeFileAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $liste = $em->getRepository('AppBundle:ListeDiffusion')->find($id);
+        $orm = $this->getDoctrine();
+        $liste = $orm->getRepository('AppBundle:ListeDiffusion')->find($id);
 
         if (!$liste) {
-            $this->view(null, Codes::HTTP_BAD_REQUEST);
+            $this->view("Liste de diffusion non trouvée", Codes::HTTP_BAD_REQUEST);
         }
+
         $file = $request->files->get('file');
-        var_dump($file);
+        if (!empty($file) && $file !== null) {
 
-        if (!empty($file)) {
+            $rows = array();
+            if (($handle = fopen($file, 'r')) !== false) {
+                $i = 0;
+                while (($data = fgetcsv($handle, null, ';')) !== false) {
+                    $i++;
+                    if ($i == 1) {
+                        continue;
+                    }
+                    $rows[] = $data;
+                }
+                fclose($handle);
+            }
 
-//            try {
-//                $em->persist();
-//                $em->flush();
-//            } catch (\Exception $ex) {
-//                return $this->view(null, Codes::HTTP_BAD_REQUEST);
-//            }
-            $this->view('OK', Codes::HTTP_OK);
+            $destinataires = array();
+            foreach ($rows as $row) {
+                $destinataire = new Destinataire();
+                $destinataire->setNom($row[0]);
+                $destinataire->setActif(true);
+                $destinataire->setPrenom($row[1]);
+                $destinataire->setEmail($row[2]);
+
+                $destinataires[] = $destinataire;
+            }
+
+            $liste->setDestinataires($destinataires);
+
+            try {
+                $em->persist($liste);
+                $em->flush();
+            } catch (\Exception $ex) {
+                return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+            }
+            $this->view('Destinataires importés', Codes::HTTP_OK);
         }
 
-        $this->view('OK', Codes::HTTP_INTERNAL_SERVER_ERROR);
+        $this->view('Pas de fichier', Codes::HTTP_INTERNAL_SERVER_ERROR);
 
     }
 
