@@ -179,7 +179,7 @@ class DestinataireRestController extends ParentRestController
             $destinataire->setEmail($params['destinataire']['email']);
         }
 
-        
+
         $dests = $liste->getDestinataires();
         $dests[] = $destinataire;
         $liste->setDestinataires($dests);
