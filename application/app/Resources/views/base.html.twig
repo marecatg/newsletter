@@ -20,21 +20,8 @@
     {% if is_granted("ROLE_USER") %}
 
                 <ul>
-                    <li class="active-link"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li class="folder">
-                        <input type="checkbox" name="folder-toggle-1" id="folder-toggle-1"
-                               class="folder-toggle-box hidden"/>
-                        <label for="folder-toggle-1" class="folder-toggle-label"><a>Folder</a></label>
-                        <ul>
-                            <li><a href="#">Link</a></li>
-                            <li><a href="#">Linkus</a></li>
-                            <li><a href="#">Linkorama</a></li>
-                            <li><a href="#">Link</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="{{ path('fos_user_security_logout') }}">Deconnexion</a></li>
+                    <li><a href="{{ path('newsletter_angular_js_homepage')}}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+                    <li>{% block deconnect %}<a href="{{ path('fos_user_security_logout') }}"><span class="glyphicon glyphicon-off"></span> Deconnexion</a>{% endblock %}</li>
                 </ul>
         {% else %}
             <ul>

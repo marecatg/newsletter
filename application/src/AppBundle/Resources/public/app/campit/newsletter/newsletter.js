@@ -5,9 +5,9 @@
         .module('app.newsletter')
         .controller('Newsletter', Newsletter);
 
-    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter', '$uibModal'];
+    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter', '$uibModal', 'logger'];
 
-    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter, $uibModal) {
+    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter, $uibModal, logger) {
 
         var vm = this;
         vm.showView = false;
@@ -24,11 +24,12 @@
         vm.rechercheNewsletters = rechercheNewsletters;
         vm.getNewsletter = getNewsletter;
         vm.openNewsletterModal = openNewsletterModal;
+        vm.deleteNewsletter = deleteNewsletter;
 
         activate();
 
         function activate() {
-            var promises = [initCampagnes(), rechercheNewsletters()];
+            var promises = [initCampagnes(), rechercheNewsletters(vm.campagnes[0])];
             return $q.all(promises).then(function () {
                 vm.showView = true;
                 console.log('Activated Newsletter View');
@@ -48,7 +49,7 @@
         }
 
         function rechercheNewsletters(campagne) {
-            if (campagne == null) {
+            if (campagne === null) {
                 campagne = vm.currentCampagne;
             }
             return dataserviceNewsletter.getNewslettersByCampagne(campagne.id)
@@ -69,6 +70,25 @@
             })
         }
 
+        function deleteNewsletter(id) {
+            return dataserviceNewsletter.deleteNewsletter(id).then(function () {
+                vm.currentNewsletter = null;
+
+                var copy = angular.copy(vm.newsletters);
+                angular.forEach(copy, function(n, key) {
+                    if (n.id === id) {
+                        vm.newsletters.splice(key, 1);
+                        return true;
+                    }
+                });
+
+                logger.success('Newsletter supprimée', true);
+            }, function () {
+                logger.error('Erreur lors de la suppression de la newsletter', true);
+                logger.error(data);
+            })
+        }
+
         function openNewsletterModal() {
             $uibModal.open({
                 templateUrl: 'bundles/app/app/campit/newsletter/modal/modalNewsletter.html',
@@ -82,7 +102,9 @@
                     }
                 }
             }).result.then(function(newsletter) {
-
+                if (newsletter !== null) {
+                    vm.newsletters.push(newsletter);
+                }
             });
         }
     }

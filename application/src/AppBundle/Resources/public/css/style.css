@@ -176,6 +176,9 @@ section:hover, section:active, section:focus, main:hover, main:active, main:focu
     background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
     background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
 }
+.espace-top-petit {
+    padding-top: 15px;
+}
 .espace-top {
     padding-top: 30px;
 }
@@ -262,4 +265,27 @@ section > h1 {
 }
 .newsletter-active, #liste-choix-newsletter button:hover, #liste-choix-newsletter button:focus {
     background-color: #e6e6e6 !important;
+}
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+}
+.has-error .input-group-btn .btn.btn-default {
+    color: #a94442;
+    border-color: #a94442;
+}
+.has-error #cke_corps {
+    border-color: #a94442;
+}
+.margin-top-10 {
+    margin-top: 10px;
+}
+.display-inline {
+    display: inline-block;
 }

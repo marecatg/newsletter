@@ -9,7 +9,8 @@
     function dataserviceListeDiffusion($q, $http) {
         return {
             getAll: getAll,
-            putListe: putListe
+            putListe: putListe,
+            postListe: postListe
         };
 
         function getAll() {
@@ -21,6 +22,13 @@
 
         function putListe(liste) {
             return $http.put('/api/liste/diffusion', {liste: liste})
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
+
+        function postListe(nom) {
+            return $http.post('/api/listes/' + nom + '/diffusions')
                 .then(function (data) {
                     return $q.when(data.data);
                 });

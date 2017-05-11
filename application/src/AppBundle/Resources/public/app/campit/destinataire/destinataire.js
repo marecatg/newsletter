@@ -5,9 +5,11 @@
         .module('app.destinataire')
         .controller('Destinataire', Destinataire);
 
-    Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger', 'dataserviceListeDiffusion', '$uibModal'];
+    Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger', 'dataserviceListeDiffusion', '$uibModal',
+        'FileUploader', '$scope'];
 
-    function Destinataire($q, dataserviceDestinataire, logger, dataserviceListeDiffusion, $uibModal) {
+    function Destinataire($q, dataserviceDestinataire, logger, dataserviceListeDiffusion, $uibModal,
+                          FileUploader, $scope) {
 
         var vm = this;
         vm.showView = false;
@@ -25,16 +27,51 @@
             }
         ];
         vm.currentListeDiffusion = vm.listesDiffusion[0];
+        vm.newList = {
+            nom: null,
+            fileName: null
+        };
+
+        //upload limit in octet
+        vm.limit = 2097152;
+        vm.limitMo = vm.limit / Math.pow(1024, 2);
+        vm.saveInProgress = false;
+
+        //uploader
+        vm.uploader = new FileUploader({
+            removeAfterUpload: true,
+            queueLimit: 1,
+            filters: [{
+                name: 'size',
+                fn: function (item) {
+                    if (item.size > vm.limit) {
+                        vm.errorFileLimit = true;
+                        return false;
+                    } else {
+                        vm.errorFileLimit = false;
+                        return true;
+                    }
+                }
+            }]
+        });
+        vm.lastListRecord = null;
 
         vm.creerDestinataire = creerDestinataire;
         vm.rechercheDestinatairesByListe = rechercheDestinatairesByListe;
         vm.openGestionDestinataireModal = openGestionDestinataireModal;
+        vm.postListeDiffusion = postListeDiffusion;
+        vm.resetListeForm = resetListeForm;
+
+        vm.uploader.onCompleteAll = onCompleteAll;
+        vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
+        vm.uploader.onErrorItem = onErrorItem;
+        vm.uploader.onAfterAddingFile = onAfterAddingFile;
 
         activate();
 
         function activate() {
             var promises = [initListesDiffusion(),
-                rechercheDestinatairesByListe()];
+                rechercheDestinatairesByListe(null)];
             return $q.all(promises).then(function () {
                 vm.showView = true;
                 logger.info('Activated Destinataire View');
@@ -54,7 +91,7 @@
         }
 
         function rechercheDestinatairesByListe(listeDiffusion) {
-            if (listeDiffusion == null) {
+            if (listeDiffusion === null) {
                 listeDiffusion = vm.currentListeDiffusion;
             }
             return dataserviceDestinataire.getDestinataireByListeDiffusion(listeDiffusion.id)
@@ -71,7 +108,7 @@
                 vm.ajoutDestinataireenCours = true;
                 dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function (destinataire) {
                     vm.ajoutDestinataireenCours = false;
-                    if (vm.currentListeDiffusion .id== vm.listesDiffusion[0].id) {
+                    if (vm.currentListeDiffusion.id === vm.listesDiffusion[0].id) {
                         vm.destinataires.push(destinataire)
                     }
                     vm.newDestinataire = {
@@ -96,19 +133,77 @@
                 size: 'md',
                 windowClass: 'clearfix',
                 resolve: {
-                    currentDestinataires : function() {
+                    currentDestinataires: function () {
                         return vm.destinataires
                     }
                 }
-            }).result.then(function(users) {
+            }).result.then(function (users) {
                 vm.currentListeDiffusion.users = users;
-                dataserviceListeDiffusion.putListe(vm.currentListeDiffusion).then(function(data) {
+                dataserviceListeDiffusion.putListe(vm.currentListeDiffusion).then(function (data) {
                     vm.destinataires = data.liste.destinataires;
-                }, function(data) {
+                }, function (data) {
                     logger.error('Erreur lors de l\'ajout des destinataire', true);
                     logger.error(data);
                 });
             });
+        }
+
+        function postListeDiffusion(form) {
+            if (form.$valid) {
+                return dataserviceListeDiffusion.postListe(vm.newList.nom).then(function (data) {
+                    importUser(data.liste);
+                }, function (data) {
+                    logger.error('Echec de la création', true);
+                    logger.error(data);
+                });
+            }
+        }
+
+        function resetListeForm(form) {
+            form.$submitted = false;
+            vm.newList = {
+                nom: null,
+                fileName: null
+            };
+            angular.element('#file').val(null);
+            vm.uploader.queue = [];
+        }
+
+        function importUser(lastListRecord) {
+            if (lastListRecord.id) {
+                vm.uploader.url = '/api/listes/' + lastListRecord.id + '/files';
+                vm.uploader.uploadAll();
+                vm.listesDiffusion.push({
+                    id: lastListRecord.id,
+                    nom: lastListRecord.nom
+                });
+            } else {
+                logger.error("Impossible d'uploader", true);
+            }
+        }
+
+        //Uploader function
+        function onCompleteAll(fileItem, response, status, headers) {
+            resetListeForm($scope.formListe);
+            logger.success('Le fichier est enregistré.', true);
+        }
+
+        //set the id project in url before upload
+        function onBeforeUploadItem(item) {
+            item.url = vm.uploader.url;
+        }
+
+        function onErrorItem(item, response, status) {
+            if (status === 406) {
+                logger.error("Le fichier n'a pas était enregistré car il contient des utilisateurs qui " +
+                    "existent déjà dans l'application.", true);
+            } else {
+                logger.error("Le fichier n'a pas était enregistré pour cause d'erreur.", true);
+            }
+        }
+
+        function onAfterAddingFile(item) {
+            vm.newList.fileName = item.file.name;
         }
     }
 })();
