@@ -29,7 +29,7 @@ class ListeDiffusionRestController extends ParentRestController
      * )
      * @View(serializerGroups={"liste_info"})
      *
-     * @return \FOS\RestBundle\View\View
+     * @return array
      */
     public function getAllListesDiffusionAction()
     {

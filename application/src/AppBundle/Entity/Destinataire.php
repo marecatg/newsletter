@@ -33,14 +33,14 @@ class Destinataire
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({})
+     * @Groups({"destinataire"})
      */
     private $nom;
 
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({})
+     * @Groups({"destinataire"})
      */
     private $prenom;
 
@@ -61,7 +61,7 @@ class Destinataire
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="ListeDiffusion", mappedBy="destinataires")
+     * @ORM\ManyToMany(targetEntity="ListeDiffusion", mappedBy="destinataires", cascade={"persist"})
      * @ORM\JoinTable(name="destinataire_liste_diffusion")
      * @Groups({})
      */

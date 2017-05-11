@@ -55,6 +55,7 @@
             }]
         });
         vm.lastListRecord = null;
+        vm.createOrUpdateDest = 0;
 
         vm.creerDestinataire = creerDestinataire;
         vm.rechercheDestinatairesByListe = rechercheDestinatairesByListe;
@@ -62,6 +63,8 @@
         vm.postListeDiffusion = postListeDiffusion;
         vm.resetListeForm = resetListeForm;
         vm.deleteListe = deleteListe;
+        vm.changeCreateOrUpdateDest = changeCreateOrUpdateDest;
+        vm.modifierDestinataire = modifierDestinataire;
 
         vm.uploader.onCompleteItem = onCompleteItem;
         vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
@@ -104,14 +107,26 @@
                 });
         }
 
+        function changeCreateOrUpdateDest(destinataire) {
+            if (vm.createOrUpdateDest == 0) { //ne pas changer le "==" !!!
+                vm.newDestinataire = {
+                    nom: null,
+                    prenom: null,
+                    email: null
+                };
+            } else {
+                vm.newDestinataire = destinataire;
+
+            }
+        }
+
         function creerDestinataire(form) {
             if (form.$valid) {
                 vm.ajoutDestinataireenCours = true;
-                dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function (destinataire) {
+                dataserviceDestinataire.postDestinataire(vm.newDestinataire, vm.currentListeDiffusion.id)
+                    .then(function (destinataire) {
                     vm.ajoutDestinataireenCours = false;
-                    if (vm.currentListeDiffusion.id === vm.listesDiffusion[0].id) {
-                        vm.destinataires.push(destinataire)
-                    }
+                    vm.destinataires.push(destinataire);
                     vm.newDestinataire = {
                         nom: null,
                         prenom: null,
@@ -120,6 +135,30 @@
                     logger.success('Destinataire ajouté', true)
                 }, function (data) {
                     logger.error('Erreur lors de l\'ajout du destinataire', true);
+                    logger.error(data);
+                    vm.ajoutDestinataireenCours = false;
+                });
+            }
+        }
+
+        function modifierDestinataire(form) {
+            if (form.$valid) {
+                vm.ajoutDestinataireenCours = true;
+                dataserviceDestinataire.putDestinataire(vm.newDestinataire).then(function (destinataire) {
+                    vm.ajoutDestinataireenCours = false;
+                    angular.forEach(vm.destinataires, function(d) {
+                       if (d.id === destinataire.id) {
+                           d.nom = destinataire.nom;
+                           d.prenom = destinataire.prenom;
+                           d.email = destinataire.email;
+                           d.id = destinataire.id;
+                       }
+                    });
+                    vm.createOrUpdateDest = 0;
+                    vm.changeCreateOrUpdateDest();
+                    logger.success('Destinataire modifié', true)
+                }, function (data) {
+                    logger.error('Erreur lors de la modification du destinataire', true);
                     logger.error(data);
                     vm.ajoutDestinataireenCours = false;
                 });
