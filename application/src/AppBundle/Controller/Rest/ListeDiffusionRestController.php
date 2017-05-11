@@ -29,7 +29,7 @@ class ListeDiffusionRestController extends ParentRestController
      * )
      * @View(serializerGroups={"liste_info"})
      *
-     * @return Response
+     * @return \FOS\RestBundle\View\View
      */
     public function getAllListesDiffusionAction()
     {
@@ -58,7 +58,7 @@ class ListeDiffusionRestController extends ParentRestController
      * @View(serializerGroups={"liste_info"})
      *
      * @param $request
-     * @return Response
+     * @return \FOS\RestBundle\View\View
      */
     public function putListeDiffusionAction(Request $request)
     {
@@ -111,7 +111,7 @@ class ListeDiffusionRestController extends ParentRestController
      * save entity if is valid
      * @param ListeDiffusion $liste
      *
-     * @return Response
+     * @return \FOS\RestBundle\View\View
      */
     private function processForm($liste)
     {
@@ -148,7 +148,7 @@ class ListeDiffusionRestController extends ParentRestController
      *    }
      * )
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \FOS\RestBundle\View\View
      */
     public function postListeFileAction(Request $request, $id)
     {
@@ -188,18 +188,28 @@ class ListeDiffusionRestController extends ParentRestController
             }
 
             $liste->setDestinataires($destinataires);
-
-            try {
-                $em->persist($liste);
-                $em->flush();
-            } catch (\Exception $ex) {
-                return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+            $ok = $orm->getRepository('AppBundle:Destinataire')->destinatairesNExistePas($destinataires);
+            if ($ok) {
+                try {
+                    $em->persist($liste);
+                    $em->flush();
+                } catch (\Exception $ex) {
+                    return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+                }
+                return $this->view('Destinataires importes', Codes::HTTP_OK);
+            } else {
+                try {
+                    $em->remove($liste);
+                    $em->flush();
+                } catch (\Exception $ex) {
+                    return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+                }
+                return $this->view('Destinataires deja existant', Codes::HTTP_NOT_ACCEPTABLE);
             }
-            $this->view('Destinataires importés', Codes::HTTP_OK);
+
         }
 
-        $this->view('Pas de fichier', Codes::HTTP_INTERNAL_SERVER_ERROR);
-
+        return $this->view('Pas de fichier', Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -215,7 +225,7 @@ class ListeDiffusionRestController extends ParentRestController
      *    }
      * )
      *
-     * @return Response
+     * @return \FOS\RestBundle\View\View
      */
     public function postListeDiffusionAction($name)
     {

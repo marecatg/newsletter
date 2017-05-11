@@ -6,10 +6,10 @@
         .controller('Destinataire', Destinataire);
 
     Destinataire.$inject = ['$q', 'dataserviceDestinataire', 'logger', 'dataserviceListeDiffusion', '$uibModal',
-        'FileUploader'];
+        'FileUploader', '$scope'];
 
     function Destinataire($q, dataserviceDestinataire, logger, dataserviceListeDiffusion, $uibModal,
-                          FileUploader) {
+                          FileUploader, $scope) {
 
         var vm = this;
         vm.showView = false;
@@ -40,7 +40,7 @@
         //uploader
         vm.uploader = new FileUploader({
             removeAfterUpload: true,
-            queueLimit : 1,
+            queueLimit: 1,
             filters: [{
                 name: 'size',
                 fn: function (item) {
@@ -108,7 +108,7 @@
                 vm.ajoutDestinataireenCours = true;
                 dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function (destinataire) {
                     vm.ajoutDestinataireenCours = false;
-                    if (vm.currentListeDiffusion .id === vm.listesDiffusion[0].id) {
+                    if (vm.currentListeDiffusion.id === vm.listesDiffusion[0].id) {
                         vm.destinataires.push(destinataire)
                     }
                     vm.newDestinataire = {
@@ -133,15 +133,15 @@
                 size: 'md',
                 windowClass: 'clearfix',
                 resolve: {
-                    currentDestinataires : function() {
+                    currentDestinataires: function () {
                         return vm.destinataires
                     }
                 }
-            }).result.then(function(users) {
+            }).result.then(function (users) {
                 vm.currentListeDiffusion.users = users;
-                dataserviceListeDiffusion.putListe(vm.currentListeDiffusion).then(function(data) {
+                dataserviceListeDiffusion.putListe(vm.currentListeDiffusion).then(function (data) {
                     vm.destinataires = data.liste.destinataires;
-                }, function(data) {
+                }, function (data) {
                     logger.error('Erreur lors de l\'ajout des destinataire', true);
                     logger.error(data);
                 });
@@ -150,11 +150,10 @@
 
         function postListeDiffusion(form) {
             if (form.$valid) {
-                return dataserviceListeDiffusion.postListe(vm.newList.nom).then(function(data) {
+                return dataserviceListeDiffusion.postListe(vm.newList.nom).then(function (data) {
                     importUser(data.liste);
-                    logger.success('Upload ok', true);
-                }, function(data) {
-                    logger.error('Upload fail', true);
+                }, function (data) {
+                    logger.error('Echec de la création', true);
                     logger.error(data);
                 });
             }
@@ -174,6 +173,10 @@
             if (lastListRecord.id) {
                 vm.uploader.url = '/api/listes/' + lastListRecord.id + '/files';
                 vm.uploader.uploadAll();
+                vm.listesDiffusion.push({
+                    id: lastListRecord.id,
+                    nom: lastListRecord.nom
+                });
             } else {
                 logger.error("Impossible d'uploader", true);
             }
@@ -181,12 +184,8 @@
 
         //Uploader function
         function onCompleteAll(fileItem, response, status, headers) {
-            angular.element('#file').val(null);
-            vm.newList = {
-                nom: null,
-                fileName: null
-            };
-            logger.info('Le fichier est enregistré.', true);
+            resetListeForm($scope.formListe);
+            logger.success('Le fichier est enregistré.', true);
         }
 
         //set the id project in url before upload
@@ -195,7 +194,12 @@
         }
 
         function onErrorItem(item, response, status) {
-            logger.error("Le fichier n'a pas était enregistré pour cause d'erreur.", true);
+            if (status === 406) {
+                logger.error("Le fichier n'a pas était enregistré car il contient des utilisateurs qui " +
+                    "existent déjà dans l'application.", true);
+            } else {
+                logger.error("Le fichier n'a pas était enregistré pour cause d'erreur.", true);
+            }
         }
 
         function onAfterAddingFile(item) {
