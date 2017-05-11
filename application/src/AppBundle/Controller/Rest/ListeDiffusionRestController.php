@@ -45,6 +45,40 @@ class ListeDiffusionRestController extends ParentRestController
     }
 
     /**
+     * Supprime une liste
+     *
+     * @ApiDoc(
+     * section = "Liste Diffusion",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when list is not found"
+     *  }
+     * )
+     * @View
+     *
+     * @return \FOS\RestBundle\View\View
+     */
+    public function deleteListeDiffusionAction($id)
+    {
+
+        $orm = $this->getDoctrine();
+        $liste = $orm->getRepository('AppBundle:ListeDiffusion')->find($id);
+
+        if ($liste == null) {
+            return $this->view('Liste non trouvée', Codes::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $orm->getManager()->remove($liste);
+            $orm->getManager()->flush();
+        } catch(\Exception $ex) {
+            return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+        }
+
+        return $this->view('Liste supprimée', Codes::HTTP_OK);
+    }
+
+    /**
      * Modifie une liste de diffusion
      *
      * @ApiDoc(

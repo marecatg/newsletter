@@ -10,7 +10,8 @@
         return {
             getAll: getAll,
             putListe: putListe,
-            postListe: postListe
+            postListe: postListe,
+            deleteListe: deleteListe
         };
 
         function getAll() {
@@ -29,6 +30,13 @@
 
         function postListe(nom) {
             return $http.post('/api/listes/' + nom + '/diffusions')
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
+
+        function deleteListe(id) {
+            return $http.delete('/api/listes/' + id + '/diffusion')
                 .then(function (data) {
                     return $q.when(data.data);
                 });

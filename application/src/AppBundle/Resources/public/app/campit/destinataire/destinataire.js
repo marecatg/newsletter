@@ -61,6 +61,7 @@
         vm.openGestionDestinataireModal = openGestionDestinataireModal;
         vm.postListeDiffusion = postListeDiffusion;
         vm.resetListeForm = resetListeForm;
+        vm.deleteListe = deleteListe;
 
         vm.uploader.onCompleteItem = onCompleteItem;
         vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
@@ -145,6 +146,24 @@
                     logger.error('Erreur lors de l\'ajout des destinataire', true);
                     logger.error(data);
                 });
+            });
+        }
+
+        function deleteListe(id) {
+            return dataserviceListeDiffusion.deleteListe(id).then(function (data) {
+                vm.listesDiffusion = [
+                    {
+                        id: -1,
+                        nom: 'Sans liste de diffusion'
+                    }
+                ];
+                vm.currentListeDiffusion = vm.listesDiffusion[0];
+                initListesDiffusion();
+                rechercheDestinatairesByListe(null);
+                logger.success('Liste supprimée', true);
+            }, function (data) {
+                logger.error('Erreur lors de la suppression', true);
+                logger.error(data);
             });
         }
 
