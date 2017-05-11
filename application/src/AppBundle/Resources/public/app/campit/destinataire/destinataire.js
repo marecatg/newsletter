@@ -62,7 +62,7 @@
         vm.postListeDiffusion = postListeDiffusion;
         vm.resetListeForm = resetListeForm;
 
-        vm.uploader.onCompleteAll = onCompleteAll;
+        vm.uploader.onCompleteItem = onCompleteItem;
         vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
         vm.uploader.onErrorItem = onErrorItem;
         vm.uploader.onAfterAddingFile = onAfterAddingFile;
@@ -173,19 +173,25 @@
             if (lastListRecord.id) {
                 vm.uploader.url = '/api/listes/' + lastListRecord.id + '/files';
                 vm.uploader.uploadAll();
-                vm.listesDiffusion.push({
+                vm.listeTmp = {
                     id: lastListRecord.id,
                     nom: lastListRecord.nom
-                });
+                };
             } else {
                 logger.error("Impossible d'uploader", true);
             }
         }
 
         //Uploader function
-        function onCompleteAll(fileItem, response, status, headers) {
-            resetListeForm($scope.formListe);
-            logger.success('Le fichier est enregistré.', true);
+        function onCompleteItem(fileItem, response, status, headers) {
+            if (status === 200) {
+                logger.success('Le fichier est enregistré.', true);
+                if (vm.listeTmp) {
+                    vm.listesDiffusion.push(vm.listeTmp);
+                }
+                resetListeForm($scope.formListe);
+            }
+            vm.listeTmp = null;
         }
 
         //set the id project in url before upload
@@ -194,6 +200,7 @@
         }
 
         function onErrorItem(item, response, status) {
+            vm.listeTmp = null;
             if (status === 406) {
                 logger.error("Le fichier n'a pas était enregistré car il contient des utilisateurs qui " +
                     "existent déjà dans l'application.", true);

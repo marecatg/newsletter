@@ -209,6 +209,13 @@ class ListeDiffusionRestController extends ParentRestController
 
         }
 
+        try {
+            $em->remove($liste);
+            $em->flush();
+        } catch (\Exception $ex) {
+            return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+        }
+
         return $this->view('Pas de fichier', Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
 
