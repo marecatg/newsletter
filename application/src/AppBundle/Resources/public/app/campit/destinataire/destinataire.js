@@ -248,6 +248,8 @@
                     vm.listesDiffusion.push(vm.listeTmp);
                 }
                 resetListeForm($scope.formListe);
+            } else if (status === 412) {
+                console.log(response);
             }
             vm.listeTmp = null;
         }

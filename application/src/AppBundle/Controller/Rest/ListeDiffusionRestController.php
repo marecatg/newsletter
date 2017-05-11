@@ -6,6 +6,7 @@ use AppBundle\Entity\Destinataire;
 use AppBundle\Entity\ListeDiffusion;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -211,11 +212,29 @@ class ListeDiffusionRestController extends ParentRestController
             }
 
             $destinataires = array();
-            foreach ($rows as $row) {
+            foreach ($rows as $key => $row) {
                 $destinataire = new Destinataire();
                 $destinataire->setNom($row[0]);
                 $destinataire->setActif(true);
                 $destinataire->setPrenom($row[1]);
+                $email = $row[2];
+                $emailConstraint = new EmailConstraint();
+                $emailConstraint->message = 'Your customized error message';
+
+                $errors = $this->get('validator')->validateValue(
+                    $email,
+                    $emailConstraint
+                );
+
+                if (count($errors) > 0) {
+                    try {
+                        $em->persist($liste);
+                        $em->flush();
+                    } catch (\Exception $ex) {
+                        return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+                    }
+                    return $this->view('Email mal formate à la ligne '.($key+2), Codes::HTTP_PRECONDITION_FAILED);
+                }
                 $destinataire->setEmail($row[2]);
 
                 $destinataires[] = $destinataire;

@@ -241,7 +241,7 @@ class DestinataireRestController extends ParentRestController
      * save entity if is valid
      * @param Destinataire $destinataire
      *
-     * @return Response
+     * @return object
      */
     private function processForm($destinataire)
     {
