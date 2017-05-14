@@ -49,12 +49,5 @@
                     return $q.when(data.data);
                 });
         }
-
-        // function putAction(action) {
-        //     return $http.put('/api/action/meeting', {action: action})
-        //         .then(function (data) {
-        //             return $q.when(data.data);
-        //         });
-        // }
     }
 })();

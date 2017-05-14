@@ -65,6 +65,7 @@
         vm.deleteListe = deleteListe;
         vm.changeCreateOrUpdateDest = changeCreateOrUpdateDest;
         vm.modifierDestinataire = modifierDestinataire;
+        vm.deleteDestinataire = deleteDestinataire;
 
         vm.uploader.onCompleteItem = onCompleteItem;
         vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
@@ -186,6 +187,30 @@
                     logger.error(data);
                 });
             });
+        }
+
+        function deleteDestinataire(id) {
+            if (vm.createOrUpdateDest != 0) { //laisser '=='
+                vm.ajoutDestinataireenCours = true;
+                return dataserviceDestinataire.deleteDestinataire(id).then(function() {
+
+                    vm.listeDestCopy = angular.copy(vm.destinataires);
+                    angular.forEach(vm.listeDestCopy, function (dest, key) {
+                       if (id === dest.id) {
+                           vm.destinataires.splice(key, 1);
+                           return true;
+                       }
+                    });
+
+                    vm.createOrUpdateDest = 0;
+                    changeCreateOrUpdateDest();
+                    logger.success('Destinataire supprimé', true);
+                    vm.ajoutDestinataireenCours = false;
+                }, function (data) {
+                    vm.ajoutDestinataireenCours = false;
+                    logger.error('Erreur lors de la suppression du destinataire', true);
+                });
+            }
         }
 
         function deleteListe(id) {

@@ -191,11 +191,18 @@
                         </div>
                     </div>
                     <div class="col-md-12 text-center">
-                        <button data-ng-click="vm.modifierDestinataire(form)" type="submit"
-                                class="btn btn-success pull-right"
-                                data-ng-disabled="vm.ajoutDestinataireenCours">
-                            Modifier
-                        </button>
+                        <div class="pull-right">
+                            <button data-ng-click="vm.deleteDestinataire(vm.newDestinataire.id)" type="submit"
+                                    class="btn btn-danger display-inline"
+                                    data-ng-disabled="vm.ajoutDestinataireenCours">
+                                Supprimer
+                            </button>
+                            <button data-ng-click="vm.modifierDestinataire(form)" type="submit"
+                                    class="btn btn-success display-inline"
+                                    data-ng-disabled="vm.ajoutDestinataireenCours">
+                                Modifier
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
