@@ -8,22 +8,51 @@
                 Gestion des listes de diffusion
             </div>
             <div class="panel-body">
-                <div class="col-md-5 form-group">
+                <div class="col-md-12 form-inline select-liste-diffusion">
                     <select class="form-control" title="Groupe Commercial"
                             data-ng-model="vm.currentListeDiffusion"
                             data-ng-change="vm.rechercheDestinatairesByListe(vm.currentListeDiffusion)"
                             data-ng-options="liste as liste.nom for liste in vm.listesDiffusion | orderBy:'name' track by liste.id">
                     </select>
+                    <button class="btn btn-danger" data-ng-click="vm.deleteListe(vm.currentListeDiffusion.id)"
+                            data-ng-disabled="vm.currentListeDiffusion.id === -1" type="button">
+                        Delete
+                    </button>
                 </div>
-                <div class="col-md-7">
-                    <div class="col-xs-10">
-                        <div class="col-xs-12 liste-destinataires">
-                            <div data-ng-repeat="destinataire in vm.destinataires | orderBy: 'email'">
-                                {{ ::destinataire.email }}
-                            </div>
-                        </div>
+                <div class="col-md-12">
+                    <div class="col-xs-11 nopadding">
+                        <form name="formeSelectDest">
+                            <table class="col-xs-12 table liste-destinataires">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Prenom</th>
+                                    <th>Email</th>
+                                    <th class="form-inline">
+                                        <input ng-model="vm.createOrUpdateDest" value="0" class="form-control"
+                                               data-ng-change="vm.changeCreateOrUpdateDest()"
+                                               id="createDest" type="radio" name="editDest">
+                                        <label class="radio control-label" for="createDest">Nouveau</label>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="destinataire in vm.destinataires | orderBy: 'nom'">
+                                    <td class="text-capitalize">{{ destinataire.nom }}</td>
+                                    <td class="text-capitalize">{{ destinataire.prenom }}</td>
+                                    <td>{{ destinataire.email }}</td>
+                                    <td class="form-inline">
+                                        <input class="form-control" data-ng-model="vm.createOrUpdateDest"
+                                               data-ng-change="vm.changeCreateOrUpdateDest(destinataire)"
+                                               value="{{$index + 1}}" id="editDest{{$index}}" type="radio" name="editDest">
+                                        <label class="radio control-label" for="editDest{{$index}}">Editer</label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
-                    <div class="col-xs-2 nopadding">
+                    <div class="col-xs-1">
                         <button class="btn btn-success text-center" ng-click="vm.openGestionDestinataireModal()"
                                 data-ng-disabled="vm.currentListeDiffusion.id === -1">
                             <span>
@@ -39,7 +68,6 @@
 
 
     <div class="espace-top col-md-5 col-lg-4">
-
         <!--Formulaire d'ajout de liste de diffusion-->
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -82,7 +110,7 @@
 
 
         <!--Formulaire d'ajout de destinataire-->
-        <div class="panel panel-primary">
+        <div data-ng-if="vm.createOrUpdateDest == 0" class="panel panel-primary">
             <div class="panel-heading">
                 Creer un nouveau destinataire
             </div>
@@ -123,6 +151,58 @@
                                 data-ng-disabled="vm.ajoutDestinataireenCours">
                             Créer
                         </button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        <div data-ng-if="vm.createOrUpdateDest > 0" class="panel panel-primary">
+            <div class="panel-heading">
+                Modifier un destinataire
+            </div>
+            <div class="panel-body">
+                <form name="form" novalidate>
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': form.$submitted && form.prenom.$error.required }">
+                            <input data-ng-model="vm.newDestinataire.prenom" required="" name="prenom"
+                                   type="text" class="form-control" placeholder="Prenom">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="form.$submitted && form.prenom.$error.required"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': form.$submitted && form.nom.$error.required }">
+                            <input data-ng-model="vm.newDestinataire.nom" required="" name="nom"
+                                   type="text" class="form-control" id="destinataire-nom" placeholder="Nom">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="form.$submitted && form.nom.$error.required"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': form.$submitted && (form.email.$error.required  || form.email.$error.email) }">
+                            <input name="email" data-ng-model="vm.newDestinataire.email" required="" type="email"
+                                   class="form-control" id="destinataire-email" placeholder="Email">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="form.$submitted && (form.email.$error.required || form.email.$error.email)"></span>
+                            <span class="help-block"
+                                  data-ng-show="form.$submitted && form.email.$error.email">Email non valide</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <div class="pull-right">
+                            <button data-ng-click="vm.deleteDestinataire(vm.newDestinataire.id)" type="submit"
+                                    class="btn btn-danger display-inline"
+                                    data-ng-disabled="vm.ajoutDestinataireenCours">
+                                Supprimer
+                            </button>
+                            <button data-ng-click="vm.modifierDestinataire(form)" type="submit"
+                                    class="btn btn-success display-inline"
+                                    data-ng-disabled="vm.ajoutDestinataireenCours">
+                                Modifier
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

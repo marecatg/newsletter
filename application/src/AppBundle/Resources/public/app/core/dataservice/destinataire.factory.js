@@ -11,7 +11,8 @@
             postDestinataire: postDestinataire,
             getAllDestinataire: getAllDestinataire,
             getDestinataireByListeDiffusion: getDestinataireByListeDiffusion,
-            deleteDestinataire: deleteDestinataire
+            deleteDestinataire: deleteDestinataire,
+            putDestinataire: putDestinataire
         };
 
         function getDestinataireByListeDiffusion(idListeDiffusion) {
@@ -28,8 +29,15 @@
                 });
         }
 
-        function postDestinataire(destinataire) {
-            return $http.post('/api/destinataires', {destinataire: destinataire})
+        function postDestinataire(destinataire, listeId) {
+            return $http.post('/api/destinataires', {destinataire: destinataire, listeId: listeId})
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
+
+        function putDestinataire(destinataire) {
+            return $http.put('/api/destinataire', {destinataire: destinataire})
                 .then(function (data) {
                     return $q.when(data.data);
                 });
@@ -41,12 +49,5 @@
                     return $q.when(data.data);
                 });
         }
-
-        // function putAction(action) {
-        //     return $http.put('/api/action/meeting', {action: action})
-        //         .then(function (data) {
-        //             return $q.when(data.data);
-        //         });
-        // }
     }
 })();

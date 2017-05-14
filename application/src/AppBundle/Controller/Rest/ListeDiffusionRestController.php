@@ -6,6 +6,7 @@ use AppBundle\Entity\Destinataire;
 use AppBundle\Entity\ListeDiffusion;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -29,7 +30,7 @@ class ListeDiffusionRestController extends ParentRestController
      * )
      * @View(serializerGroups={"liste_info"})
      *
-     * @return \FOS\RestBundle\View\View
+     * @return array
      */
     public function getAllListesDiffusionAction()
     {
@@ -42,6 +43,40 @@ class ListeDiffusionRestController extends ParentRestController
 //        }
 
         return $listes;
+    }
+
+    /**
+     * Supprime une liste
+     *
+     * @ApiDoc(
+     * section = "Liste Diffusion",
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      404="Returned when list is not found"
+     *  }
+     * )
+     * @View
+     *
+     * @return \FOS\RestBundle\View\View
+     */
+    public function deleteListeDiffusionAction($id)
+    {
+
+        $orm = $this->getDoctrine();
+        $liste = $orm->getRepository('AppBundle:ListeDiffusion')->find($id);
+
+        if ($liste == null) {
+            return $this->view('Liste non trouvée', Codes::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $orm->getManager()->remove($liste);
+            $orm->getManager()->flush();
+        } catch(\Exception $ex) {
+            return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+        }
+
+        return $this->view('Liste supprimée', Codes::HTTP_OK);
     }
 
     /**
@@ -177,11 +212,29 @@ class ListeDiffusionRestController extends ParentRestController
             }
 
             $destinataires = array();
-            foreach ($rows as $row) {
+            foreach ($rows as $key => $row) {
                 $destinataire = new Destinataire();
                 $destinataire->setNom($row[0]);
                 $destinataire->setActif(true);
                 $destinataire->setPrenom($row[1]);
+                $email = $row[2];
+                $emailConstraint = new EmailConstraint();
+                $emailConstraint->message = 'Your customized error message';
+
+                $errors = $this->get('validator')->validateValue(
+                    $email,
+                    $emailConstraint
+                );
+
+                if (count($errors) > 0) {
+                    try {
+                        $em->remove($liste);
+                        $em->flush();
+                    } catch (\Exception $ex) {
+                        return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
+                    }
+                    return $this->view('Email mal formaté à la ligne '.($key+2), Codes::HTTP_PRECONDITION_FAILED);
+                }
                 $destinataire->setEmail($row[2]);
 
                 $destinataires[] = $destinataire;
@@ -207,6 +260,13 @@ class ListeDiffusionRestController extends ParentRestController
                 return $this->view('Destinataires deja existant', Codes::HTTP_NOT_ACCEPTABLE);
             }
 
+        }
+
+        try {
+            $em->remove($liste);
+            $em->flush();
+        } catch (\Exception $ex) {
+            return $this->view($ex->getMessage(), Codes::HTTP_BAD_REQUEST);
         }
 
         return $this->view('Pas de fichier', Codes::HTTP_INTERNAL_SERVER_ERROR);

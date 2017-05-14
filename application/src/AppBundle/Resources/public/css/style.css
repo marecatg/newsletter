@@ -289,3 +289,6 @@ section > h1 {
 .display-inline {
     display: inline-block;
 }
+.select-liste-diffusion select, .select-liste-diffusion button {
+    margin-bottom: 15px;
+ }

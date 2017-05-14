@@ -59,7 +59,7 @@ class DestinataireRestController extends ParentRestController
      * )
      * @View(serializerGroups={"destinataire"})
      * @param $idListeDiffusion integer
-     * @return Response
+     * @return object
      */
     public function getDestinataireByListeDiffusionAction($idListeDiffusion)
     {
@@ -146,7 +146,7 @@ class DestinataireRestController extends ParentRestController
      * )
      * @View(serializerGroups={"destinataire"})
      * @param $request Request
-     * @return Response
+     * @return object
      */
     public function postDestinataireAction(Request $request)
     {
@@ -157,6 +157,71 @@ class DestinataireRestController extends ParentRestController
         if (!isset($params['destinataire'])) {
             return $this->view('Param destinataire non trouvé', Codes::HTTP_BAD_REQUEST);
         }
+        if (!isset($params['listeId'])) {
+            return $this->view('Param listeId non trouve', Codes::HTTP_BAD_REQUEST);
+        }
+
+        $liste = $this->getDoctrine()->getRepository('AppBundle:ListeDiffusion')->find($params['listeId']);
+        if ($liste === null) {
+            return $this->view('Liste de diffusion non trouve', Codes::HTTP_BAD_REQUEST);
+        }
+
+
+        if (isset($params['destinataire']['nom']) && $params['destinataire']['nom'] != null) {
+            $destinataire->setNom($params['destinataire']['nom']);
+        }
+
+        if (isset($params['destinataire']['prenom']) && $params['destinataire']['prenom'] != null) {
+            $destinataire->setPrenom($params['destinataire']['prenom']);
+        }
+
+        if (isset($params['destinataire']['email']) && $params['destinataire']['email'] != null) {
+            $destinataire->setEmail($params['destinataire']['email']);
+        }
+
+
+        $dests = $liste->getDestinataires();
+        $dests[] = $destinataire;
+        $liste->setDestinataires($dests);
+        $listes = array();
+        $listes[] = $liste;
+        $destinataire->setListesDiffusion($listes);
+
+        return $this->processForm($destinataire);
+    }
+
+    /**
+     * Modifier un destinataire
+     *
+     * @ApiDoc(
+     * section = "Destinataire",
+     *  output={"class"="AppBundle\Entity\Destinataire"},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      400="Est retourné lorsque le destinataire est invalide"
+     *  }
+     * )
+     * @View(serializerGroups={"destinataire"})
+     * @param $request Request
+     * @return object
+     */
+    public function putDestinataireAction(Request $request)
+    {
+
+        $params = json_decode($request->getContent(), true);
+
+        if (!isset($params['destinataire']) || !isset($params['destinataire']['id']) ||
+            $params['destinataire']['id'] === null) {
+            return $this->view('Param destinataire non trouvé', Codes::HTTP_BAD_REQUEST);
+        }
+
+        $orm = $this->getDoctrine();
+        $destinataire = $orm->getRepository('AppBundle:Destinataire')->find($params['destinataire']['id']);
+
+        if (!$destinataire) {
+            return $this->view('Destinataire non trouvé', Codes::HTTP_BAD_REQUEST);
+        }
+
         if (isset($params['destinataire']['nom']) && $params['destinataire']['nom'] != null) {
             $destinataire->setNom($params['destinataire']['nom']);
         }
@@ -176,7 +241,7 @@ class DestinataireRestController extends ParentRestController
      * save entity if is valid
      * @param Destinataire $destinataire
      *
-     * @return Response
+     * @return object
      */
     private function processForm($destinataire)
     {

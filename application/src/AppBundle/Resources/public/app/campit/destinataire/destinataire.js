@@ -55,14 +55,19 @@
             }]
         });
         vm.lastListRecord = null;
+        vm.createOrUpdateDest = 0;
 
         vm.creerDestinataire = creerDestinataire;
         vm.rechercheDestinatairesByListe = rechercheDestinatairesByListe;
         vm.openGestionDestinataireModal = openGestionDestinataireModal;
         vm.postListeDiffusion = postListeDiffusion;
         vm.resetListeForm = resetListeForm;
+        vm.deleteListe = deleteListe;
+        vm.changeCreateOrUpdateDest = changeCreateOrUpdateDest;
+        vm.modifierDestinataire = modifierDestinataire;
+        vm.deleteDestinataire = deleteDestinataire;
 
-        vm.uploader.onCompleteAll = onCompleteAll;
+        vm.uploader.onCompleteItem = onCompleteItem;
         vm.uploader.onBeforeUploadItem = onBeforeUploadItem;
         vm.uploader.onErrorItem = onErrorItem;
         vm.uploader.onAfterAddingFile = onAfterAddingFile;
@@ -103,14 +108,26 @@
                 });
         }
 
+        function changeCreateOrUpdateDest(destinataire) {
+            if (vm.createOrUpdateDest == 0) { //ne pas changer le "==" !!!
+                vm.newDestinataire = {
+                    nom: null,
+                    prenom: null,
+                    email: null
+                };
+            } else {
+                vm.newDestinataire = destinataire;
+
+            }
+        }
+
         function creerDestinataire(form) {
             if (form.$valid) {
                 vm.ajoutDestinataireenCours = true;
-                dataserviceDestinataire.postDestinataire(vm.newDestinataire).then(function (destinataire) {
+                dataserviceDestinataire.postDestinataire(vm.newDestinataire, vm.currentListeDiffusion.id)
+                    .then(function (destinataire) {
                     vm.ajoutDestinataireenCours = false;
-                    if (vm.currentListeDiffusion.id === vm.listesDiffusion[0].id) {
-                        vm.destinataires.push(destinataire)
-                    }
+                    vm.destinataires.push(destinataire);
                     vm.newDestinataire = {
                         nom: null,
                         prenom: null,
@@ -119,6 +136,30 @@
                     logger.success('Destinataire ajouté', true)
                 }, function (data) {
                     logger.error('Erreur lors de l\'ajout du destinataire', true);
+                    logger.error(data);
+                    vm.ajoutDestinataireenCours = false;
+                });
+            }
+        }
+
+        function modifierDestinataire(form) {
+            if (form.$valid) {
+                vm.ajoutDestinataireenCours = true;
+                dataserviceDestinataire.putDestinataire(vm.newDestinataire).then(function (destinataire) {
+                    vm.ajoutDestinataireenCours = false;
+                    angular.forEach(vm.destinataires, function(d) {
+                       if (d.id === destinataire.id) {
+                           d.nom = destinataire.nom;
+                           d.prenom = destinataire.prenom;
+                           d.email = destinataire.email;
+                           d.id = destinataire.id;
+                       }
+                    });
+                    vm.createOrUpdateDest = 0;
+                    vm.changeCreateOrUpdateDest();
+                    logger.success('Destinataire modifié', true)
+                }, function (data) {
+                    logger.error('Erreur lors de la modification du destinataire', true);
                     logger.error(data);
                     vm.ajoutDestinataireenCours = false;
                 });
@@ -148,6 +189,48 @@
             });
         }
 
+        function deleteDestinataire(id) {
+            if (vm.createOrUpdateDest != 0) { //laisser '=='
+                vm.ajoutDestinataireenCours = true;
+                return dataserviceDestinataire.deleteDestinataire(id).then(function() {
+
+                    vm.listeDestCopy = angular.copy(vm.destinataires);
+                    angular.forEach(vm.listeDestCopy, function (dest, key) {
+                       if (id === dest.id) {
+                           vm.destinataires.splice(key, 1);
+                           return true;
+                       }
+                    });
+
+                    vm.createOrUpdateDest = 0;
+                    changeCreateOrUpdateDest();
+                    logger.success('Destinataire supprimé', true);
+                    vm.ajoutDestinataireenCours = false;
+                }, function (data) {
+                    vm.ajoutDestinataireenCours = false;
+                    logger.error('Erreur lors de la suppression du destinataire', true);
+                });
+            }
+        }
+
+        function deleteListe(id) {
+            return dataserviceListeDiffusion.deleteListe(id).then(function (data) {
+                vm.listesDiffusion = [
+                    {
+                        id: -1,
+                        nom: 'Sans liste de diffusion'
+                    }
+                ];
+                vm.currentListeDiffusion = vm.listesDiffusion[0];
+                initListesDiffusion();
+                rechercheDestinatairesByListe(null);
+                logger.success('Liste supprimée', true);
+            }, function (data) {
+                logger.error('Erreur lors de la suppression', true);
+                logger.error(data);
+            });
+        }
+
         function postListeDiffusion(form) {
             if (form.$valid) {
                 return dataserviceListeDiffusion.postListe(vm.newList.nom).then(function (data) {
@@ -173,19 +256,25 @@
             if (lastListRecord.id) {
                 vm.uploader.url = '/api/listes/' + lastListRecord.id + '/files';
                 vm.uploader.uploadAll();
-                vm.listesDiffusion.push({
+                vm.listeTmp = {
                     id: lastListRecord.id,
                     nom: lastListRecord.nom
-                });
+                };
             } else {
                 logger.error("Impossible d'uploader", true);
             }
         }
 
         //Uploader function
-        function onCompleteAll(fileItem, response, status, headers) {
+        function onCompleteItem(fileItem, response, status, headers) {
+            if (status === 200) {
+                logger.success('Le fichier est enregistré.', true);
+                if (vm.listeTmp) {
+                    vm.listesDiffusion.push(vm.listeTmp);
+                }
+            }
             resetListeForm($scope.formListe);
-            logger.success('Le fichier est enregistré.', true);
+            vm.listeTmp = null;
         }
 
         //set the id project in url before upload
@@ -194,9 +283,12 @@
         }
 
         function onErrorItem(item, response, status) {
+            vm.listeTmp = null;
             if (status === 406) {
                 logger.error("Le fichier n'a pas était enregistré car il contient des utilisateurs qui " +
                     "existent déjà dans l'application.", true);
+            } else if (status === 412) {
+                logger.error(response, true);
             } else {
                 logger.error("Le fichier n'a pas était enregistré pour cause d'erreur.", true);
             }

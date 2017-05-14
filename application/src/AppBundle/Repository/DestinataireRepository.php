@@ -34,10 +34,10 @@ class DestinataireRepository extends EntityRepository
 
         foreach ($destinataires as $id => $destinataire)
         {
-            $qb->orWhere($qb->expr()->orX(
+            $qb->orWhere($qb->expr()->andX(
                 $qb->expr()->eq('d.nom', ":nom_".$id),
-                $qb->expr()->like('d.prenom', ":prenom_".$id),
-                $qb->expr()->like('d.email', ":email_".$id)
+                $qb->expr()->eq('d.prenom', ":prenom_".$id),
+                $qb->expr()->eq('d.email', ":email_".$id)
             ));
             $qb->setParameter("nom_".$id, $destinataire->getNom())
                 ->setParameter("prenom_".$id, $destinataire->getPrenom())
