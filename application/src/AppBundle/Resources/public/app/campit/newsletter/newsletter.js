@@ -25,6 +25,7 @@
         vm.getNewsletter = getNewsletter;
         vm.openNewsletterModal = openNewsletterModal;
         vm.deleteNewsletter = deleteNewsletter;
+        vm.modifierNewsletter = modifierNewsletter;
 
         activate();
 
@@ -33,6 +34,37 @@
             return $q.all(promises).then(function () {
                 vm.showView = true;
                 console.log('Activated Newsletter View');
+            });
+        }
+
+        function modifierNewsletter() {
+            $uibModal.open({
+                templateUrl: 'bundles/app/app/campit/newsletter/modal/modalNewsletter.html',
+                controller: 'ModalNewsletter',
+                controllerAs: 'vm',
+                size: 'lg',
+                windowClass: 'clearfix',
+                resolve: {
+                    campagne : function() {
+                        return vm.currentCampagne
+                    },
+                    newsletter : function() {
+                        return {
+                            id: vm.currentNewsletter.id,
+                            nom: vm.currentNewsletter.nom,
+                            corps: vm.currentNewsletter.contenus[0].contenu_h_t_m_l,
+                            campagneId: vm.currentCampagne.id,
+                            dateEnvoi: vm.currentNewsletter.date_prochain_envoi,
+                            periodiciteUnite: vm.currentNewsletter.periodicite_unite,
+                            periodiciteValeur: vm.currentNewsletter.periodicite_valeur
+                        };
+                    }
+                }
+            }).result.then(function(newsletter) {
+                if (newsletter !== null) {
+                    vm.currentNewsletter = null;
+                    rechercheNewsletters();
+                }
             });
         }
 
@@ -49,7 +81,7 @@
         }
 
         function rechercheNewsletters(campagne) {
-            if (campagne === null) {
+            if (!campagne) {
                 campagne = vm.currentCampagne;
             }
             return dataserviceNewsletter.getNewslettersByCampagne(campagne.id)
@@ -99,6 +131,16 @@
                 resolve: {
                     campagne : function() {
                         return vm.currentCampagne
+                    },
+                    newsletter: function() {
+                        return {
+                            nom: null,
+                            corps: null,
+                            campagneId: null,
+                            dateEnvoi: null,
+                            periodiciteUnite: null,
+                            periodiciteValeur: null
+                        };
                     }
                 }
             }).result.then(function(newsletter) {

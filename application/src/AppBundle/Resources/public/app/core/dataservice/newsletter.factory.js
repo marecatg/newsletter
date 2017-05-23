@@ -11,7 +11,8 @@
             getNewslettersByCampagne: getNewslettersByCampagne,
             getNewsletter: getNewsletter,
             postNewsletter: postNewsletter,
-            deleteNewsletter: deleteNewsletter
+            deleteNewsletter: deleteNewsletter,
+            putNewsletter: putNewsletter
         };
 
         function getNewslettersByCampagne(idCampagne) {
@@ -30,6 +31,13 @@
 
         function postNewsletter(newsletter) {
             return $http.post('/api/newsletters', {newsletter: newsletter})
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
+
+        function putNewsletter(newsletter) {
+            return $http.put('/api/newsletter', {newsletter: newsletter})
                 .then(function (data) {
                     return $q.when(data.data);
                 });

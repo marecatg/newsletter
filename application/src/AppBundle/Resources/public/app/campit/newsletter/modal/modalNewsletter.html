@@ -64,7 +64,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-success" ng-disabled="vm.ajoutNewsletterEnCours" type="submit" ng-click="vm.creerNewsletter(form)">Créer</button>
+            <button class="btn btn-success" ng-disabled="vm.ajoutNewsletterEnCours" type="submit"
+                    data-ng-if="!vm.isEdit" ng-click="vm.creerNewsletter(form)">Créer</button>
+            <button class="btn btn-success" ng-disabled="vm.ajoutNewsletterEnCours" type="submit"
+                    data-ng-if="vm.isEdit" ng-click="vm.modifierNewsletter(form)">Modifier</button>
             <button class="btn btn-danger" type="button" ng-click="vm.cancel()">Annuler</button>
         </div>
     </form>

@@ -5,23 +5,17 @@
         .module('app.core')
         .controller('ModalNewsletter', ModalNewsletter);
 
-    ModalNewsletter.$inject = ['$uibModalInstance', '$q', 'campagne', 'dataserviceNewsletter', 'periodiciteUnite',
-        '$scope', 'logger'];
+    ModalNewsletter.$inject = ['$uibModalInstance', '$q', 'campagne', 'dataserviceNewsletter',
+        '$scope', 'logger', 'newsletter', "periodiciteUnite"];
 
-    function ModalNewsletter($uibModalInstance, $q, campagne, dataserviceNewsletter, periodiciteUnite,
-        $scope, logger) {
+    function ModalNewsletter($uibModalInstance, $q, campagne, dataserviceNewsletter,
+        $scope, logger, newsletter, periodiciteUnite) {
 
         var vm = this;
         vm.showView = false;
-        vm.newsletter = {
-            nom: null,
-            corps: null,
-            campagneId: null,
-            dateEnvoi: null,
-            periodiciteUnite: null,
-            periodiciteValeur: null
-        };
+        vm.newsletter = newsletter;
         vm.campagne = campagne;
+        vm.isEdit = angular.isDefined(vm.newsletter.id);
         vm.periodiciteUnite = periodiciteUnite;
 
         vm.ckeditorOptions = {
@@ -32,6 +26,7 @@
 
         vm.cancel = cancel;
         vm.creerNewsletter = creerNewsletter;
+        vm.modifierNewsletter = modifierNewsletter;
 
 
         activate();
@@ -59,8 +54,24 @@
                 dataserviceNewsletter.postNewsletter(vm.newsletter).then(function (newsletter) {
                     vm.ajoutNewsletterEnCours = false;
                     vm.newsletter = newsletter;
+                    logger.success('Newsletter créée', true);
                     ok();
-                    logger.success('Newsletter créée', true)
+                }, function (data) {
+                    logger.error('Erreur lors de la création de la newsletter', true);
+                    logger.error(data);
+                    vm.ajoutNewsletterEnCours = false;
+                });
+            }
+        }
+
+        function modifierNewsletter(form) {
+            if (form.$valid) {
+                vm.ajoutNewsletterEnCours = true;
+                dataserviceNewsletter.putNewsletter(vm.newsletter).then(function (newsletter) {
+                    vm.ajoutNewsletterEnCours = false;
+                    vm.newsletter = newsletter;
+                    logger.success('Newsletter créée', true);
+                    ok();
                 }, function (data) {
                     logger.error('Erreur lors de la création de la newsletter', true);
                     logger.error(data);
