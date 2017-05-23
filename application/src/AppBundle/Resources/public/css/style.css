@@ -292,3 +292,9 @@ section > h1 {
 .select-liste-diffusion select, .select-liste-diffusion button {
     margin-bottom: 15px;
  }
+.select-campagne-first {
+    color: #999999;
+}
+.padding-label-campagne {
+    padding: 7px 0 0 0;
+}

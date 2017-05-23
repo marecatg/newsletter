@@ -1,6 +1,85 @@
 <section class="container-fluid view-animation"
-         data-ng-if="vm.showView">
+         data-ng-show="vm.showView">
 
-    <h1>Campagne</h1>
+    <h1 class="text-center">Gestion des destinataires</h1>
+    <div class="col-md-7 col-lg-6 col-lg-offset-1 espace-top">
+
+    </div>
+
+
+    <div class="espace-top col-md-5 col-lg-4">
+
+        <!--Formulaire d'ajout de campagne-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Creer une nouvelle campagne
+            </div>
+            <div class="panel-body">
+                <form name="form" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': form.$submitted && form.nom.$error.required }">
+                            <input data-ng-model="vm.newCampagne.nom" required="" name="nom"
+                                   type="text" class="form-control" placeholder="Prenom">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="form.$submitted && form.nom.$error.required"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="col-md-4 padding-label-campagne">
+                            A envoyer tous les
+                        </label>
+                        <div class="col-md-4">
+                            <div class="form-group"
+                                 ng-class="{ 'has-error': form.$submitted && form.periodiciteValeur.$error.required }">
+                                <input data-ng-model="vm.newCampagne.periodiciteValeur" required=""
+                                       placeholder="Interval" name="periodiciteValeur"
+                                       type="number" class="form-control" id="periodiciteValeur">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group"
+                                 ng-class="{ 'has-error': form.$submitted && form.periodiciteUnite.$error.required }">
+                                <select data-ng-model="vm.newCampagne.periodiciteUnite" required=""
+                                        name="periodiciteUnite"
+                                        class="form-control select-campagne" id="periodiciteUnite" title="Périodicité">
+                                    <option value="" selected disabled></option>
+                                    <option value="{{ vm.periodiciteUnite.jour }}">Jour</option>
+                                    <option value="{{ vm.periodiciteUnite.semaine }}">Semaine</option>
+                                    <option value="{{ vm.periodiciteUnite.mois }}">Mois</option>
+                                    <option value="{{ vm.periodiciteUnite.annee}}">Année</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group"
+                             ng-class="{ 'has-error': form.$submitted && form.prochainEnvoi.$error.required }">
+                            <div class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="{{ format }}"
+                                       ng-model="vm.newCampagne.dateEnvoi" placeholder="Date de prochain envoi"
+                                       id="prochainEnvoi" name="prochainEnvoi"
+                                       is-open="popup.opened" datepicker-options="dateOptions" ng-required="true"
+                                       close-text="Fermer" current-text="Aujourd'hui" clear-text="Effacer"/>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open()"><i
+                                        class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <button data-ng-click="vm.creerCampagne(form)" type="submit"
+                                class="btn btn-success pull-right"
+                                data-ng-disabled="vm.ajoutCampagneEnCours">
+                            Créer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
 
