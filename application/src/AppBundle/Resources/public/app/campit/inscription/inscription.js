@@ -11,6 +11,7 @@
 
         var vm = this;
         vm.showView = false;
+        vm.newsletters = [];
 
         activate();
 
@@ -21,6 +22,10 @@
                 vm.showView = true;
                 console.log('Activated Inscription View');
             });
+        }
+
+        function initInscription() {
+
         }
     }
 })();
