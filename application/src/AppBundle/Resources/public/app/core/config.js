@@ -25,7 +25,7 @@
 
     var config = {
         appErrorPrefix: '[My app] ', //Configure the exceptionHandler decorator
-        appTitle: 'Application Campit',
+        appTitle: 'Campit',
         version: '1.0.0'
     };
 
