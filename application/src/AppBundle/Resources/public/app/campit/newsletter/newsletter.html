@@ -2,7 +2,7 @@
          data-ng-show="vm.showView" id="accueil-view">
 
     <h1 class="text-center">Gestion des newsletters</h1>
-    <div class="col-md-6 col-lg-4 col-lg-offset-1 espace-top">
+    <div class="col-md-offset-1 col-md-10 col-lg-8 col-lg-offset-2 espace-top">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 Gestion des newsletters
@@ -32,7 +32,7 @@
                             </span>
                         </button>
 
-                        <button class="btn btn-success text-center margin-top-10"
+                        <button class="btn btn-danger text-center margin-top-10"
                                 data-ng-disabled="!vm.currentNewsletter.id"
                                 ng-click="vm.deleteNewsletter(vm.currentNewsletter.id)">
                             <span>
@@ -46,7 +46,7 @@
     </div>
 
 
-    <div class="espace-top col-md-6 col-lg-6 view-animation" ng-show="vm.currentNewsletter">
+    <div class="espace-top col-md-offset-1 col-md-10 col-lg-8 col-lg-offset-2 view-animation" ng-show="vm.currentNewsletter">
         <!--Formulaire d'ajout de destinataire-->
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -55,7 +55,8 @@
             <div class="panel-body">
                 <div ng-bind-html="vm.currentNewsletter.contenus[0].contenu_h_t_m_l"></div>
                 <div class="espace-top">
-                    <button class="col-xs-12 btn btn-success">Voir la liste des inscrits</button>
+                    <button class="btn btn-success">Voir la liste des inscrits</button>
+                    <button data-ng-click="vm.modifierNewsletter()" class="btn btn-success">Modifier</button>
                 </div>
             </div>
         </div>

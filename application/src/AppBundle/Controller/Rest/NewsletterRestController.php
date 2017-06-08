@@ -112,7 +112,7 @@ class NewsletterRestController extends ParentRestController
      * )
      * @View(serializerGroups={"newsletter_list"})
      * @param $request Request
-     * @return Response
+     * @return object
      */
     public function postNewsletterAction(Request $request)
     {
@@ -164,10 +164,74 @@ class NewsletterRestController extends ParentRestController
     }
 
     /**
+     * Modifier une newsletter
+     *
+     * @ApiDoc(
+     * section = "Newsletter",
+     *  output={"class"="Response"},
+     *  statusCodes={
+     *      200="Returned when successful",
+     *      400="Est retourné lorsque le destinataire est invalide"
+     *  }
+     * )
+     * @View(serializerGroups={"newsletter_list"})
+     * @param $request Request
+     * @return object
+     */
+    public function putNewsletterAction(Request $request)
+    {
+
+        $params = json_decode($request->getContent(), true);
+        $orm = $this->getDoctrine();
+
+        if (!isset($params['newsletter']) && !isset($params['newsletter']['id'])) {
+            return $this->view('Param newsletter non trouvé ou il n\'a pas d\'id', Codes::HTTP_BAD_REQUEST);
+        }
+        $newsletter = $orm->getRepository('AppBundle:Newsletter')->find($params['newsletter']['id']);
+        $contenu = new ContenuNewsletter();
+        if (isset($params['newsletter']['nom']) && $params['newsletter']['nom'] != null) {
+            $newsletter->setNom($params['newsletter']['nom']);
+        }
+
+        if (isset($params['newsletter']['corps']) && $params['newsletter']['corps'] != null) {
+            $contenu->setContenuHTML($params['newsletter']['corps']);
+        }
+
+//        if (isset($params['newsletter']['campagneId']) && $params['newsletter']['campagneId'] != null) {
+//            $campagne = $orm->getRepository('AppBundle:Campagne')->find($params['newsletter']['campagneId']);
+//            if ($campagne == null) {
+//                return $this->view('Campagne d\'id '.$params['newsletter']['campagneId'].' non trouvé', Codes::HTTP_BAD_REQUEST);
+//            }
+//            $newsletter->setCampagne($campagne);
+//        }
+
+        if (isset($params['newsletter']['periodiciteValeur']) && $params['newsletter']['periodiciteValeur'] != null) {
+            $newsletter->setPeriodiciteValeur($params['newsletter']['periodiciteValeur']);
+        }
+
+        if (isset($params['newsletter']['periodiciteUnite']) && $params['newsletter']['periodiciteUnite'] != null) {
+            $newsletter->setPeriodiciteUnite($params['newsletter']['periodiciteUnite']);
+        }
+
+        if (isset($params['newsletter']['dateEnvoi']) && $params['newsletter']['dateEnvoi'] != null) {
+            $newsletter->setDateProchainEnvoi(new \DateTime($params['newsletter']['dateEnvoi']));
+        }
+
+        $contenu->setDateModification(new \DateTime());
+        $newsletter->setCreateur($this->getUser());
+        $contenu->setNewsletter($newsletter);
+        $contenus = $newsletter->getContenus();
+        $contenus[] = $contenu;
+        $newsletter->setContenus($contenus);
+
+        return $this->processForm($newsletter);
+    }
+
+    /**
      * save entity if is valid
      * @param Newsletter $newsletter
      *
-     * @return Response
+     * @return object
      */
     private function processForm($newsletter)
     {

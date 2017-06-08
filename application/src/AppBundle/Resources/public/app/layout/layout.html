@@ -1,6 +1,6 @@
 <div data-ng-controller="Layout as vm" id="wrapper">
     <header class="clearfix display-header" role="banner" data-ng-if="vm.showView">
-        <!--<div data-ng-include="'bundles/app/app/layout/header.html'"></div>-->
+        <!--<div data-ng-de="'bundles/app/app/layout/header.html'"></div>-->
         <header class="header-banner-top">
             <div class="main-navigation">
                 <input type="checkbox" name="mobile-menu-toggle" id="mobile-menu-toggle" class="mobile-menu-box"/>
@@ -17,17 +17,22 @@
                                 Destinataire
                             </a>
                         </li>
-                        <li class="folder">
-                            <input type="checkbox" name="folder-toggle-1" id="folder-toggle-1"
-                                   class="folder-toggle-box hidden"/>
-                            <label for="folder-toggle-1" class="folder-toggle-label"><a>Folder</a></label>
-                            <ul>
-                                <li><a href="#">Link</a></li>
-                                <li><a href="#">Linkus</a></li>
-                                <li><a href="#">Linkorama</a></li>
-                                <li><a href="#">Link</a></li>
-                            </ul>
+                        <li data-ng-class="{'active-link': vm.currentPage === vm.page.routeInscription}">
+                            <a href="/#/inscription">
+                                Inscriptions
+                            </a>
                         </li>
+                        <!--<li class="folder">-->
+                            <!--<input type="checkbox" name="folder-toggle-1" id="folder-toggle-1"-->
+                                   <!--class="folder-toggle-box hidden"/>-->
+                            <!--<label for="folder-toggle-1" class="folder-toggle-label"><a>Folder</a></label>-->
+                            <!--<ul>-->
+                                <!--<li><a href="#">Link</a></li>-->
+                                <!--<li><a href="#">Linkus</a></li>-->
+                                <!--<li><a href="#">Linkorama</a></li>-->
+                                <!--<li><a href="#">Link</a></li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
                         <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Deconnexion</a></li>
                     </ul>
                 </nav>

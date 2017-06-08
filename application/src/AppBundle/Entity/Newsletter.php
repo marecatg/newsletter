@@ -34,12 +34,14 @@ class Newsletter
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"newsletter_last_contenu"})
      */
     private $dateProchainEnvoi;
 
     /**
      * @var string
      * @Assert\NotBlank()
+     * @Groups({"newsletter_last_contenu"})
      * @ORM\Column(type="string", columnDefinition="ENUM('jour', 'semaine', 'mois', 'annee')", nullable=false)
      */
     private $periodiciteUnite;
@@ -47,6 +49,7 @@ class Newsletter
     /**
      * @var integer
      * @Assert\NotBlank()
+     * @Groups({"newsletter_last_contenu"})
      * @ORM\Column(type="integer", nullable=false)
      */
     private $periodiciteValeur;

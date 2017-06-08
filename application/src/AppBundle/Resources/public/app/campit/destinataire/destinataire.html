@@ -2,7 +2,7 @@
          data-ng-show="vm.showView">
 
     <h1 class="text-center">Gestion des destinataires</h1>
-    <div class="col-md-7 col-lg-6 col-lg-offset-1 espace-top">
+    <div class="col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-1 espace-top">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 Gestion des listes de diffusion
@@ -16,7 +16,7 @@
                     </select>
                     <button class="btn btn-danger" data-ng-click="vm.deleteListe(vm.currentListeDiffusion.id)"
                             data-ng-disabled="vm.currentListeDiffusion.id === -1" type="button">
-                        Delete
+                        Supprimer
                     </button>
                 </div>
                 <div class="col-md-12">
@@ -44,7 +44,8 @@
                                     <td class="form-inline">
                                         <input class="form-control" data-ng-model="vm.createOrUpdateDest"
                                                data-ng-change="vm.changeCreateOrUpdateDest(destinataire)"
-                                               value="{{$index + 1}}" id="editDest{{$index}}" type="radio" name="editDest">
+                                               value="{{$index + 1}}" id="editDest{{$index}}" type="radio"
+                                               name="editDest">
                                         <label class="radio control-label" for="editDest{{$index}}">Editer</label>
                                     </td>
                                 </tr>
@@ -67,47 +68,7 @@
     </div>
 
 
-    <div class="espace-top col-md-5 col-lg-4">
-        <!--Formulaire d'ajout de liste de diffusion-->
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                Creer une liste de diffusion
-            </div>
-            <div class="panel-body">
-                <form name="formListe" novalidate>
-                    <div class="col-md-12">
-                        <div class="form-group has-feedback"
-                             ng-class="{ 'has-error': formListe.$submitted && formListe.nom.$error.required }">
-                            <input data-ng-model="vm.newList.nom" required="" name="nom"
-                                   type="text" class="form-control" placeholder="Nom de la liste">
-                            <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  data-ng-show="formListe.$submitted && formListe.nom.$error.required"></span>
-                        </div>
-                        <div class="form-group has-feedback"
-                             ng-class="{ 'has-error': formListe.$submitted && formListe.file.$error.required }">
-                            <input id="file" type="file" class="form-control col-xs-10" required="" name="file"
-                                   nv-file-select data-uploader="vm.uploader" data-ng-model="vm.newList.fileName"/>
-                            <span class="glyphicon glyphicon-remove form-control-feedback"
-                                  data-ng-show="formListe.$submitted && formListe.file.$error.required"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-12 text-center espace-top-petit">
-                        <div class="pull-right">
-                            <button class="btn btn-warning display-inline"
-                                    type="button" data-ng-click="vm.resetListeForm(formListe)">
-                                Vider
-                            </button>
-                            <button data-ng-click="vm.postListeDiffusion(formListe)" type="submit"
-                                    class="btn btn-success display-inline"
-                                    data-ng-disabled="">
-                                Créer
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
+    <div class="espace-top col-md-10 col-md-offset-1 col-lg-4 col-lg-offset-0">
 
         <!--Formulaire d'ajout de destinataire-->
         <div data-ng-if="vm.createOrUpdateDest == 0" class="panel panel-primary">
@@ -154,7 +115,7 @@
                     </div>
                 </form>
             </div>
-            </div>
+        </div>
         <div data-ng-if="vm.createOrUpdateDest > 0" class="panel panel-primary">
             <div class="panel-heading">
                 Modifier un destinataire
@@ -207,6 +168,46 @@
                 </form>
             </div>
         </div>
+        <!--Formulaire d'ajout de liste de diffusion-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Creer une liste de diffusion
+            </div>
+            <div class="panel-body">
+                <form name="formListe" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': formListe.$submitted && formListe.nom.$error.required }">
+                            <input data-ng-model="vm.newList.nom" required="" name="nom"
+                                   type="text" class="form-control" placeholder="Nom de la liste">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="formListe.$submitted && formListe.nom.$error.required"></span>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{ 'has-error': formListe.$submitted && formListe.file.$error.required }">
+                            <input id="file" type="file" class="form-control col-xs-10" required="" name="file"
+                                   nv-file-select data-uploader="vm.uploader" data-ng-model="vm.newList.fileName"/>
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  data-ng-show="formListe.$submitted && formListe.file.$error.required"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center espace-top-petit">
+                        <div class="pull-right">
+                            <button class="btn btn-warning display-inline"
+                                    type="button" data-ng-click="vm.resetListeForm(formListe)">
+                                Vider
+                            </button>
+                            <button data-ng-click="vm.postListeDiffusion(formListe)" type="submit"
+                                    class="btn btn-success display-inline"
+                                    data-ng-disabled="">
+                                Créer
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
 </section>
 

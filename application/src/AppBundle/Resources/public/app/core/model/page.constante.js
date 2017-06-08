@@ -3,5 +3,6 @@ angular
     .constant('page', {
         routeCampagne: '/campagne',
         routeNewsletter: '/newsletter',
-        routeDestinataire: '/destinataire'
+        routeDestinataire: '/destinataire',
+        routeInscription: '/inscription'
     });

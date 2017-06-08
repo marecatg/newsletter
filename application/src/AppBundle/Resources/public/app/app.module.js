@@ -18,7 +18,8 @@
         'app.newsletter',
         'app.campagne',
         'app.destinataire',
-        'app.layout'
+        'app.layout',
+        'app.inscription'
     ]);
 
 })();
