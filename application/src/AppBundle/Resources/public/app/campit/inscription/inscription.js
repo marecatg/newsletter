@@ -17,8 +17,10 @@
         vm.inscriptions = [];
         vm.listesDiffusions = [];
         vm.selectionNonSauvegarde = false;
+        vm.idNewsletterSelected = null;
 
         vm.ignoreAlert = ignoreAlert;
+        vm.saveChange = saveChange;
         vm.changeSelection = changeSelection;
 
         activate();
@@ -36,7 +38,7 @@
         }
 
         function changeSelection(idNewsletterSelected) {
-
+            vm.idNewsletterSelected = idNewsletterSelected;
             angular.forEach(vm.listesDiffusions, function (liste) {
                 liste.select = false;
             });
@@ -49,6 +51,31 @@
                     });
                 }
             });
+        }
+
+        function saveChange() {
+            var insciptions = [];
+
+            angular.forEach(vm.listesDiffusions, function (liste) {
+                if (liste.select) {
+                    var insciption = {
+                        newsletterId: vm.idNewsletterSelected,
+                        idListeSource: liste.id
+                    };
+                    insciptions.push(insciption);
+                }
+            });
+
+            return dataserviceInscription.putInscriptionNewsletterListeDiffusion(insciptions, vm.idNewsletterSelected)
+                .then(function () {
+                    logger.success('Inscriptions mises à jour', true);
+                    vm.selectionNonSauvegarde = false;
+                    initInscription();
+                    vm.idNewsletterSelected = null;
+                }, function (data) {
+                    logger.error('Erreur lors de la sauvegarde des inscriptions', true);
+                    logger.error(data);
+                });
         }
 
         function initInscription() {

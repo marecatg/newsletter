@@ -42,15 +42,17 @@
                     <div class="alert alert-warning col-sm-12" role="alert" data-ng-show="vm.selectionNonSauvegarde">
                         <span>Il y a des modifications à sauvegarder.</span>
                         <div class="pull-right">
-                            <button class="btn btn-success">Sauvegarder</button>
+                            <button class="btn btn-success" data-ng-click="vm.saveChange()">Sauvegarder</button>
                             <button class="btn btn-danger" data-ng-click="vm.ignoreAlert()">Ignorer</button>
                         </div>
                     </div>
                     <div class="col-sm-12 no-padding">
                         <ul class="list-group liste-choix-destinataire">
-                            <li ng-repeat="liste in vm.listesDiffusions | orderBy: 'nom'" class="list-group-item"
-                                data-ng-click="vm.selectionNonSauvegarde = true">
-                                <label class="checkbox-inline"><input type="checkbox" id="{{liste.id}}" ng-model="liste.select">
+                            <li ng-repeat="liste in vm.listesDiffusions | orderBy: 'nom'" class="list-group-item">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="{{liste.id}}" ng-model="liste.select"
+                                           data-ng-click="vm.selectionNonSauvegarde = true"
+                                           data-ng-disabled="vm.idNewsletterSelected === null">
                                     {{liste.nom}}
                                 </label>
                             </li>

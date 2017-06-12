@@ -71,7 +71,7 @@ class Newsletter
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="Inscription", mappedBy="newsletter", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Inscription", mappedBy="newsletter", cascade={"remove", "persist"})
      */
     private $inscriptions;
 

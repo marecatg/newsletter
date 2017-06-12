@@ -21,14 +21,13 @@ class NewsletterRestController extends ParentRestController
      *
      * @ApiDoc(
      * section = "Newsletter",
-     *  output={"class"="Newsletter"},
      *  statusCodes={
      *      200="Returned when successful",
      *      404="Returned when user is not found"
      *  }
      * )
      * @View(serializerGroups={"newsletter_list"})
-     * @return Response
+     * @return array
      */
     public function getAllLastNewsletterAction()
     {
@@ -84,7 +83,7 @@ class NewsletterRestController extends ParentRestController
      * )
      * @View(serializerGroups={"newsletter_last_contenu"})
      * @param $id integer
-     * @return Newsletter
+     * @return object
      */
     public function getNewsletterAction($id)
     {
