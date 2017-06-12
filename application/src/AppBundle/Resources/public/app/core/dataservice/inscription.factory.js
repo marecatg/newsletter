@@ -3,16 +3,16 @@
 
     angular
         .module('app.core')
-        .factory('dataserviceCampagne', dataserviceCampagne);
+        .factory('dataserviceInscription', dataserviceInscription);
 
-    dataserviceCampagne.$inject = ['$q', '$http'];
-    function dataserviceCampagne($q, $http) {
+    dataserviceInscription.$inject = ['$q', '$http'];
+    function dataserviceInscription($q, $http) {
         return {
-            getAll: getAll
+            getInscriptionListeDiffusion: getInscriptionListeDiffusion
         };
 
-        function getAll() {
-            return $http.get('/api/all/campagne')
+        function getInscriptionListeDiffusion() {
+            return $http.get('/api/all/insciption/liste/diffusion')
                 .then(function (data) {
                     return $q.when(data.data);
                 });

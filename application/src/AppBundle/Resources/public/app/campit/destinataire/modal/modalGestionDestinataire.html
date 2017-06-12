@@ -3,7 +3,7 @@
         <h3 class="modal-title" id="modal-title">Ajouter ou supprimer des destinataires</h3>
     </div>
     <div class="modal-body" id="modal-body">
-        <ul class="list-group" id="liste-choix-destinataire">
+        <ul class="list-group liste-choix-destinataire">
             <li ng-repeat="destinataire in vm.allDestinataires | orderBy: 'email'" class="list-group-item">
                 <label class="checkbox-inline"><input type="checkbox" id="{{destinataire.id}}" ng-model="destinataire.present">
                     {{destinataire.email}}

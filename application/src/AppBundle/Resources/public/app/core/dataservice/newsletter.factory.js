@@ -12,8 +12,16 @@
             getNewsletter: getNewsletter,
             postNewsletter: postNewsletter,
             deleteNewsletter: deleteNewsletter,
-            putNewsletter: putNewsletter
+            putNewsletter: putNewsletter,
+            getAllLast: getAllLast
         };
+
+        function getAllLast() {
+            return $http.get('/api/all/last/newsletter')
+                .then(function (data) {
+                    return $q.when(data.data);
+                });
+        }
 
         function getNewslettersByCampagne(idCampagne) {
             return $http.get('/api/newsletters/' + idCampagne + '/by/campagne')

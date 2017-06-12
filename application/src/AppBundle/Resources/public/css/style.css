@@ -231,18 +231,18 @@ section > h1 {
 .view-animation.ng-hide-remove.ng-hide-remove-active {
     opacity:1;
 }
-#liste-choix-destinataire, #liste-choix-newsletter {
+.liste-choix-destinataire, #liste-choix-newsletter {
     max-height: 400px;
     overflow-y: auto;
 }
-#liste-choix-destinataire label, #liste-choix-newsletter label {
+.liste-choix-destinataire label, #liste-choix-newsletter label {
     width: 100%;
     padding: 10px 30px;
 }
-#liste-choix-destinataire li, #liste-choix-newsletter li {
+.liste-choix-destinataire li, #liste-choix-newsletter li {
     padding: 0;
 }
-#liste-choix-destinataire label:hover, #liste-choix-destinataire label:focus,
+.liste-choix-destinataire label:hover, .liste-choix-destinataire label:focus,
 #liste-choix-newsletter button:hover, #liste-choix-newsletter button:focus{
     background-color: #f9f9f9;
 }

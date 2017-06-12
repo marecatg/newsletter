@@ -19,7 +19,7 @@ class Newsletter
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"newsletter_list", "newsletter_last_contenu"})
+     * @Groups({"newsletter_list", "newsletter_last_contenu", "all_inscriptions"})
      */
     private $id;
 
@@ -71,7 +71,7 @@ class Newsletter
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="Inscription", mappedBy="newsletter")
+     * @ORM\OneToMany(targetEntity="Inscription", mappedBy="newsletter", cascade={"remove"})
      */
     private $inscriptions;
 
