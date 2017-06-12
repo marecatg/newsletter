@@ -6,10 +6,10 @@ parameters:
     database_user: root
     database_password: root
     mailer_transport: smtp
-    mailer_host: 192.168.76.128
-    mailer_user: root@campit.mail
-    mailer_password: root
-    mailer_auth_mode: login
-    mailer_port: 587
+    mailer_host: 192.168.76.130
+    mailer_user: root
+    mailer_password: epsi
+    mailer_auth_mode: null
+    mailer_port: 25
     secret: tookenprojeti4
     chanel_require: ~
