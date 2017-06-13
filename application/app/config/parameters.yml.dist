@@ -21,3 +21,4 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     chanel_require: ~
+    mailer_from: ~

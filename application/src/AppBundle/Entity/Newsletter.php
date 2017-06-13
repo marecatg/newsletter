@@ -237,7 +237,9 @@ class Newsletter
                 break;
         }
 
-        dump(new \DateTime($date));
+        $this->dateProchainEnvoi = new \DateTime($date);
+
+        return true;
     }
 
     /**

@@ -14,3 +14,4 @@ parameters:
     mailer_from: root@campit.mail
     secret: tookenprojeti4
     chanel_require: ~
+    mailer_from: root@campit.mail

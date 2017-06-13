@@ -57,6 +57,13 @@ class SendNewsletterCommand extends ContainerAwareCommand
             }
 
             $newsletter->incrementeDateEnvoi();
+            $orm->getManager()->persist($newsletter);
+        }
+        try {
+            $orm->getManager()->flush();
+        } catch (\Exception $e) {
+            $io->error("Erreur lors de lasauvegarde des prochaines dates d'envois des newsletter.");
+            $io->error($e->getMessage());
         }
 
         $transport  = $mailer->getTransport();

@@ -73,11 +73,13 @@ class NewsletterRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
 
+        $now = (new \DateTime("now", new \DateTimeZone("Europe/Paris")))->format('Y-m-d');
+
         $q = $em->createQueryBuilder();
         $q->select('n')
             ->from('AppBundle:Newsletter', 'n')
             ->where('n.dateProchainEnvoi = :today')
-            ->setParameter('today', (new \DateTime())->format('Y-m-d'));
+            ->setParameter('today', $now);
 
         $newsletters = $this->keepLastContenus($q->getQuery()->getResult());
         $newslettersFiltered = array();
