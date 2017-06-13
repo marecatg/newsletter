@@ -11,5 +11,6 @@ parameters:
     mailer_password: epsiepsi34
     mailer_auth_mode: login
     mailer_port: 587
+    mailer_from: campit@gaetan-marecat.fr
     secret: tookenprojeti4
     chanel_require: null

@@ -1,14 +1,17 @@
 <?php
+
 namespace AppBundle\Repository;
 
 use AppBundle\AppBundle;
 use AppBundle\Entity\ContenuNewsletter;
+use AppBundle\Entity\Newsletter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class NewsletterRepository extends EntityRepository
 {
-    public function getAllLast() {
+    public function getAllLast()
+    {
         $em = $this->getEntityManager();
 
         $q = $em->createQueryBuilder();
@@ -21,7 +24,8 @@ class NewsletterRepository extends EntityRepository
         return $this->keepLastContenus($newsletters);
     }
 
-    public function getLast($id) {
+    public function getLast($id)
+    {
         $em = $this->getEntityManager();
 
         $q = $em->createQueryBuilder();
@@ -38,8 +42,9 @@ class NewsletterRepository extends EntityRepository
         return $newsletter;
     }
 
-    private function keepLastContenus($newsletters) {
-        foreach($newsletters as $n) {
+    private function keepLastContenus($newsletters)
+    {
+        foreach ($newsletters as $n) {
             $contenuLight = new ArrayCollection();
             $contenuLight->add($n->getContenus()[$n->getContenus()->count() - 1]);
             $n->setContenus($contenuLight);
@@ -62,5 +67,35 @@ class NewsletterRepository extends EntityRepository
         $newsletters = $q->getQuery()->getResult();
 
         return $newsletters;
+    }
+
+    public function getNewsletterToSend()
+    {
+        $em = $this->getEntityManager();
+
+        $q = $em->createQueryBuilder();
+        $q->select('n')
+            ->from('AppBundle:Newsletter', 'n')
+            ->where('n.dateProchainEnvoi = :today')
+            ->setParameter('today', (new \DateTime())->format('Y-m-d'));
+
+        $newsletters = $this->keepLastContenus($q->getQuery()->getResult());
+        $newslettersFiltered = array();
+        foreach ($newsletters as $n) {
+            $newslettersFiltered[] = $this->filterDoubleInscriptions($n);
+        }
+
+        return $newslettersFiltered;
+     }
+
+    private function filterDoubleInscriptions(Newsletter $newsletter) {
+        $inscriptions = array();
+        foreach ($newsletter->getInscriptions() as $i) {
+            $inscriptions[$i->getDestinataire()->getId()] = $i;
+        }
+
+        $newsletter->setInscriptions($inscriptions);
+
+        return $newsletter;
     }
 }

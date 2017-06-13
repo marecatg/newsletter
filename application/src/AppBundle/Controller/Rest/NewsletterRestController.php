@@ -150,7 +150,11 @@ class NewsletterRestController extends ParentRestController
         }
 
         if (isset($params['newsletter']['dateEnvoi']) && $params['newsletter']['dateEnvoi'] != null) {
-            $newsletter->setDateProchainEnvoi(new \DateTime($params['newsletter']['dateEnvoi']));
+            $date = new \DateTime($params['newsletter']['dateEnvoi']);
+            if ($date < new \DateTime()) {
+                $date = $newsletter->prochaineDateEnvoi($date);
+            }
+            $newsletter->setDateProchainEnvoi($date);
         }
 
         $contenu->setDateModification(new \DateTime());
@@ -213,7 +217,11 @@ class NewsletterRestController extends ParentRestController
         }
 
         if (isset($params['newsletter']['dateEnvoi']) && $params['newsletter']['dateEnvoi'] != null) {
-            $newsletter->setDateProchainEnvoi(new \DateTime($params['newsletter']['dateEnvoi']));
+            $date = new \DateTime($params['newsletter']['dateEnvoi']);
+            if ($date < new \DateTime()) {
+                $date = $newsletter->prochaineDateEnvoi($date);
+            }
+            $newsletter->setDateProchainEnvoi($date);
         }
 
         $contenu->setDateModification(new \DateTime());

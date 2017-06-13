@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Model\PeriodiciteUnite;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -195,7 +196,7 @@ class Newsletter
     }
 
     /**
-     * @param ArrayCollection $inscriptions
+     * @param array $inscriptions
      */
     public function setInscriptions($inscriptions)
     {
@@ -216,5 +217,51 @@ class Newsletter
     public function setCampagne($campagne)
     {
         $this->campagne = $campagne;
+    }
+
+    public function incrementeDateEnvoi() {
+
+        $date = $this->dateProchainEnvoi->format('Y-m-d');
+        switch($this->periodiciteUnite) {
+            case PeriodiciteUnite::JOUR:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' days'));
+                break;
+            case PeriodiciteUnite::SEMAINE:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' weeks'));
+                break;
+            case PeriodiciteUnite::MOIS:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' months'));
+                break;
+            case PeriodiciteUnite::ANNEE:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' years'));
+                break;
+        }
+
+        dump(new \DateTime($date));
+    }
+
+    /**
+     * @param $date \DateTime
+     * @return false|string
+     */
+    public function prochaineDateEnvoi(\DateTime $date) {
+
+        $date = $date->format('Y-m-d');
+        switch($this->periodiciteUnite) {
+            case PeriodiciteUnite::JOUR:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' days'));
+                break;
+            case PeriodiciteUnite::SEMAINE:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' weeks'));
+                break;
+            case PeriodiciteUnite::MOIS:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' months'));
+                break;
+            case PeriodiciteUnite::ANNEE:
+                $date = date('Y-m-d', strtotime($date . ' + '. $this->periodiciteValeur . ' years'));
+                break;
+        }
+
+        return new \DateTime($date);
     }
 }

@@ -14,6 +14,7 @@
         var vm = this;
         vm.showView = false;
         vm.newsletter = newsletter;
+        vm.newsletter.dateEnvoi = new Date(newsletter.dateEnvoi);
         vm.campagne = campagne;
         vm.isEdit = angular.isDefined(vm.newsletter.id);
         vm.periodiciteUnite = periodiciteUnite;
@@ -50,10 +51,17 @@
 
         function creerNewsletter(form) {
             if (form.$valid) {
+                var n = angular.copy(vm.newsletter);
+                var d = n.dateEnvoi;
+                var curr_date = d.getDate();
+                var curr_month = d.getMonth() + 1; //Months are zero based
+                var curr_year = d.getFullYear();
+                n.dateEnvoi = curr_year + "-" + curr_month + "-" + curr_date;
                 vm.ajoutNewsletterEnCours = true;
-                dataserviceNewsletter.postNewsletter(vm.newsletter).then(function (newsletter) {
+                dataserviceNewsletter.postNewsletter(n).then(function (newsletter) {
                     vm.ajoutNewsletterEnCours = false;
                     vm.newsletter = newsletter;
+                    vm.newsletter.dateEnvoi = new Date(newsletter.dateEnvoi);
                     logger.success('Newsletter créée', true);
                     ok();
                 }, function (data) {
@@ -66,10 +74,17 @@
 
         function modifierNewsletter(form) {
             if (form.$valid) {
+                var n = angular.copy(vm.newsletter);
+                var d = n.dateEnvoi;
+                var curr_date = d.getDate();
+                var curr_month = d.getMonth() + 1; //Months are zero based
+                var curr_year = d.getFullYear();
+                n.dateEnvoi = curr_year + "-" + curr_month + "-" + curr_date;
                 vm.ajoutNewsletterEnCours = true;
-                dataserviceNewsletter.putNewsletter(vm.newsletter).then(function (newsletter) {
+                dataserviceNewsletter.putNewsletter(n).then(function (newsletter) {
                     vm.ajoutNewsletterEnCours = false;
                     vm.newsletter = newsletter;
+                    vm.newsletter.dateEnvoi = new Date(newsletter.dateEnvoi);
                     logger.success('Newsletter créée', true);
                     ok();
                 }, function (data) {
