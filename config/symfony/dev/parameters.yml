@@ -13,3 +13,4 @@ parameters:
     mailer_port: 587
     secret: tookenprojeti4
     chanel_require: null
+    mailer_from: campit@gaetan-marecat.fr

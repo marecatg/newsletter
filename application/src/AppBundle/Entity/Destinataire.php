@@ -54,7 +54,7 @@ class Destinataire
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="Inscription", mappedBy="destinataire")
+     * @ORM\OneToMany(targetEntity="Inscription", mappedBy="destinataire", cascade={"remove"})
      * @Groups({})
      */
     private $inscriptions;

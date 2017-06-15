@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\InscriptionRepository")
@@ -15,6 +16,7 @@ class Inscription
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"all_inscriptions"})
      */
     private $id;
 
@@ -23,6 +25,7 @@ class Inscription
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Newsletter", inversedBy="inscriptions")
      * @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", nullable=false)
+     * @Groups({"all_inscriptions"})
      */
     private $newsletter;
 
@@ -43,6 +46,7 @@ class Inscription
     /**
      * @var ListeDiffusion
      * @ORM\Column(name="liste_diffusion_source", type="integer", nullable=true)
+     * @Groups({"all_inscriptions"})
      */
     private $listeDiffusionSource;
 

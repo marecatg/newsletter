@@ -14,6 +14,7 @@
         var vm = this;
         vm.showView = false;
         vm.newsletter = newsletter;
+        vm.newsletter.dateEnvoi = new Date(newsletter.dateEnvoi);
         vm.campagne = campagne;
         vm.isEdit = angular.isDefined(vm.newsletter.id);
         vm.periodiciteUnite = periodiciteUnite;
@@ -21,8 +22,57 @@
         vm.ckeditorOptions = {
             language: 'fr',
             allowedContent: true,
-            entities: false
+            entities: false,
+            disallowedContent : 'img{width,height}'
         };
+
+        CKEDITOR.on('instanceReady', function(ev) {
+
+            // Ends self closing tags the HTML4 way, like <br>.
+            ev.editor.dataProcessor.htmlFilter.addRules({
+                elements: {
+                    $: function(element) {
+                        // Output dimensions of images as width and height
+                        if (element.name == 'img') {
+                            var style = element.attributes.style;
+
+                            if (style) {
+                                // Get the width from the style.
+                                var match = /(?:^|\s)width\s*:\s*(\d+)px/i.exec(style),
+                                    width = match && match[1];
+
+                                // Get the height from the style.
+                                match = /(?:^|\s)height\s*:\s*(\d+)px/i.exec(style);
+                                var height = match && match[1];
+
+                                // Get the float from the style.
+                                match = /(?:^|\s)float\s*:\s*(\w+)/i.exec(style);
+                                var float = match && match[1];
+
+                                if (width) {
+                                    element.attributes.style = element.attributes.style.replace(/(?:^|\s)width\s*:\s*(\d+)px;?/i, '');
+                                    element.attributes.width = width;
+                                }
+
+                                if (height) {
+                                    element.attributes.style = element.attributes.style.replace(/(?:^|\s)height\s*:\s*(\d+)px;?/i, '');
+                                    element.attributes.height = height;
+                                }
+                                if (float) {
+                                    element.attributes.style = element.attributes.style.replace(/(?:^|\s)float\s*:\s*(\w+)/i, '');
+                                    element.attributes.align = float;
+                                }
+
+                            }
+                        }
+
+                        if (!element.attributes.style) delete element.attributes.style;
+
+                        return element;
+                    }
+                }
+            });
+        });
 
         vm.cancel = cancel;
         vm.creerNewsletter = creerNewsletter;
@@ -50,10 +100,17 @@
 
         function creerNewsletter(form) {
             if (form.$valid) {
+                var n = angular.copy(vm.newsletter);
+                var d = n.dateEnvoi;
+                var curr_date = d.getDate();
+                var curr_month = d.getMonth() + 1; //Months are zero based
+                var curr_year = d.getFullYear();
+                n.dateEnvoi = curr_year + "-" + curr_month + "-" + curr_date;
                 vm.ajoutNewsletterEnCours = true;
-                dataserviceNewsletter.postNewsletter(vm.newsletter).then(function (newsletter) {
+                dataserviceNewsletter.postNewsletter(n).then(function (newsletter) {
                     vm.ajoutNewsletterEnCours = false;
                     vm.newsletter = newsletter;
+                    vm.newsletter.dateEnvoi = new Date(newsletter.dateEnvoi);
                     logger.success('Newsletter créée', true);
                     ok();
                 }, function (data) {
@@ -66,10 +123,17 @@
 
         function modifierNewsletter(form) {
             if (form.$valid) {
+                var n = angular.copy(vm.newsletter);
+                var d = n.dateEnvoi;
+                var curr_date = d.getDate();
+                var curr_month = d.getMonth() + 1; //Months are zero based
+                var curr_year = d.getFullYear();
+                n.dateEnvoi = curr_year + "-" + curr_month + "-" + curr_date;
                 vm.ajoutNewsletterEnCours = true;
-                dataserviceNewsletter.putNewsletter(vm.newsletter).then(function (newsletter) {
+                dataserviceNewsletter.putNewsletter(n).then(function (newsletter) {
                     vm.ajoutNewsletterEnCours = false;
                     vm.newsletter = newsletter;
+                    vm.newsletter.dateEnvoi = new Date(newsletter.dateEnvoi);
                     logger.success('Newsletter créée', true);
                     ok();
                 }, function (data) {

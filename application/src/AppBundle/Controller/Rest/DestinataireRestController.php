@@ -161,12 +161,6 @@ class DestinataireRestController extends ParentRestController
             return $this->view('Param listeId non trouve', Codes::HTTP_BAD_REQUEST);
         }
 
-        $liste = $this->getDoctrine()->getRepository('AppBundle:ListeDiffusion')->find($params['listeId']);
-        if ($liste === null) {
-            return $this->view('Liste de diffusion non trouve', Codes::HTTP_BAD_REQUEST);
-        }
-
-
         if (isset($params['destinataire']['nom']) && $params['destinataire']['nom'] != null) {
             $destinataire->setNom($params['destinataire']['nom']);
         }
@@ -179,13 +173,18 @@ class DestinataireRestController extends ParentRestController
             $destinataire->setEmail($params['destinataire']['email']);
         }
 
-
-        $dests = $liste->getDestinataires();
-        $dests[] = $destinataire;
-        $liste->setDestinataires($dests);
-        $listes = array();
-        $listes[] = $liste;
-        $destinataire->setListesDiffusion($listes);
+        if ($params['listeId'] !== -1) {
+            $liste = $this->getDoctrine()->getRepository('AppBundle:ListeDiffusion')->find($params['listeId']);
+            if ($liste === null) {
+                return $this->view('Liste de diffusion non trouve', Codes::HTTP_BAD_REQUEST);
+            }
+            $dests[] = $destinataire;
+            $dests = $liste->getDestinataires();
+            $liste->setDestinataires($dests);
+            $listes = array();
+            $listes[] = $liste;
+            $destinataire->setListesDiffusion($listes);
+        }
 
         return $this->processForm($destinataire);
     }

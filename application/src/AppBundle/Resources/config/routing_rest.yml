@@ -18,3 +18,7 @@ campagne:
     type: rest
     resource: AppBundle\Controller\Rest\CampagneRestController
     name_prefix:  api_campagne_
+insciption:
+    type: rest
+    resource: AppBundle\Controller\Rest\InscriptionRestController
+    name_prefix:  api_insciption_

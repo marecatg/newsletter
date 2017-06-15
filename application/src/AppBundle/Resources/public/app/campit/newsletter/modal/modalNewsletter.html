@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-xs-3">
                     <div class="form-group"
-                         ng-class="{ 'has-error': form.$submitted && form.prochainEnvoi.$error.required }">
+                         ng-class="{ 'has-error': form.$submitted && (form.prochainEnvoi.$error.required || form.prochainEnvoi.$error.date) }">
                         <label class="control-label" for="prochainEnvoi">Date de prochain envoi</label>
                         <div class="input-group">
                             <input type="text" class="form-control" uib-datepicker-popup="{{ format }}"

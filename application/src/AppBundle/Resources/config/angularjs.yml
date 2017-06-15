@@ -39,6 +39,7 @@ parameters:
                     - "Resources/public/app/core/dataservice/listeDiffusion.factory.js"
                     - "Resources/public/app/core/dataservice/campagne.factory.js"
                     - "Resources/public/app/core/dataservice/newsletter.factory.js"
+                    - "Resources/public/app/core/dataservice/inscription.factory.js"
                     #- "Resources/public/app/core/modal/modal.js"
                     - "Resources/public/app/layout/layout.module.js"
                     #- "Resources/public/app/layout/config.route.js"

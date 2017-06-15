@@ -8,20 +8,26 @@
                 Newsletters / Campagnes
             </div>
             <div class="panel-body">
-                <div class="form-group col-lg-4">
-                    <select class="form-control" title="">
-                        <option>Newsletters</option>
-                        <option>Campagne</option>
-                    </select>
+                <!--<div class="form-group col-sm-12 col-lg-4">-->
+                    <!--<select class="form-control" title="">-->
+                        <!--<option>Newsletters</option>-->
+                        <!--<option>Campagne</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <div class="col-sm-12">
+                    <ul class="list-group liste-choix-destinataire">
+                        <li ng-repeat="newsletter in vm.newsletters | orderBy: 'nom'" class="list-group-item">
+                            <label class="checkbox-inline">
+                                <input type="radio" name="newsletter" id="{{newsletter.id}}"
+                                       data-ng-disabled="vm.selectionNonSauvegarde"
+                                       data-ng-click="vm.changeSelection(newsletter.id)"
+                                       data-ng-model="newsletter.select">
+                                {{newsletter.nom}}
+                            </label>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <ul class="list-group" id="liste-choix-destinataire">
-                <li ng-repeat="newsletter in vm.newsletters | orderBy: 'nom'" class="list-group-item">
-                    <label class="checkbox-inline"><input type="checkbox" id="{{newsletter.id}}" ng-model="newsletter.select">
-                        {{newsletter.nom}}
-                    </label>
-                </li>
-            </ul>
         </div>
     </div>
 
@@ -32,7 +38,27 @@
                 Destinataires / Listes de diffusion
             </div>
             <div class="panel-body">
-
+                <div class="col-sm-12">
+                    <div class="alert alert-warning col-sm-12" role="alert" data-ng-show="vm.selectionNonSauvegarde">
+                        <span>Il y a des modifications à sauvegarder.</span>
+                        <div class="pull-right">
+                            <button class="btn btn-success" data-ng-click="vm.saveChange()">Sauvegarder</button>
+                            <button class="btn btn-danger" data-ng-click="vm.ignoreAlert()">Ignorer</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 no-padding">
+                        <ul class="list-group liste-choix-destinataire">
+                            <li ng-repeat="liste in vm.listesDiffusions | orderBy: 'nom'" class="list-group-item">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="{{liste.id}}" ng-model="liste.select"
+                                           data-ng-click="vm.selectionNonSauvegarde = true"
+                                           data-ng-disabled="vm.idNewsletterSelected === null">
+                                    {{liste.nom}}
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

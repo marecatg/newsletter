@@ -68,7 +68,7 @@ class ContenuNewsletter
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
     public function getDateModification()
     {
@@ -76,7 +76,7 @@ class ContenuNewsletter
     }
 
     /**
-     * @param \DateTime $dateModification
+     * @param string $dateModification
      */
     public function setDateModification($dateModification)
     {

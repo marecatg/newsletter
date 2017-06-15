@@ -5,9 +5,9 @@
         .module('app.newsletter')
         .controller('Newsletter', Newsletter);
 
-    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter', '$uibModal', 'logger'];
+    Newsletter.$inject = ['$q', 'dataserviceCampagne', 'dataserviceNewsletter', '$uibModal', 'logger', '$sce'];
 
-    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter, $uibModal, logger) {
+    function Newsletter($q, dataserviceCampagne, dataserviceNewsletter, $uibModal, logger, $sce) {
 
         var vm = this;
         vm.showView = false;
@@ -26,6 +26,7 @@
         vm.openNewsletterModal = openNewsletterModal;
         vm.deleteNewsletter = deleteNewsletter;
         vm.modifierNewsletter = modifierNewsletter;
+        vm.trustAsHtml = trustAsHtml;
 
         activate();
 
@@ -149,5 +150,9 @@
                 }
             });
         }
+
+        function trustAsHtml(string) {
+            return $sce.trustAsHtml(string);
+        };
     }
 })();
