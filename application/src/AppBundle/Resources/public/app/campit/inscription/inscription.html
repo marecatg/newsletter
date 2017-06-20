@@ -8,12 +8,12 @@
                 Newsletters / Campagnes
             </div>
             <div class="panel-body">
-                <!--<div class="form-group col-sm-12 col-lg-4">-->
-                    <!--<select class="form-control" title="">-->
-                        <!--<option>Newsletters</option>-->
-                        <!--<option>Campagne</option>-->
-                    <!--</select>-->
-                <!--</div>-->
+                <div class="form-group col-sm-12 col-lg-4">
+                    <select class="form-control" title="" disabled>
+                        <option>Newsletters</option>
+                        <option>Campagne</option>
+                    </select>
+                </div>
                 <div class="col-sm-12">
                     <ul class="list-group liste-choix-destinataire">
                         <li ng-repeat="newsletter in vm.newsletters | orderBy: 'nom'" class="list-group-item">
@@ -38,6 +38,12 @@
                 Destinataires / Listes de diffusion
             </div>
             <div class="panel-body">
+                <div class="form-group col-sm-12 col-lg-4">
+                    <select class="form-control" title="" disabled>
+                        <option>Destinataires</option>
+                        <option>Listes de diffusion</option>
+                    </select>
+                </div>
                 <div class="col-sm-12">
                     <div class="alert alert-warning col-sm-12" role="alert" data-ng-show="vm.selectionNonSauvegarde">
                         <span>Il y a des modifications à sauvegarder.</span>

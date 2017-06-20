@@ -134,10 +134,10 @@
                     vm.ajoutNewsletterEnCours = false;
                     vm.newsletter = newsletter;
                     vm.newsletter.dateEnvoi = new Date(newsletter.dateEnvoi);
-                    logger.success('Newsletter créée', true);
+                    logger.success('Newsletter modifiée', true);
                     ok();
                 }, function (data) {
-                    logger.error('Erreur lors de la création de la newsletter', true);
+                    logger.error('Erreur lors de la modification de la newsletter', true);
                     logger.error(data);
                     vm.ajoutNewsletterEnCours = false;
                 });
